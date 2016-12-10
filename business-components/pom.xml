@@ -1,0 +1,24 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>it.vige.wildfly</groupId>
+		<artifactId>book</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	
+	<artifactId>business-components</artifactId>
+	<packaging>pom</packaging>
+	<name>Wildfly Business Components</name>
+	<description>Part 1- Service and business components</description>
+
+	<modules>
+		<module>injection</module>
+		<module>persistence</module>
+		<module>business-logic</module>
+		<module>transactions</module>
+		<module>services</module>
+	</modules>
+	
+</project>

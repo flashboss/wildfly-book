@@ -1,0 +1,55 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>it.vige.wildfly</groupId>
+		<artifactId>class-loading</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>deployment</artifactId>
+	<packaging>war</packaging>
+	<name>Deployment</name>
+	<description>Chapter 17: Deployment</description>
+
+	<build>
+		<defaultGoal>package</defaultGoal>
+		<finalName>deployment</finalName>
+		<plugins>
+			<plugin>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<configuration>
+					<additionalBuildcommands>
+						<buildCommand>
+							<name>org.jboss.tools.common.verification.verifybuilder</name>
+						</buildCommand>
+					</additionalBuildcommands>
+					<additionalConfig>
+						<file>
+							<name>.settings/org.maven.ide.eclipse.prefs</name>
+							<content>eclipse.preferences.version=1
+								fullBuildGoals=process-test-resources
+								includeModules=false
+								resolveWorkspaceProjects=true
+								resourceFilterGoals=process-resources
+								resources\:testResources
+								skipCompilerPlugin=true
+								version=1</content>
+						</file>
+					</additionalConfig>
+					<additionalProjectnatures>
+						<projectnature>org.eclipse.jem.workbench.JavaEMFNature</projectnature>
+						<projectnature>org.eclipse.wst.common.modulecore.ModuleCoreNature</projectnature>
+						<projectnature>org.eclipse.wst.common.project.facet.core.nature</projectnature>
+						<projectnature>org.eclipse.jdt.core.javanature</projectnature>
+					</additionalProjectnatures>
+					<workspace>${user.home}/.eclipse/workspace</workspace>
+					<wtpdefaultserver>JBossAS</wtpdefaultserver>
+					<wtpversion>3.6</wtpversion>
+					<!-- <downloadSources>true</downloadSources> <downloadJavadocs>true</downloadJavadocs> -->
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

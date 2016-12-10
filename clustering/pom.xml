@@ -1,0 +1,22 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>it.vige.wildfly</groupId>
+		<artifactId>book</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	
+	<artifactId>clustering</artifactId>
+	<packaging>pom</packaging>
+	<name>Wildfly Clustering</name>
+	<description>Part 4 - Clustering</description>
+
+	<modules>
+		<module>web-sessions</module>
+		<module>service-propagation</module>
+		<module>share-data</module>
+	</modules>
+	
+</project>
