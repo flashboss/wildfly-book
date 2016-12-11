@@ -11,7 +11,7 @@
 	<artifactId>deployment</artifactId>
 	<packaging>war</packaging>
 	<name>Deployment</name>
-	<description>Chapter 17: Deployment</description>
+	<description>Chapter 19: Deployment</description>
 
 	<build>
 		<defaultGoal>package</defaultGoal>

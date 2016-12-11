@@ -11,7 +11,7 @@
 	<artifactId>web-programming</artifactId>
 	<packaging>pom</packaging>
 	<name>Wildfly Web Programming</name>
-	<description>Part 3 - Web programming</description>
+	<description>Part 4 - Web programming</description>
 
 	<modules>
 		<module>servlets-jsp</module>

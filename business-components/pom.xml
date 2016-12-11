@@ -11,7 +11,7 @@
 	<artifactId>business-components</artifactId>
 	<packaging>pom</packaging>
 	<name>Wildfly Business Components</name>
-	<description>Part 1- Service and business components</description>
+	<description>Part 2- Service and business components</description>
 
 	<modules>
 		<module>injection</module>

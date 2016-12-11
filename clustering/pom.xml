@@ -11,7 +11,7 @@
 	<artifactId>clustering</artifactId>
 	<packaging>pom</packaging>
 	<name>Wildfly Clustering</name>
-	<description>Part 4 - Clustering</description>
+	<description>Part 5 - Clustering</description>
 
 	<modules>
 		<module>web-sessions</module>

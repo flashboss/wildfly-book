@@ -11,7 +11,7 @@
 	<artifactId>share-data</artifactId>
 	<packaging>ejb</packaging>
 	<name>Share your data</name>
-	<description>Chapter 16: Share your data</description>
+	<description>Chapter 18: Share your data</description>
 
 	<build>
 		<defaultGoal>package</defaultGoal>

@@ -11,7 +11,7 @@
 	<artifactId>osgi</artifactId>
 	<packaging>war</packaging>
 	<name>OSGI</name>
-	<description>Chapter 18: OSGI</description>
+	<description>Chapter 20: OSGI</description>
 
 	<build>
 		<defaultGoal>package</defaultGoal>

@@ -11,7 +11,7 @@
 	<artifactId>asynchronous-ejb</artifactId>
 	<packaging>ejb</packaging>
 	<name>Asynchronous EJB</name>
-	<description>Chapter 10: Asynchronous EJB</description>
+	<description>Chapter 12: Asynchronous EJB</description>
 
 	<build>
 		<defaultGoal>package</defaultGoal>

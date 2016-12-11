@@ -11,7 +11,7 @@
 	<artifactId>batches-workflows</artifactId>
 	<packaging>ejb</packaging>
 	<name>Batches and workflows</name>
-	<description>Chapter 11: Batches and workflows</description>
+	<description>Chapter 13: Batches and workflows</description>
 
 	<build>
 		<defaultGoal>package</defaultGoal>

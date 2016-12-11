@@ -11,7 +11,7 @@
 	<artifactId>web-sockets</artifactId>
 	<packaging>war</packaging>
 	<name>Web sockets</name>
-	<description>Chapter 6: Web sockets</description>
+	<description>Chapter 8: Web sockets</description>
 
 	<build>
 		<defaultGoal>package</defaultGoal>

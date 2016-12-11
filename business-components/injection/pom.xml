@@ -11,7 +11,7 @@
 	<artifactId>injection</artifactId>
 	<packaging>ejb</packaging>
 	<name>Injection</name>
-	<description>Chapter 1: Injection</description>
+	<description>Chapter 3: Injection</description>
 
 	<build>
 		<defaultGoal>package</defaultGoal>

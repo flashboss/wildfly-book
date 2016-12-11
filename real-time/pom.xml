@@ -11,7 +11,7 @@
 	<artifactId>real-time</artifactId>
 	<packaging>pom</packaging>
 	<name>Wildfly Real Time</name>
-	<description>Part 2 - Asynchronous and real time</description>
+	<description>Part 3 - Asynchronous and real time</description>
 
 	<modules>
 		<module>web-sockets</module>

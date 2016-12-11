@@ -11,7 +11,7 @@
 	<artifactId>java-server-faces</artifactId>
 	<packaging>war</packaging>
 	<name>Java Server Faces</name>
-	<description>Chapter 13: Java Server Faces</description>
+	<description>Chapter 15: Java Server Faces</description>
 
 	<build>
 		<defaultGoal>package</defaultGoal>

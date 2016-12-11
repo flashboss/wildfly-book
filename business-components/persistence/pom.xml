@@ -11,7 +11,7 @@
 	<artifactId>persistence</artifactId>
 	<packaging>ejb</packaging>
 	<name>Persistence</name>
-	<description>Chapter 2: Persistence</description>
+	<description>Chapter 4: Persistence</description>
 
 	<build>
 		<defaultGoal>package</defaultGoal>

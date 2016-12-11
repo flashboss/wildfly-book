@@ -11,7 +11,7 @@
 	<artifactId>business-logic</artifactId>
 	<packaging>ejb</packaging>
 	<name>Business logic</name>
-	<description>Chapter 3: Business logic</description>
+	<description>Chapter 5: Business logic</description>
 
 	<build>
 		<defaultGoal>package</defaultGoal>
