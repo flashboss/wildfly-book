@@ -11,7 +11,7 @@
 	<artifactId>transactions</artifactId>
 	<packaging>ejb</packaging>
 	<name>Transactions</name>
-	<description>Chapter 6: Transactions</description>
+	<description>Chapter 6: Working with Distributed Transactions</description>
 
 	<build>
 		<defaultGoal>package</defaultGoal>

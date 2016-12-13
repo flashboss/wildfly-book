@@ -11,7 +11,7 @@
 	<artifactId>messaging</artifactId>
 	<packaging>ejb</packaging>
 	<name>Messaging</name>
-	<description>Chapter 9: Messaging</description>
+	<description>Chapter 9: Working with Messaging</description>
 
 	<build>
 		<defaultGoal>package</defaultGoal>

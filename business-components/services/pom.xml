@@ -11,7 +11,7 @@
 	<artifactId>services</artifactId>
 	<packaging>war</packaging>
 	<name>Services</name>
-	<description>Chapter 7: Services</description>
+	<description>Chapter 7: Creating REST Services</description>
 
 	<build>
 		<defaultGoal>package</defaultGoal>

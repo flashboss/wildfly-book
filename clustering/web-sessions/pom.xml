@@ -11,7 +11,7 @@
 	<artifactId>web-sessions</artifactId>
 	<packaging>war</packaging>
 	<name>Web sessions</name>
-	<description>Chapter 16: Web sessions</description>
+	<description>Chapter 16: Sharing the Web sessions</description>
 
 	<build>
 		<defaultGoal>package</defaultGoal>

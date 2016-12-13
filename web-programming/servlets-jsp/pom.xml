@@ -11,7 +11,7 @@
 	<artifactId>servlets-jsp</artifactId>
 	<packaging>war</packaging>
 	<name>Servlets and JSP</name>
-	<description>Chapter 14: Servlets and JSP</description>
+	<description>Chapter 14: Working with Servlets and JSP</description>
 
 	<build>
 		<defaultGoal>package</defaultGoal>
