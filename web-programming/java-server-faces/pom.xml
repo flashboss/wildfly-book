@@ -11,7 +11,7 @@
 	<artifactId>java-server-faces</artifactId>
 	<packaging>war</packaging>
 	<name>Java Server Faces</name>
-	<description>Chapter 15: Writing a JSF Application</description>
+	<description>Chapter 14: Writing a JSF Application</description>
 
 	<build>
 		<defaultGoal>package</defaultGoal>

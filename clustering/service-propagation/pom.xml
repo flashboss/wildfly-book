@@ -11,7 +11,7 @@
 	<artifactId>service-propagation</artifactId>
 	<packaging>ejb</packaging>
 	<name>Service propagation</name>
-	<description>Chapter 17: Service propagation</description>
+	<description>Chapter 16: Service propagation</description>
 
 	<build>
 		<defaultGoal>package</defaultGoal>

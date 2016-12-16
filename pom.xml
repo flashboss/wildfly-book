@@ -39,12 +39,23 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<jboss.home>${env.JBOSS_HOME}</jboss.home>
 		<version.jboss.spec.javaee.7.0>1.0.3.Final</version.jboss.spec.javaee.7.0>
 		<richfaces.version>4.5.17.Final</richfaces.version>
 		<org.jboss.arquillian.version>1.1.11.Final</org.jboss.arquillian.version>
 		<org.jboss.arquillian.drone.version>2.0.1.Final</org.jboss.arquillian.drone.version>
 		<version.selenium>3.0.1</version.selenium>
+
+
+
+		<version.surefire.plugin>2.18</version.surefire.plugin>
+		<version.org.wildfly.core>2.2.0.Final</version.org.wildfly.core>
+		<version.org.wildfly.arquillian>1.0.2.Final</version.org.wildfly.arquillian>
+		<testLogToFile>true</testLogToFile>
+		<maven.deploy.skip>true</maven.deploy.skip>
+		<jboss.dist>${jbossas.ts.integ.dir}/tools/wildfly-10.1.0.Final</jboss.dist>
+		<jboss.home>${jboss.dist}</jboss.home>
+		<ts.skipTests>${skipTests}</ts.skipTests>
+		<enforcer.skip>true</enforcer.skip>
 	</properties>
 
 	<repositories>
@@ -135,17 +146,34 @@
 				<artifactId>richfaces</artifactId>
 				<version>${richfaces.version}</version>
 			</dependency>
+
+			<!-- Import the core parent to get all the managed dependencies from core -->
+			<dependency>
+				<groupId>org.wildfly.core</groupId>
+				<artifactId>wildfly-core-parent</artifactId>
+				<type>pom</type>
+				<version>${version.org.wildfly.core}</version>
+				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.wildfly.arquillian</groupId>
+				<artifactId>wildfly-arquillian-parent</artifactId>
+				<version>${version.org.wildfly.arquillian}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.wildfly.arquillian</groupId>
+				<artifactId>wildfly-arquillian-container-managed</artifactId>
+				<version>${version.org.wildfly.arquillian}</version>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.jboss.spec</groupId>
-			<artifactId>jboss-javaee-7.0</artifactId>
-			<version>${version.jboss.spec.javaee.7.0}</version>
-			<type>pom</type>
-			<scope>provided</scope>
-		</dependency>
 
 		<!-- Test dependencies -->
 
@@ -171,6 +199,17 @@
 			<artifactId>arquillian-drone-webdriver-depchain</artifactId>
 			<type>pom</type>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.wildfly.arquillian</groupId>
+			<artifactId>wildfly-arquillian-container-managed</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.spec</groupId>
+			<artifactId>jboss-javaee-7.0</artifactId>
+			<version>${version.jboss.spec.javaee.7.0}</version>
+			<type>pom</type>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 
@@ -246,7 +285,7 @@
 				</repository>
 			</distributionManagement>
 		</profile>
-		
+
 		<profile>
 			<id>deploy</id>
 			<build>
@@ -359,6 +398,115 @@
 							</execution>
 						</executions>
 					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<profile>
+			<id>basic.integration.tests.profile</id>
+			<activation>
+				<property>
+					<name>!no.basic.integration.tests</name>
+				</property>
+			</activation>
+
+			<!-- Server configuration executions. -->
+			<build>
+				<testResources>
+					<testResource>
+						<directory>src/test/java</directory>
+						<excludes>
+							<exclude>**/*.java</exclude>
+						</excludes>
+					</testResource>
+				</testResources>
+				<plugins>
+					<!-- A build of target/jbossas which is shared by all modules. Modules 
+						and bundles are not copied as they are read-only (see surefire props). -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-resources-plugin</artifactId>
+						<executions combine.children="append">
+							<!-- Copy the AS into current_submodule/target/jbossas . This is executed 
+								recursively in submodules. -->
+							<execution>
+								<id>ts.copy-jbossas.groups</id>
+								<inherited>true</inherited>
+								<phase>generate-test-resources</phase>
+								<goals>
+									<goal>copy-resources</goal>
+								</goals>
+								<configuration>
+									<outputDirectory>${basedir}/target/jbossas</outputDirectory>
+									<overwrite>true</overwrite>
+									<resources>
+										<resource>
+											<directory>${jboss.home}</directory>
+											<excludes>
+												<exclude>modules/</exclude>
+												<exclude>standalone/data</exclude>
+												<exclude>standalone/log</exclude>
+												<exclude>standalone/tmp</exclude>
+											</excludes>
+										</resource>
+									</resources>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+
+					<!-- Sets general surefire system properties. These can be overridden 
+						by inheriting plugin configurations. -->
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<configuration>
+							<skipTests>${ts.skipTests}</skipTests>
+							<enableAssertions>true</enableAssertions>
+							<!-- System properties to forked surefire JVM which runs clients. -->
+							<failIfNoTests>false</failIfNoTests>
+							<redirectTestOutputToFile>${testLogToFile}</redirectTestOutputToFile>
+							<systemPropertyVariables>
+								<jboss.home>${basedir}/target/jbossas</jboss.home>
+								<module.path>${jboss.dist}/modules${path.separator}${basedir}/target/modules</module.path>
+							</systemPropertyVariables>
+						</configuration>
+						<executions combine.children="append">
+
+							<!-- Disable default-test execution. -->
+							<execution>
+								<id>default-test</id>
+								<goals>
+									<goal>test</goal>
+								</goals>
+								<phase>none</phase>
+							</execution>
+							<execution>
+								<id>basic-integration-default-full.surefire</id>
+								<phase>test</phase>
+								<goals>
+									<goal>test</goal>
+								</goals>
+								<configuration>
+									<!-- Tests to execute. Overriden in webProfileExclusion.profile 
+										. -->
+									<includes>
+										<include>org/jboss/as/test/integration/ee/injection/resource/basic/*TestCase.java</include>
+									</includes>
+
+									<!-- Parameters to test cases. -->
+									<systemPropertyVariables
+										combine.children="append">
+										<jboss.server.config.file.name>standalone-full.xml</jboss.server.config.file.name>
+									</systemPropertyVariables>
+								</configuration>
+							</execution>
+
+						</executions>
+					</plugin>
+
+
 				</plugins>
 			</build>
 		</profile>

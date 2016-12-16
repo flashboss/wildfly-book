@@ -11,7 +11,7 @@
 	<artifactId>java-mail</artifactId>
 	<packaging>ejb</packaging>
 	<name>Java Mail</name>
-	<description>Chapter 10: Implementing a Mail Client</description>
+	<description>Chapter 9: Implementing a Mail Client</description>
 
 	<build>
 		<defaultGoal>package</defaultGoal>
