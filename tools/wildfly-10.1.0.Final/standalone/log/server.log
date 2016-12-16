@@ -1,0 +1,97 @@
+2016-12-15 00:24:31,781 INFO  [org.jboss.modules] (main) JBoss Modules version 1.5.2.Final
+2016-12-15 00:24:32,541 INFO  [org.jboss.msc] (main) JBoss MSC version 1.2.6.Final
+2016-12-15 00:24:32,881 INFO  [org.jboss.as] (MSC service thread 1-6) WFLYSRV0049: WildFly Full 10.1.0.Final (WildFly Core 2.2.0.Final) starting
+2016-12-15 00:24:32,883 DEBUG [org.jboss.as.config] (MSC service thread 1-6) Configured system properties:
+	[Standalone] = 
+	awt.toolkit = sun.lwawt.macosx.LWCToolkit
+	file.encoding = UTF-8
+	file.encoding.pkg = sun.io
+	file.separator = /
+	ftp.nonProxyHosts = local|*.local|169.254/16|*.169.254/16
+	gopherProxySet = false
+	http.nonProxyHosts = local|*.local|169.254/16|*.169.254/16
+	java.awt.graphicsenv = sun.awt.CGraphicsEnvironment
+	java.awt.headless = true
+	java.awt.printerjob = sun.lwawt.macosx.CPrinterJob
+	java.class.path = /Users/lucastancapiano/Sviluppo/src/workspace_wildfly_book/prova/vige-testsuite/vige-integration/vige-basic/target/jbossas/jboss-modules.jar
+	java.class.version = 52.0
+	java.endorsed.dirs = /Library/Java/JavaVirtualMachines/jdk1.8.0_112.jdk/Contents/Home/jre/lib/endorsed
+	java.ext.dirs = /Users/lucastancapiano/Library/Java/Extensions:/Library/Java/JavaVirtualMachines/jdk1.8.0_112.jdk/Contents/Home/jre/lib/ext:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java
+	java.home = /Library/Java/JavaVirtualMachines/jdk1.8.0_112.jdk/Contents/Home/jre
+	java.io.tmpdir = /var/folders/_p/7c06bb95071f644r5vvs8pnm0000gn/T/
+	java.library.path = /Users/lucastancapiano/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:.
+	java.net.preferIPv4Stack = true
+	java.runtime.name = Java(TM) SE Runtime Environment
+	java.runtime.version = 1.8.0_112-b16
+	java.specification.name = Java Platform API Specification
+	java.specification.vendor = Oracle Corporation
+	java.specification.version = 1.8
+	java.util.logging.manager = org.jboss.logmanager.LogManager
+	java.vendor = Oracle Corporation
+	java.vendor.url = http://java.oracle.com/
+	java.vendor.url.bug = http://bugreport.sun.com/bugreport/
+	java.version = 1.8.0_112
+	java.vm.info = mixed mode
+	java.vm.name = Java HotSpot(TM) 64-Bit Server VM
+	java.vm.specification.name = Java Virtual Machine Specification
+	java.vm.specification.vendor = Oracle Corporation
+	java.vm.specification.version = 1.8
+	java.vm.vendor = Oracle Corporation
+	java.vm.version = 25.112-b16
+	javax.management.builder.initial = org.jboss.as.jmx.PluggableMBeanServerBuilder
+	javax.xml.datatype.DatatypeFactory = __redirected.__DatatypeFactory
+	javax.xml.parsers.DocumentBuilderFactory = __redirected.__DocumentBuilderFactory
+	javax.xml.parsers.SAXParserFactory = __redirected.__SAXParserFactory
+	javax.xml.stream.XMLEventFactory = __redirected.__XMLEventFactory
+	javax.xml.stream.XMLInputFactory = __redirected.__XMLInputFactory
+	javax.xml.stream.XMLOutputFactory = __redirected.__XMLOutputFactory
+	javax.xml.transform.TransformerFactory = __redirected.__TransformerFactory
+	javax.xml.validation.SchemaFactory:http://www.w3.org/2001/XMLSchema = __redirected.__SchemaFactory
+	javax.xml.xpath.XPathFactory:http://java.sun.com/jaxp/xpath/dom = __redirected.__XPathFactory
+	jboss.home.dir = /Users/lucastancapiano/Sviluppo/src/workspace_wildfly_book/prova/vige-testsuite/vige-integration/vige-basic/target/jbossas
+	jboss.host.name = mbp-di-luca
+	jboss.modules.dir = /Users/lucastancapiano/Sviluppo/src/workspace_wildfly_book/prova/vige-testsuite/vige-integration/vige-basic/target/jbossas/modules
+	jboss.modules.system.pkgs = org.jboss.byteman
+	jboss.node.name = mbp-di-luca
+	jboss.qualified.host.name = mbp-di-luca
+	jboss.server.base.dir = /Users/lucastancapiano/Sviluppo/src/workspace_wildfly_book/prova/vige-testsuite/vige-integration/vige-basic/target/jbossas/standalone
+	jboss.server.config.dir = /Users/lucastancapiano/Sviluppo/src/workspace_wildfly_book/prova/vige-testsuite/vige-integration/vige-basic/target/jbossas/standalone/configuration
+	jboss.server.data.dir = /Users/lucastancapiano/Sviluppo/src/workspace_wildfly_book/prova/vige-testsuite/vige-integration/vige-basic/target/jbossas/standalone/data
+	jboss.server.deploy.dir = /Users/lucastancapiano/Sviluppo/src/workspace_wildfly_book/prova/vige-testsuite/vige-integration/vige-basic/target/jbossas/standalone/data/content
+	jboss.server.log.dir = /Users/lucastancapiano/Sviluppo/src/workspace_wildfly_book/prova/vige-testsuite/vige-integration/vige-basic/target/jbossas/standalone/log
+	jboss.server.name = mbp-di-luca
+	jboss.server.persist.config = true
+	jboss.server.temp.dir = /Users/lucastancapiano/Sviluppo/src/workspace_wildfly_book/prova/vige-testsuite/vige-integration/vige-basic/target/jbossas/standalone/tmp
+	line.separator = 
+
+	logging.configuration = file:/Users/lucastancapiano/Sviluppo/src/workspace_wildfly_book/prova/vige-testsuite/vige-integration/vige-basic/target/jbossas/standalone/configuration/logging.properties
+	module.path = /Users/lucastancapiano/Sviluppo/src/workspace_wildfly_book/prova/vige-testsuite/vige-integration/vige-basic/target/jbossas/modules:/Users/lucastancapiano/Sviluppo/src/workspace_wildfly_book/prova/vige-dist/target/wildfly-10.1.0.Final/modules:/Users/lucastancapiano/Sviluppo/src/workspace_wildfly_book/prova/vige-testsuite/vige-integration/vige-basic/target/modules
+	org.jboss.boot.log.file = /Users/lucastancapiano/Sviluppo/src/workspace_wildfly_book/prova/vige-testsuite/vige-integration/vige-basic/target/jbossas/standalone/log/server.log
+	org.jboss.resolver.warning = true
+	org.xml.sax.driver = __redirected.__XMLReaderFactory
+	os.arch = x86_64
+	os.name = Mac OS X
+	os.version = 10.12.2
+	path.separator = :
+	socksNonProxyHosts = local|*.local|169.254/16|*.169.254/16
+	sun.arch.data.model = 64
+	sun.boot.class.path = /Library/Java/JavaVirtualMachines/jdk1.8.0_112.jdk/Contents/Home/jre/lib/resources.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_112.jdk/Contents/Home/jre/lib/rt.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_112.jdk/Contents/Home/jre/lib/sunrsasign.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_112.jdk/Contents/Home/jre/lib/jsse.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_112.jdk/Contents/Home/jre/lib/jce.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_112.jdk/Contents/Home/jre/lib/charsets.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_112.jdk/Contents/Home/jre/lib/jfr.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_112.jdk/Contents/Home/jre/classes
+	sun.boot.library.path = /Library/Java/JavaVirtualMachines/jdk1.8.0_112.jdk/Contents/Home/jre/lib
+	sun.cpu.endian = little
+	sun.cpu.isalist = 
+	sun.io.unicode.encoding = UnicodeBig
+	sun.java.command = /Users/lucastancapiano/Sviluppo/src/workspace_wildfly_book/prova/vige-testsuite/vige-integration/vige-basic/target/jbossas/jboss-modules.jar -mp /Users/lucastancapiano/Sviluppo/src/workspace_wildfly_book/prova/vige-testsuite/vige-integration/vige-basic/target/jbossas/modules:/Users/lucastancapiano/Sviluppo/src/workspace_wildfly_book/prova/vige-dist/target/wildfly-10.1.0.Final/modules:/Users/lucastancapiano/Sviluppo/src/workspace_wildfly_book/prova/vige-testsuite/vige-integration/vige-basic/target/modules org.jboss.as.standalone -Djboss.home.dir=/Users/lucastancapiano/Sviluppo/src/workspace_wildfly_book/prova/vige-testsuite/vige-integration/vige-basic/target/jbossas -Djboss.server.base.dir=/Users/lucastancapiano/Sviluppo/src/workspace_wildfly_book/prova/vige-testsuite/vige-integration/vige-basic/target/jbossas/standalone -Djboss.server.log.dir=/Users/lucastancapiano/Sviluppo/src/workspace_wildfly_book/prova/vige-testsuite/vige-integration/vige-basic/target/jbossas/standalone/log -Djboss.server.config.dir=/Users/lucastancapiano/Sviluppo/src/workspace_wildfly_book/prova/vige-testsuite/vige-integration/vige-basic/target/jbossas/standalone/configuration -c=standalone-full.xml
+	sun.java.launcher = SUN_STANDARD
+	sun.jnu.encoding = UTF-8
+	sun.management.compiler = HotSpot 64-Bit Tiered Compilers
+	sun.os.patch.level = unknown
+	user.country = IT
+	user.dir = /Users/lucastancapiano/Sviluppo/src/workspace_wildfly_book/prova/vige-testsuite/vige-integration/vige-basic
+	user.home = /Users/lucastancapiano
+	user.language = it
+	user.name = lucastancapiano
+	user.timezone = Europe/Rome
+2016-12-15 00:24:32,885 DEBUG [org.jboss.as.config] (MSC service thread 1-6) VM Arguments: -D[Standalone] -Xms64m -Xmx512m -Djava.net.preferIPv4Stack=true -Djava.awt.headless=true -Djboss.modules.system.pkgs=org.jboss.byteman -ea -Djboss.home.dir=/Users/lucastancapiano/Sviluppo/src/workspace_wildfly_book/prova/vige-testsuite/vige-integration/vige-basic/target/jbossas -Dorg.jboss.boot.log.file=/Users/lucastancapiano/Sviluppo/src/workspace_wildfly_book/prova/vige-testsuite/vige-integration/vige-basic/target/jbossas/standalone/log/server.log -Dlogging.configuration=file:/Users/lucastancapiano/Sviluppo/src/workspace_wildfly_book/prova/vige-testsuite/vige-integration/vige-basic/target/jbossas/standalone/configuration/logging.properties 
+2016-12-15 00:24:35,737 INFO  [org.jboss.as.server] (Controller Boot Thread) WFLYSRV0039: Creating http management service using socket-binding (management-http)
+2016-12-15 00:24:35,784 INFO  [org.xnio] (MSC service thread 1-8) XNIO version 3.4.0.Final
+2016-12-15 00:24:35,812 INFO  [org.xnio.nio] (MSC service thread 1-8) XNIO NIO Implementation Version 3.4.0.Final
