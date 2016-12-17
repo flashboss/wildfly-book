@@ -53,6 +53,7 @@ public class ResourceInjectionTestCase {
         Context ctx = new InitialContext();
         this.slsb = (SimpleSLSB) ctx.lookup("java:module/" + SimpleSLSB.class.getSimpleName() + "!"
                 + SimpleSLSB.class.getName());
+        logger.info("Starting test");
     }
 
     @Deployment

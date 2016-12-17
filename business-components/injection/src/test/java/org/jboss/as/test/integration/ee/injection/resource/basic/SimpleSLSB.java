@@ -155,4 +155,8 @@ public class SimpleSLSB extends Parent {
     public boolean validContextInjections() {
         return this.context1 != null && this.context2 == null;
     }
+
+	public Parent getOtherBean() {
+		return otherBean;
+	}
 }
