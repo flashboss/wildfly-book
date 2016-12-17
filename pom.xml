@@ -52,8 +52,7 @@
 		<version.org.wildfly.arquillian>1.0.2.Final</version.org.wildfly.arquillian>
 		<testLogToFile>true</testLogToFile>
 		<maven.deploy.skip>true</maven.deploy.skip>
-		<jboss.dist>${jbossas.ts.integ.dir}/tools/wildfly-10.1.0.Final</jboss.dist>
-		<jboss.home>${jboss.dist}</jboss.home>
+		<jboss.home>${env.JBOSS_HOME}</jboss.home>
 		<ts.skipTests>${skipTests}</ts.skipTests>
 		<enforcer.skip>true</enforcer.skip>
 	</properties>
@@ -469,7 +468,7 @@
 							<redirectTestOutputToFile>${testLogToFile}</redirectTestOutputToFile>
 							<systemPropertyVariables>
 								<jboss.home>${basedir}/target/jbossas</jboss.home>
-								<module.path>${jboss.dist}/modules${path.separator}${basedir}/target/modules</module.path>
+								<module.path>${jboss.home}/modules${path.separator}${basedir}/target/modules</module.path>
 							</systemPropertyVariables>
 						</configuration>
 						<executions combine.children="append">
