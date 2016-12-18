@@ -20,7 +20,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.jboss.as.test.integration.ee.injection.resource.basic;
+package it.vige.businesslogic.injection;
 
 import javax.annotation.Resource;
 import javax.ejb.EJB;

@@ -127,7 +127,6 @@
 							<redirectTestOutputToFile>${testLogToFile}</redirectTestOutputToFile>
 							<systemPropertyVariables>
 								<jboss.home>${basedir}/target/wildfly-10.1.0.Final</jboss.home>
-								<module.path>${jboss.home}/modules${path.separator}${basedir}/target/modules</module.path>
 							</systemPropertyVariables>
 						</configuration>
 						<executions combine.children="append">
@@ -150,7 +149,7 @@
 									<!-- Tests to execute. Overriden in webProfileExclusion.profile 
 										. -->
 									<includes>
-										<include>org/jboss/as/test/integration/ee/injection/resource/basic/*TestCase.java</include>
+										<include>it/vige/businesslogic/injection/*TestCase.java</include>
 									</includes>
 
 									<!-- Parameters to test cases. -->
