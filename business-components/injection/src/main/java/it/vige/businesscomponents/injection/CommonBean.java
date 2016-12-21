@@ -22,6 +22,8 @@
 
 package it.vige.businesscomponents.injection;
 
+import javax.annotation.Resource;
+import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Named;
 
 /**
@@ -31,9 +33,16 @@ import javax.inject.Named;
 @Named
 public class CommonBean {
 
-    public static final String HELLO_GREETING_PREFIX = "Hello ";
+	public static final String HELLO_GREETING_PREFIX = "Hello ";
 
-    public String sayHello(String user) {
-        return HELLO_GREETING_PREFIX + user;
-    }
+	@Resource(lookup = "java:comp/BeanManager")
+	private BeanManager beanManager;
+
+	public String sayHello(String user) {
+		return HELLO_GREETING_PREFIX + user;
+	}
+
+	public BeanManager getBeanManager() {
+		return beanManager;
+	}
 }

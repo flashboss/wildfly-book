@@ -26,10 +26,14 @@ import static it.vige.businesscomponents.injection.CommonBean.HELLO_GREETING_PRE
 import static java.util.logging.Logger.getLogger;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
+import java.util.Set;
 import java.util.logging.Logger;
 
+import javax.enterprise.inject.spi.Bean;
+import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -50,6 +54,8 @@ public class ContainerInjectionTestCase {
 
 	private static final Logger logger = getLogger(ContainerInjectionTestCase.class.getName());
 
+	final String user = "Charlie Sheen";
+
 	@Inject
 	private CommonBean cb;
 
@@ -66,8 +72,24 @@ public class ContainerInjectionTestCase {
 	 */
 	@Test
 	public void testResourceInjection() {
-		logger.info("starting a weld engine in standalone mode");
-		final String user = "Charlie Sheen";
+		logger.info("starting a weld engine in container mode");
+		final String greeting = cb.sayHello(user);
+		assertEquals("Unepxected greeting received from bean", HELLO_GREETING_PREFIX + user, greeting);
+	}
+
+	/**
+	 * Tests simple resource injection in a jar archive
+	 */
+	@Test
+	public void testBeanManager() {
+		logger.info("starting a weld engine in container mode");
+		BeanManager beanManager = cb.getBeanManager();
+		assertNotNull("verify there is ever a bean manager", beanManager);
+		Set<Bean<?>> beans = beanManager.getBeans(CommonBean.class);
+		assertEquals("One injected common bean", 1, beans.size());
+		@SuppressWarnings("unchecked")
+		Bean<CommonBean> bean = (Bean<CommonBean>) beanManager.resolve(beans);
+		CommonBean cb = beanManager.getContext(bean.getScope()).get(bean, beanManager.createCreationalContext(bean));
 		final String greeting = cb.sayHello(user);
 		assertEquals("Unepxected greeting received from bean", HELLO_GREETING_PREFIX + user, greeting);
 	}
