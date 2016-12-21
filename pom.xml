@@ -42,11 +42,9 @@
 		<version.jboss.spec.javaee.7.0>1.0.3.Final</version.jboss.spec.javaee.7.0>
 		<richfaces.version>4.5.17.Final</richfaces.version>
 		<org.jboss.arquillian.version>1.1.11.Final</org.jboss.arquillian.version>
+		<weld.version>2.3.5.Final</weld.version>
 		<org.jboss.arquillian.drone.version>2.0.1.Final</org.jboss.arquillian.drone.version>
 		<version.selenium>3.0.1</version.selenium>
-
-
-
 		<version.surefire.plugin>2.18</version.surefire.plugin>
 		<version.org.wildfly.core>2.2.0.Final</version.org.wildfly.core>
 		<version.org.wildfly.arquillian>1.0.2.Final</version.org.wildfly.arquillian>
