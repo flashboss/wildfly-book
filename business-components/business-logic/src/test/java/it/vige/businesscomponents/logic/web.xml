@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ JBoss, Home of Professional Open Source.
+  ~ Copyright 2011, Red Hat, Inc., and individual contributors
+  ~ as indicated by the @author tags. See the copyright.txt file in the
+  ~ distribution for a full listing of individual contributors.
+  ~
+  ~ This is free software; you can redistribute it and/or modify it
+  ~ under the terms of the GNU Lesser General Public License as
+  ~ published by the Free Software Foundation; either version 2.1 of
+  ~ the License, or (at your option) any later version.
+  ~
+  ~ This software is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  ~ Lesser General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU Lesser General Public
+  ~ License along with this software; if not, write to the Free
+  ~ Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+  ~ 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+  -->
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+
+    <env-entry>
+        <env-entry-name>simpleString</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>It's Friday!!!</env-entry-value>
+    </env-entry>
+
+    <env-entry>
+        <env-entry-name>primitiveInt</env-entry-name>
+        <env-entry-type>int</env-entry-type>
+        <env-entry-value>10</env-entry-value>
+    </env-entry>
+
+    <env-entry>
+        <env-entry-name>primitiveFloat</env-entry-name>
+        <env-entry-type>float</env-entry-type>
+        <env-entry-value>234.1</env-entry-value>
+    </env-entry>
+
+    <env-entry>
+        <env-entry-name>missingEnvEntryValStringResource</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+    </env-entry>
+
+    <env-entry>
+        <env-entry-name>missingEnvEntryValIntResource</env-entry-name>
+        <env-entry-type>int</env-entry-type>
+    </env-entry>
+
+    <resource-ref>
+        <res-ref-name>url1</res-ref-name>
+        <res-type>java.net.URL</res-type>
+        <lookup-name>https://www.widlfly.org</lookup-name>
+    </resource-ref>
+
+    <resource-env-ref>
+        <resource-env-ref-name>ldapContext1</resource-env-ref-name>
+        <resource-env-ref-type>javax.naming.ldap.LdapContext</resource-env-ref-type>
+        <lookup-name>ldap://localhost:389/ou=users,dc=example,dc=com</lookup-name>
+    </resource-env-ref>
+
+</web-app>
