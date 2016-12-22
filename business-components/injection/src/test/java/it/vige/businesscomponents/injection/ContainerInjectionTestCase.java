@@ -22,7 +22,7 @@
 
 package it.vige.businesscomponents.injection;
 
-import static it.vige.businesscomponents.injection.CommonBean.HELLO_GREETING_PREFIX;
+import static it.vige.businesscomponents.injection.common.CommonBean.HELLO_GREETING_PREFIX;
 import static java.util.logging.Logger.getLogger;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
 import static org.junit.Assert.assertEquals;
@@ -42,6 +42,8 @@ import org.jboss.shrinkwrap.api.asset.FileAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import it.vige.businesscomponents.injection.common.CommonBean;
 
 /**
  * Tests that the Resource injection as specified by Java EE spec works as
@@ -63,7 +65,7 @@ public class ContainerInjectionTestCase {
 	public static JavaArchive createWebDeployment() {
 		final JavaArchive jar = create(JavaArchive.class, "resource-injection-test.jar");
 		jar.addPackage(CommonBean.class.getPackage());
-		jar.addAsManifestResource(new FileAsset(new File("src/main/resources/META-INF/beans.xml")), "beans.xml");
+		jar.addAsManifestResource(new FileAsset(new File("src/main/resources/META-INF/beans-empty.xml")), "beans.xml");
 		return jar;
 	}
 
@@ -74,7 +76,7 @@ public class ContainerInjectionTestCase {
 	public void testResourceInjection() {
 		logger.info("starting a weld engine in container mode");
 		final String greeting = cb.sayHello(user);
-		assertEquals("Unepxected greeting received from bean", HELLO_GREETING_PREFIX + user, greeting);
+		assertEquals("Unexpected greeting received from bean", HELLO_GREETING_PREFIX + user, greeting);
 	}
 
 	/**
