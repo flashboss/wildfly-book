@@ -5,7 +5,9 @@ import java.util.List;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
+import javax.ejb.Stateful;
 
+@Stateful
 public class Movies {
 
 	private List<Movie> movies = new ArrayList<Movie>();

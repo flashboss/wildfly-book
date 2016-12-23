@@ -8,8 +8,8 @@ import java.io.File;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import javax.ejb.EJB;
 import javax.ejb.EJBAccessException;
-import javax.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -18,22 +18,21 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import it.vige.businesscomponents.injection.security.EmployeeBean;
-import it.vige.businesscomponents.injection.security.ManagerBean;
+import it.vige.businesscomponents.injection.security.Caller;
 import it.vige.businesscomponents.injection.security.Movie;
 import it.vige.businesscomponents.injection.security.Movies;
 
 @RunWith(Arquillian.class)
 public class SecurityTestCase {
 
-	@Inject
+	@EJB(mappedName = "java:module/Movies")
 	private Movies movies;
 
-	@Inject
-	private ManagerBean manager;
+	@EJB(mappedName = "java:module/ManagerBean")
+	private Caller manager;
 
-	@Inject
-	private EmployeeBean employee;
+	@EJB(mappedName = "java:module/EmployeeBean")
+	private Caller employee;
 
 	@Deployment
 	public static JavaArchive createWebDeployment() {
