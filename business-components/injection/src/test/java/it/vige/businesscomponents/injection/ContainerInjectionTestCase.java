@@ -44,6 +44,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import it.vige.businesscomponents.injection.common.CommonBean;
+import it.vige.businesscomponents.injection.common.CommonManagedBean;
+import it.vige.businesscomponents.injection.common.NamedBean;
 
 /**
  * Tests that the Resource injection as specified by Java EE spec works as
@@ -60,6 +62,12 @@ public class ContainerInjectionTestCase {
 
 	@Inject
 	private CommonBean cb;
+
+	@Inject
+	private CommonManagedBean cmb;
+
+	@Inject
+	private NamedBean nb;
 
 	@Deployment
 	public static JavaArchive createWebDeployment() {
@@ -94,5 +102,19 @@ public class ContainerInjectionTestCase {
 		CommonBean cb = beanManager.getContext(bean.getScope()).get(bean, beanManager.createCreationalContext(bean));
 		final String greeting = cb.sayHello(user);
 		assertEquals("Unepxected greeting received from bean", HELLO_GREETING_PREFIX + user, greeting);
+	}
+
+	@Test
+	public void testManagedInjection() {
+		logger.info("starting a weld engine with a managed bean");
+		final String greeting = cmb.sayHello(user);
+		assertEquals("Unexpected greeting received from bean", HELLO_GREETING_PREFIX + user, greeting);
+	}
+
+	@Test
+	public void testNamedInjection() {
+		logger.info("starting a weld engine with a managed bean");
+		final double prize = nb.giveMeThePrize();
+		assertEquals("Unexpected greeting received from bean", 5.6, prize, 0.0);
 	}
 }

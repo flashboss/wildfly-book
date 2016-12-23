@@ -24,13 +24,11 @@ package it.vige.businesscomponents.injection.common;
 
 import javax.annotation.Resource;
 import javax.enterprise.inject.spi.BeanManager;
-import javax.inject.Named;
 
 /**
  * User: jpai
  */
 
-@Named
 public class CommonBean {
 
 	public static final String HELLO_GREETING_PREFIX = "Hello ";
