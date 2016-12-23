@@ -5,6 +5,7 @@
     <interceptors>
         <class>it.vige.businesscomponents.injection.interceptor.AuditInterceptor</class>
         <class>it.vige.businesscomponents.injection.interceptor.LoggingInterceptor</class>
+        <class>it.vige.businesscomponents.injection.interceptor.TraceInterceptor</class>
     </interceptors>
 
     <alternatives>

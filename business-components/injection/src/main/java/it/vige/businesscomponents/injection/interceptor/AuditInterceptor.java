@@ -5,6 +5,7 @@ import static java.text.DateFormat.getTimeInstance;
 
 import java.util.Date;
 
+import javax.annotation.Priority;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
@@ -17,6 +18,7 @@ import javax.interceptor.InvocationContext;
  */
 @Interceptor
 @Audit
+@Priority(2)
 public class AuditInterceptor {
 
 	@AroundInvoke

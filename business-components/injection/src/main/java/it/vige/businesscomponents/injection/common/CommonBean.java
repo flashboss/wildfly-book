@@ -22,7 +22,6 @@
 
 package it.vige.businesscomponents.injection.common;
 
-import javax.annotation.Priority;
 import javax.annotation.Resource;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Named;
@@ -32,7 +31,6 @@ import javax.inject.Named;
  */
 
 @Named
-@Priority(1)
 public class CommonBean {
 
 	public static final String HELLO_GREETING_PREFIX = "Hello ";

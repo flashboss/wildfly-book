@@ -4,6 +4,7 @@ import static java.util.logging.Logger.getLogger;
 
 import java.util.logging.Logger;
 
+import javax.annotation.Priority;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
@@ -15,10 +16,8 @@ import javax.interceptor.InvocationContext;
  * @author ievgen.shulga
  */
 @Interceptor
-// Binding the interceptor below. Now any business method or bean annotated with
-// @Logging will be intercepted by
-// LoggingInterceptor.aroundInvoke(..) method.
 @Logging
+@Priority(0)
 public class LoggingInterceptor {
 
 	private static final Logger logger = getLogger(LoggingInterceptor.class.getName());
