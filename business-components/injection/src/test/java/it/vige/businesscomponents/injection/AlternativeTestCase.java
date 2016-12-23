@@ -1,0 +1,49 @@
+package it.vige.businesscomponents.injection;
+
+import static java.util.logging.Logger.getLogger;
+import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
+import static org.junit.Assert.assertEquals;
+
+import java.io.File;
+import java.util.logging.Logger;
+
+import javax.inject.Inject;
+
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.shrinkwrap.api.asset.FileAsset;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import it.vige.businesscomponents.injection.alternative.CoderBrutalImpl;
+import it.vige.businesscomponents.injection.decorator.Coder;
+
+@RunWith(Arquillian.class)
+public class AlternativeTestCase {
+
+	private static final Logger logger = getLogger(AlternativeTestCase.class.getName());
+
+	@Inject
+	private Coder coder;
+
+	@Deployment
+	public static JavaArchive createWebDeployment() {
+		final JavaArchive jar = create(JavaArchive.class, "alternative-test.jar");
+		jar.addPackage(Coder.class.getPackage());
+		jar.addPackage(CoderBrutalImpl.class.getPackage());
+		jar.addAsManifestResource(new FileAsset(new File("src/main/resources/META-INF/beans-alternative.xml")),
+				"beans.xml");
+		return jar;
+	}
+
+	/**
+	 * Tests simple decorator injection in a jar archive
+	 */
+	@Test
+	public void testDecorator() {
+		logger.info("starting a weld engine in container mode");
+		String value = coder.codeString("Hello", 3);
+		assertEquals("Unexpected greeting received from bean", "hiiiiiiiii", value);
+	}
+}
