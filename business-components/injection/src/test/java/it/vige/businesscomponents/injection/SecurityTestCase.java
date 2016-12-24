@@ -1,19 +1,19 @@
 package it.vige.businesscomponents.injection;
 
+import static java.util.logging.Logger.getLogger;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-import java.io.File;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.ejb.EJBAccessException;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.asset.FileAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,6 +24,8 @@ import it.vige.businesscomponents.injection.security.Movies;
 
 @RunWith(Arquillian.class)
 public class SecurityTestCase {
+
+	private static final Logger logger = getLogger(SecurityTestCase.class.getName());
 
 	@EJB(mappedName = "java:module/Movies")
 	private Movies movies;
@@ -38,7 +40,6 @@ public class SecurityTestCase {
 	public static JavaArchive createWebDeployment() {
 		final JavaArchive jar = create(JavaArchive.class, "security-test.jar");
 		jar.addPackage(Movie.class.getPackage());
-		jar.addAsManifestResource(new FileAsset(new File("src/main/resources/META-INF/beans-empty.xml")), "beans.xml");
 		return jar;
 	}
 
@@ -85,7 +86,7 @@ public class SecurityTestCase {
 					movies.deleteMovie(movie1);
 					fail("Employees should not be allowed to delete");
 				} catch (EJBAccessException e) {
-					// Good, Employees cannot delete things
+					logger.info("It go here. Good");
 				}
 
 				// The list should still be three movies long
@@ -101,14 +102,14 @@ public class SecurityTestCase {
 			movies.addMovie(new Movie("Quentin Tarantino", "Reservoir Dogs", 1992));
 			fail("Unauthenticated users should not be able to add movies");
 		} catch (EJBAccessException e) {
-			// Good, guests cannot add things
+			logger.info("It go here. Good");
 		}
 
 		try {
 			movies.deleteMovie(null);
 			fail("Unauthenticated users should not be allowed to delete");
 		} catch (EJBAccessException e) {
-			// Good, Unauthenticated users cannot delete things
+			logger.info("It go here. Very good");
 		}
 
 		try {
