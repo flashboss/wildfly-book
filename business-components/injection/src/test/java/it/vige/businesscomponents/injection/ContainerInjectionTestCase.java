@@ -25,10 +25,10 @@ package it.vige.businesscomponents.injection;
 import static it.vige.businesscomponents.injection.common.CommonBean.HELLO_GREETING_PREFIX;
 import static java.util.logging.Logger.getLogger;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
+import static org.jboss.shrinkwrap.api.asset.EmptyAsset.INSTANCE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.io.File;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -38,7 +38,6 @@ import javax.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.asset.FileAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -73,7 +72,7 @@ public class ContainerInjectionTestCase {
 	public static JavaArchive createWebDeployment() {
 		final JavaArchive jar = create(JavaArchive.class, "resource-injection-test.jar");
 		jar.addPackage(CommonBean.class.getPackage());
-		jar.addAsManifestResource(new FileAsset(new File("src/main/resources/META-INF/beans-empty.xml")), "beans.xml");
+		jar.addAsManifestResource(INSTANCE, "beans.xml");
 		return jar;
 	}
 

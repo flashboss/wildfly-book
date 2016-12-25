@@ -4,7 +4,6 @@ import static java.util.logging.Logger.getLogger;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
 import static org.junit.Assert.fail;
 
-import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Logger;
@@ -14,7 +13,6 @@ import javax.sql.DataSource;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.asset.FileAsset;
 import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
@@ -35,7 +33,6 @@ public class SqlTestCase {
 		final JavaArchive jar = create(JavaArchive.class, "sql-test.jar");
 		jar.addPackage(DataBean.class.getPackage());
 		jar.addAsManifestResource(new StringAsset("Dependencies: com.h2database.h2\n"), "MANIFEST.MF");
-		jar.addAsManifestResource(new FileAsset(new File("src/main/resources/META-INF/beans-empty.xml")), "beans.xml");
 		return jar;
 	}
 
