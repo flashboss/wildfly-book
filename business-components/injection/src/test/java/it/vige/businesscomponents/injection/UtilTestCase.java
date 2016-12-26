@@ -54,7 +54,7 @@ public class UtilTestCase {
 	 */
 	@Test
 	public void testAnnotationLiteral() {
-		logger.info("staring util event test");
+		logger.info("starting util event test");
 		Set<Bean<?>> beans = beanManager.getBeans(ConfigurationBean.class, new AnnotationLiteral<Default>() {
 
 			private static final long serialVersionUID = -4378964126487759035L;
