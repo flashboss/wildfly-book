@@ -116,6 +116,33 @@ public class EventTestCase {
 
 	}
 
+	/**
+	 * Tests the fire of the event inside a failed transaction
+	 */
+	@Test
+	public void testFailedTransaction() {
+		Bill bill = null;
+		try {
+			userTransaction.begin();
+			bill = fire();
+			assertEquals(
+					"The id generation passes through the always and it is incremented only by inprogess always observer method",
+					1, bill.getId());
+			throw new RollbackException();
+		} catch (NotSupportedException | SystemException | SecurityException | IllegalStateException
+				| RollbackException e) {
+			try {
+				userTransaction.rollback();
+				assertEquals(
+						"The id generation passes through the always and it is incremented only by transactional failure observer methods",
+						3, bill.getId());
+			} catch (SystemException se) {
+
+			}
+		}
+
+	}
+
 	private Bill fire() {
 		Bill bill = new Bill();
 		bill.setId(0);
