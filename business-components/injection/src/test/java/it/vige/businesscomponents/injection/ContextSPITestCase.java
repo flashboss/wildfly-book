@@ -71,7 +71,7 @@ public class ContextSPITestCase {
 	private MethodScopedBean methodScopedBean;
 
 	@Deployment
-	public static JavaArchive createWebDeployment() {
+	public static JavaArchive createJavaDeployment() {
 		final JavaArchive jar = create(JavaArchive.class, "context-spi-test.jar");
 		jar.addPackage(ConversationBean.class.getPackage());
 		jar.addAsManifestResource(INSTANCE, "beans.xml");

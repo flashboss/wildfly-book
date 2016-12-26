@@ -28,7 +28,7 @@ public class AlternativeTestCase {
 	private Coder coder;
 
 	@Deployment
-	public static JavaArchive createWebDeployment() {
+	public static JavaArchive createJavaDeployment() {
 		final JavaArchive jar = create(JavaArchive.class, "alternative-test.jar");
 		jar.addPackage(Coder.class.getPackage());
 		jar.addPackage(CoderBrutalImpl.class.getPackage());

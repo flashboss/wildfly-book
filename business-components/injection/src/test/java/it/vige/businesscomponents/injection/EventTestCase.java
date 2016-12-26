@@ -3,10 +3,17 @@ package it.vige.businesscomponents.injection;
 import static java.util.logging.Logger.getLogger;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
 import static org.jboss.shrinkwrap.api.asset.EmptyAsset.INSTANCE;
+import static org.junit.Assert.assertEquals;
 
+import java.util.Set;
 import java.util.logging.Logger;
 
+import javax.annotation.Resource;
+import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.event.Event;
+import javax.enterprise.inject.spi.Bean;
+import javax.enterprise.inject.spi.BeanManager;
+import javax.enterprise.inject.spi.ObserverMethod;
 import javax.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -16,17 +23,21 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import it.vige.businesscomponents.injection.event.Bill;
+import it.vige.businesscomponents.injection.event.IfExistsObserver;
 
 @RunWith(Arquillian.class)
 public class EventTestCase {
 
 	private static final Logger logger = getLogger(EventTestCase.class.getName());
 
-    @Inject
-    private Event<Bill> billEvent;
-    
+	@Resource(lookup = "java:comp/BeanManager")
+	private BeanManager beanManager;
+
+	@Inject
+	private Event<Bill> billEvent;
+
 	@Deployment
-	public static JavaArchive createWebDeployment() {
+	public static JavaArchive createJavaDeployment() {
 		final JavaArchive jar = create(JavaArchive.class, "event-test.jar");
 		jar.addPackage(Bill.class.getPackage());
 		jar.addAsManifestResource(INSTANCE, "beans.xml");
@@ -34,14 +45,50 @@ public class EventTestCase {
 	}
 
 	/**
-	 * Tests simple sql injection in a jar archive
+	 * Tests always observer injection in a jar archive
 	 */
 	@Test
-	public void testTransaction() {
-		logger.info("staring transaction event test");
+	public void testAlways() {
+		logger.info("starting always event test");
+		Bill bill = fire();
+		assertEquals("The id generation passes through only the always observer and it is incremented", 5,
+				bill.getId());
+	}
+
+	/**
+	 * Tests if exists observer injection in a jar archive
+	 */
+	@Test
+	public void testIfExists() {
+		logger.info("starting if exists event test");
+		// To test the IF_EXISTS Reception I need to inject the observer bean so
+		// it will be instantiated and ready to use
+		Set<Bean<?>> beans = beanManager.getBeans(IfExistsObserver.class);
+		assertEquals(beans.size(), 1);
+		@SuppressWarnings("unchecked")
+		Bean<IfExistsObserver> bean = (Bean<IfExistsObserver>) beans.iterator().next();
+		CreationalContext<IfExistsObserver> ctx = beanManager.createCreationalContext(bean);
+		beanManager.getReference(bean, IfExistsObserver.class, ctx);
+		Bill bill = fire();
+		assertEquals("The id generation passes through the always and if_exists observers and it is incremented", 10,
+				bill.getId());
+	}
+
+	/**
+	 * Tests the size of observer methods in a jar archive
+	 */
+	@Test
+	public void testSize() {
+		logger.info("starting size event test");
+		Set<ObserverMethod<? super Bill>> observers = beanManager.resolveObserverMethods(new Bill());
+		assertEquals(observers.size(), 10);
+	}
+
+	private Bill fire() {
 		Bill bill = new Bill();
-		bill.setId(1);
+		bill.setId(0);
 		bill.setTitle("ticket for the concert of Franco Battiato");
 		billEvent.fire(bill);
+		return bill;
 	}
 }

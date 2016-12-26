@@ -14,6 +14,9 @@ public class Bill {
 	public void setId(int id) {
 		this.id = id;
 	}
+	public void incrementId() {
+		id++;
+	}
 	public String getTitle() {
 		return title;
 	}

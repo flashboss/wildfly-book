@@ -37,7 +37,7 @@ public class SecurityTestCase {
 	private Caller employee;
 
 	@Deployment
-	public static JavaArchive createWebDeployment() {
+	public static JavaArchive createEJBDeployment() {
 		final JavaArchive jar = create(JavaArchive.class, "security-test.jar");
 		jar.addPackage(Movie.class.getPackage());
 		return jar;

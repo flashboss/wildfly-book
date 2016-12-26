@@ -29,7 +29,7 @@ public class SqlTestCase {
 	private DataBean dataBean;
 
 	@Deployment
-	public static JavaArchive createWebDeployment() {
+	public static JavaArchive createJavaDeployment() {
 		final JavaArchive jar = create(JavaArchive.class, "sql-test.jar");
 		jar.addPackage(DataBean.class.getPackage());
 		jar.addAsManifestResource(new StringAsset("Dependencies: com.h2database.h2\n"), "MANIFEST.MF");

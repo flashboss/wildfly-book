@@ -69,7 +69,7 @@ public class ContainerInjectionTestCase {
 	private NamedBean nb;
 
 	@Deployment
-	public static JavaArchive createWebDeployment() {
+	public static JavaArchive createJavaDeployment() {
 		final JavaArchive jar = create(JavaArchive.class, "resource-injection-test.jar");
 		jar.addPackage(CommonBean.class.getPackage());
 		jar.addAsManifestResource(INSTANCE, "beans.xml");

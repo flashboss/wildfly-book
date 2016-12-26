@@ -30,7 +30,7 @@ public class AlternativeStereotypeTestCase {
 	private static final Logger logger = getLogger(AlternativeStereotypeTestCase.class.getName());
 
 	@Deployment
-	public static JavaArchive createWebDeployment() {
+	public static JavaArchive createJavaDeployment() {
 		final JavaArchive jar = create(JavaArchive.class, "interceptors-alternative-stereotype-test.jar");
 		jar.addPackage(Audit.class.getPackage());
 		jar.addPackage(Item.class.getPackage());

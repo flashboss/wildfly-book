@@ -28,7 +28,7 @@ public class InterceptorsTestCase {
 	private static final Logger logger = getLogger(InterceptorsTestCase.class.getName());
 
 	@Deployment
-	public static JavaArchive createWebDeployment() {
+	public static JavaArchive createJavaDeployment() {
 		final JavaArchive jar = create(JavaArchive.class, "interceptors-test.jar");
 		jar.addPackage(Audit.class.getPackage());
 		jar.addPackage(Item.class.getPackage());
