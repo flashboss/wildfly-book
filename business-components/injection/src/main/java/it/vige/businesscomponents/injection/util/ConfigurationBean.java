@@ -6,8 +6,6 @@ import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.Annotated;
 import javax.enterprise.inject.spi.InjectionPoint;
 
-import org.jboss.shrinkwrap.api.Configuration;
-
 public class ConfigurationBean {
 
 	@Produces
@@ -18,16 +16,16 @@ public class ConfigurationBean {
 		if (annotation != null) {
 			ConfigurationKey key = annotation.key();
 			if (key != null) {
-				/*switch (key) {
+				switch (key) {
 				case DEFAULT_DIRECTORY:
-					return System.getProperty("user.dir");
+					return "/user/test";
 				case VERSION:
-					return JB5n.createInstance(Configuration.class).version();
+					return "2.3.4";
 				case BUILD_TIMESTAMP:
-					return JB5n.createInstance(Configuration.class).timestamp();
+					return "10-10-2016:10:10:10";
 				default:
 					return null;
-				}*/
+				}
 			}
 		}
 		throw new IllegalStateException("No key for injection point: " + injectionPoint);

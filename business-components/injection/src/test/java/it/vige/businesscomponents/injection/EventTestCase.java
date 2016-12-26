@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 import javax.annotation.Resource;
+import javax.annotation.Resources;
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.event.Event;
 import javax.enterprise.inject.spi.Bean;
@@ -33,6 +34,8 @@ import it.vige.businesscomponents.injection.event.Bill;
 import it.vige.businesscomponents.injection.event.IfExistsObserver;
 
 @RunWith(Arquillian.class)
+@Resources({ @Resource(name = "java:comp/BeanManager", type = BeanManager.class, lookup = "java:comp/BeanManager"),
+		@Resource(name = "java:comp/UserTransaction", type = UserTransaction.class, lookup = "java:comp/UserTransaction") })
 public class EventTestCase {
 
 	private static final Logger logger = getLogger(EventTestCase.class.getName());

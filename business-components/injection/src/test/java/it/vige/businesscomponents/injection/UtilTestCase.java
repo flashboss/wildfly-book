@@ -1,22 +1,18 @@
 package it.vige.businesscomponents.injection;
 
 import static it.vige.businesscomponents.injection.util.ConfigurationKey.DEFAULT_DIRECTORY;
+import static java.util.Arrays.asList;
 import static java.util.logging.Logger.getLogger;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
 import static org.jboss.shrinkwrap.api.asset.EmptyAsset.INSTANCE;
 import static org.junit.Assert.assertEquals;
 
 import java.lang.reflect.Type;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import javax.annotation.ManagedBean;
-import javax.annotation.Resource;
-import javax.enterprise.context.spi.CreationalContext;
-import javax.enterprise.inject.Any;
+import javax.enterprise.inject.Default;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.util.AnnotationLiteral;
@@ -29,6 +25,7 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import it.vige.businesscomponents.injection.util.ConfigurationBean;
 import it.vige.businesscomponents.injection.util.ConfigurationKey;
 import it.vige.businesscomponents.injection.util.ConfigurationValue;
 
@@ -37,9 +34,13 @@ public class UtilTestCase {
 
 	private static final Logger logger = getLogger(UtilTestCase.class.getName());
 
-	@Resource(lookup = "java:comp/BeanManager")
+	@Inject
 	private BeanManager beanManager;
-	
+
+	@Inject
+	@ConfigurationValue(key = DEFAULT_DIRECTORY)
+	private String defaultDirectory;
+
 	@Deployment
 	public static JavaArchive createJavaDeployment() {
 		final JavaArchive jar = create(JavaArchive.class, "event-test.jar");
@@ -48,27 +49,18 @@ public class UtilTestCase {
 		return jar;
 	}
 
-	@Inject
-	@ConfigurationValue(key = DEFAULT_DIRECTORY)
-	private String defaultDirectory;
-
 	/**
 	 * Tests annotation literals in a jar archive
 	 */
 	@Test
 	public void testAnnotationLiteral() {
 		logger.info("staring util event test");
-		Set<Bean<?>> beans = beanManager.getBeans(ManagedBean.class, new AnnotationLiteral<Any>() {
+		Set<Bean<?>> beans = beanManager.getBeans(ConfigurationBean.class, new AnnotationLiteral<Default>() {
 
 			private static final long serialVersionUID = -4378964126487759035L;
 		});
-		if (beans.size() > 0) {
-			Bean<?> bean = beans.iterator().next();
-			CreationalContext<?> cc = beanManager.createCreationalContext(bean);
-			beanManager.getReference(bean, ManagedBean.class, cc);
-		} else {
-			logger.info("Can't find class " + ManagedBean.class);
-		}
+		assertEquals("The configuration bean has by default the @Default qualifier and it is a ManagedBean", 1,
+				beans.size());
 	}
 
 	/**
@@ -76,10 +68,14 @@ public class UtilTestCase {
 	 */
 	@Test
 	public void testTypeLiteral() {
-		new HashSet<Type>(Arrays.asList(Integer.class, String.class, new TypeLiteral<List<Boolean>>() {
+		Type listBooleans = new TypeLiteral<List<Boolean>>() {
 
 			private static final long serialVersionUID = 1228070460716823527L;
-		}.getType()));
+		}.getType();
+		List<Type> types = asList(Integer.class, String.class, listBooleans);
+		assertEquals("The configuration bean has by default the @Default qualifier and it is a ManagedBean", 3,
+				types.size());
+		assertEquals("This type is a list of booleans", listBooleans.toString(), types.get(2).getTypeName());
 	}
 
 	/**
@@ -87,6 +83,6 @@ public class UtilTestCase {
 	 */
 	@Test
 	public void testNonBinding() {
-		assertEquals("Verify if the NonBinding works", "prova", defaultDirectory);
+		assertEquals("Verify if the NonBinding works", "/user/test", defaultDirectory);
 	}
 }
