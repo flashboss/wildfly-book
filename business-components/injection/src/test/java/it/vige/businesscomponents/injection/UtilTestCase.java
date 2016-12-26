@@ -82,7 +82,9 @@ public class UtilTestCase {
 	 * Tests non binding in a jar archive
 	 */
 	@Test
-	public void testNonBinding() {
-		assertEquals("Verify if the NonBinding works", "/user/test", defaultDirectory);
+	public void testNonBinding() throws NoSuchMethodException {
+		assertEquals(
+				"Verify if the NonBinding works. Through the NonBinding, the container will consider the injection with the ConfigurationValue equals to the producer ConfigurationBean. Without the NonBinding, the producer is not actived",
+				"/user/test", defaultDirectory);
 	}
 }
