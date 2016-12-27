@@ -17,6 +17,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import it.vige.businesscomponents.injection.decorator.Coder;
+import it.vige.businesscomponents.injection.decorator.CoderImpl;
 
 @RunWith(Arquillian.class)
 public class DecoratorTestCase {
@@ -44,5 +45,8 @@ public class DecoratorTestCase {
 		String value = coder.codeString("Hello", 3);
 		assertEquals("Unexpected greeting received from bean", "\"Hello\" becomes \"hi\", 5 characters in length",
 				value);
+		assertEquals("A decorator may inject metadata about the bean it is decorating", CoderImpl.class,
+				coder.getBean().getBeanClass());
+
 	}
 }
