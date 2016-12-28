@@ -9,6 +9,7 @@ import static java.util.logging.Logger.getLogger;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
 import static org.jboss.shrinkwrap.api.asset.EmptyAsset.INSTANCE;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
@@ -38,6 +39,7 @@ import it.vige.businesscomponents.injection.inject.impl.CommentService;
 import it.vige.businesscomponents.injection.inject.impl.CommentWriter;
 import it.vige.businesscomponents.injection.inject.impl.Revision;
 import it.vige.businesscomponents.injection.inject.impl.RevisionService;
+import it.vige.businesscomponents.injection.inject.impl.TransientOrderManager;
 import it.vige.businesscomponents.injection.inject.model.Book;
 import it.vige.businesscomponents.injection.inject.produces.UserNumberBean;
 
@@ -84,6 +86,9 @@ public class InjectTestCase {
 
 	@Inject
 	private BeanManager beanManager;
+
+	@Inject
+	private TransientOrderManager orderManager;
 
 	@Deployment
 	public static JavaArchive createJavaDeployment() {
@@ -139,5 +144,15 @@ public class InjectTestCase {
 		}).iterator().next();
 		assertEquals("RevisionService should inherit the SessionScope without the Specializes annotation",
 				SessionScoped.class, bean.getScope());
+	}
+
+	/**
+	 * Tests the specializes a jar archive
+	 */
+	@Test
+	public void testTransient() {
+		String message = "the order is marked as @TransientReference so, after it is created, it will be removed. A session scoped can inject a dependent bean only if there is this annotation. I we remove the annotation, we get an error because the order is not serializable";
+		assertNotNull(message, orderManager);
+		assertNotNull(message, orderManager.getOrder());
 	}
 }
