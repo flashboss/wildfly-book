@@ -14,6 +14,10 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.enterprise.context.SessionScoped;
+import javax.enterprise.inject.spi.Bean;
+import javax.enterprise.inject.spi.BeanManager;
+import javax.enterprise.util.AnnotationLiteral;
 import javax.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -32,6 +36,8 @@ import it.vige.businesscomponents.injection.inject.any.BankType;
 import it.vige.businesscomponents.injection.inject.impl.BookService;
 import it.vige.businesscomponents.injection.inject.impl.CommentService;
 import it.vige.businesscomponents.injection.inject.impl.CommentWriter;
+import it.vige.businesscomponents.injection.inject.impl.Revision;
+import it.vige.businesscomponents.injection.inject.impl.RevisionService;
 import it.vige.businesscomponents.injection.inject.model.Book;
 import it.vige.businesscomponents.injection.inject.produces.UserNumberBean;
 
@@ -45,6 +51,10 @@ public class InjectTestCase {
 
 	@Inject
 	private Service service;
+
+	@Inject
+	@Revision
+	private Service revisionService;
 
 	@Inject
 	private UserNumberBean userNumberBean;
@@ -71,6 +81,9 @@ public class InjectTestCase {
 	@BankType(HSBC)
 	@BankProducer
 	private Bank hsbc;
+
+	@Inject
+	private BeanManager beanManager;
 
 	@Deployment
 	public static JavaArchive createJavaDeployment() {
@@ -111,5 +124,20 @@ public class InjectTestCase {
 		userNumberBean.setUserNumber(myChosenNumber);
 		userNumberBean.check();
 		userNumberBean.reset();
+	}
+
+	/**
+	 * Tests the specializes a jar archive
+	 */
+	@Test
+	public void testSpecializes() {
+		logger.info("starting specializes test");
+		assertTrue("the revisionService with Specializes", revisionService instanceof RevisionService);
+		Bean<?> bean = beanManager.getBeans(Service.class, new AnnotationLiteral<Revision>() {
+
+			private static final long serialVersionUID = -4491584612013368113L;
+		}).iterator().next();
+		assertEquals("RevisionService should inherit the SessionScope without the Specializes annotation",
+				SessionScoped.class, bean.getScope());
 	}
 }

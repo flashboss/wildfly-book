@@ -6,6 +6,9 @@ import static java.text.DateFormat.getTimeInstance;
 import java.util.Date;
 
 import javax.annotation.Priority;
+import javax.enterprise.inject.Intercepted;
+import javax.enterprise.inject.spi.Bean;
+import javax.inject.Inject;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
@@ -21,6 +24,10 @@ import javax.interceptor.InvocationContext;
 @Priority(2)
 public class AuditInterceptor {
 
+	@Inject
+	@Intercepted
+	private Bean<?> bean;
+
 	@AroundInvoke
 	public Object aroundInvoke(InvocationContext ic) throws Exception {
 		String methodName = ic.getMethod().getName();
@@ -31,5 +38,9 @@ public class AuditInterceptor {
 			getItemHistory().add(String.format("List of Items retrieved at %s", time));
 		}
 		return ic.proceed();
+	}
+
+	public Bean<?> getBean() {
+		return bean;
 	}
 }

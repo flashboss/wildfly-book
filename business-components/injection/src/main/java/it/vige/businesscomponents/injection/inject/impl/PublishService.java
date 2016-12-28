@@ -6,6 +6,7 @@ import static java.util.Arrays.asList;
 import java.util.List;
 
 import javax.enterprise.inject.Any;
+import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
 
 import it.vige.businesscomponents.injection.inject.Published;
@@ -21,5 +22,9 @@ public class PublishService implements Service {
 		Book[] books = new Book[] { new Book("JavaEE with Wildfly", "Luca Stancapiano", PUBLISHED),
 				new Book("Gatein Cookbook", "Luca Stancapiano", PUBLISHED) };
 		return asList(books);
+	}
+
+	public void close(@Disposes @Published List<Book> books) {
+		books.clear();
 	}
 }

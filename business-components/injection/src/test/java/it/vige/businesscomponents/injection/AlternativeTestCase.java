@@ -7,6 +7,8 @@ import static org.junit.Assert.assertEquals;
 import java.io.File;
 import java.util.logging.Logger;
 
+import javax.enterprise.inject.spi.Bean;
+import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -27,6 +29,9 @@ public class AlternativeTestCase {
 	@Inject
 	private Coder coder;
 
+	@Inject
+	private BeanManager beanManager;
+
 	@Deployment
 	public static JavaArchive createJavaDeployment() {
 		final JavaArchive jar = create(JavaArchive.class, "alternative-test.jar");
@@ -45,5 +50,17 @@ public class AlternativeTestCase {
 		logger.info("starting a weld engine in container mode");
 		String value = coder.codeString("Hello", 3);
 		assertEquals("Unexpected greeting received from bean", "hiiiiiiiii", value);
+	}
+
+	/**
+	 * Tests specializes injection in a jar archive
+	 */
+	@Test
+	public void testSpecializes() {
+		logger.info("starting a weld engine in container mode with specializes");
+		Bean<?> bean = beanManager.getBeans(CoderBrutalImpl.class).iterator().next();
+		assertEquals(
+				"CoderBrutalImpl should inherit the SessionScope because has the Specializes annotation. Specializes works only for the alternative",
+				3, bean.getQualifiers().size());
 	}
 }

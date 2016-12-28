@@ -1,10 +1,8 @@
 package it.vige.businesscomponents.injection.inject.impl;
 
-import javax.enterprise.inject.Alternative;
+@Revision
+public class RevisionService extends CommentService {
 
-import it.vige.businesscomponents.injection.inject.Service;
-
-@Alternative
-public class RevisionService implements Service {
+	private static final long serialVersionUID = 2369821395380188289L;
 
 }
