@@ -23,6 +23,7 @@ import org.junit.runner.RunWith;
 import it.vige.businesscomponents.injection.interceptor.Audit;
 import it.vige.businesscomponents.injection.interceptor.service.Item;
 import it.vige.businesscomponents.injection.interceptor.service.ItemService;
+import it.vige.businesscomponents.injection.interceptor.service.SimpleService;
 
 @RunWith(Arquillian.class)
 public class InterceptorsTestCase {
@@ -42,6 +43,9 @@ public class InterceptorsTestCase {
 	@Inject
 	private ItemService itemService;
 
+	@Inject
+	private SimpleService simpleService;
+
 	@Test
 	public void testAuditInterceptor() {
 		logger.info("Start interceptor test");
@@ -51,6 +55,9 @@ public class InterceptorsTestCase {
 		List<Item> items = itemService.getList();
 		assertEquals(0, items.size());
 		assertEquals(2, getItemHistory().size());
+		simpleService.setItem(item);
+		assertEquals("the bean maintains the state", item, simpleService.getItem());
+		assertTrue(getItemHistory().contains("test_trace"));
 	}
 
 	@Test

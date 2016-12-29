@@ -2,10 +2,10 @@ package it.vige.businesscomponents.injection.interceptor;
 
 import static java.util.logging.Logger.getLogger;
 
+import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.interceptor.AroundInvoke;
-import javax.interceptor.AroundTimeout;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 
@@ -26,14 +26,9 @@ public class ExcludedInterceptor {
 			Item item = (Item) parameters[0];
 			logger.info("item: " + item.getName());
 		}
-		return ic.proceed();
-	}
-
-	@AroundTimeout
-	public Object aroundTimeout(InvocationContext ic) throws Exception {
-		logger.info("Executing " + ic.getTimer());
-		Object[] parameters = (Object[]) ic.getParameters();
-		logger.info("parameters are: " + parameters.length);
+		Map<String, Object> contextData = ic.getContextData();
+		if (contextData.isEmpty())
+			contextData.put("test_trace", "test_trace");
 		return ic.proceed();
 	}
 }
