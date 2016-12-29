@@ -1,6 +1,7 @@
 package it.vige.businesscomponents.injection.interceptor;
 
 import static java.util.logging.Logger.getLogger;
+import static javax.interceptor.Interceptor.Priority.LIBRARY_BEFORE;
 
 import java.util.logging.Logger;
 
@@ -14,7 +15,7 @@ import javax.interceptor.InvocationContext;
 
 @Interceptor
 @Logging
-@Priority(1)
+@Priority(LIBRARY_BEFORE + 1)
 public class TraceInterceptor {
 
 	@Inject

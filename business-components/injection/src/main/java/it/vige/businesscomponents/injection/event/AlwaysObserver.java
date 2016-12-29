@@ -5,13 +5,14 @@ import static javax.enterprise.event.TransactionPhase.AFTER_COMPLETION;
 import static javax.enterprise.event.TransactionPhase.AFTER_FAILURE;
 import static javax.enterprise.event.TransactionPhase.AFTER_SUCCESS;
 import static javax.enterprise.event.TransactionPhase.BEFORE_COMPLETION;
+import static javax.interceptor.Interceptor.Priority.PLATFORM_BEFORE;
 
 import java.util.logging.Logger;
 
 import javax.annotation.Priority;
 import javax.enterprise.event.Observes;
 
-@Priority(1)
+@Priority(PLATFORM_BEFORE + 1)
 public class AlwaysObserver {
 
 	private static final Logger logger = getLogger(AlwaysObserver.class.getName());

@@ -1,6 +1,7 @@
 package it.vige.businesscomponents.injection.interceptor;
 
 import static java.util.logging.Logger.getLogger;
+import static javax.interceptor.Interceptor.Priority.LIBRARY_BEFORE;
 
 import java.util.Map;
 import java.util.logging.Logger;
@@ -24,7 +25,7 @@ import it.vige.businesscomponents.injection.interceptor.service.Item;
  */
 @Interceptor
 @Logging
-@Priority(0)
+@Priority(LIBRARY_BEFORE)
 public class LoggingInterceptor {
 
 	@Inject

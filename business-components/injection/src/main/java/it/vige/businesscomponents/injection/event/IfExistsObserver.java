@@ -1,5 +1,6 @@
 package it.vige.businesscomponents.injection.event;
 
+import static javax.interceptor.Interceptor.Priority.PLATFORM_BEFORE;
 import static java.util.logging.Logger.getLogger;
 import static javax.enterprise.event.Reception.IF_EXISTS;
 import static javax.enterprise.event.TransactionPhase.AFTER_COMPLETION;
@@ -14,7 +15,7 @@ import javax.enterprise.event.Observes;
 import javax.inject.Singleton;
 
 @Singleton
-@Priority(0)
+@Priority(PLATFORM_BEFORE)
 public class IfExistsObserver {
 
 	private static final Logger logger = getLogger(IfExistsObserver.class.getName());

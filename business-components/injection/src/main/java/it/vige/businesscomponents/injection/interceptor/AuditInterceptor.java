@@ -2,6 +2,7 @@ package it.vige.businesscomponents.injection.interceptor;
 
 import static it.vige.businesscomponents.injection.interceptor.service.History.getItemHistory;
 import static java.text.DateFormat.getTimeInstance;
+import static javax.interceptor.Interceptor.Priority.LIBRARY_BEFORE;
 
 import java.util.Date;
 
@@ -21,7 +22,7 @@ import javax.interceptor.InvocationContext;
  */
 @Interceptor
 @Audit
-@Priority(2)
+@Priority(LIBRARY_BEFORE + 2)
 public class AuditInterceptor {
 
 	@Inject
