@@ -4,10 +4,12 @@ import java.io.Serializable;
 
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.TransientReference;
+import javax.enterprise.inject.Typed;
 import javax.inject.Inject;
 
 @SessionScoped
-public class TransientOrderManager implements Serializable {
+@Typed(Comment.class)
+public class TransientOrderManager implements Comment<String>, Serializable {
 
 	private static final long serialVersionUID = -368372211937274036L;
 	private Order order;
@@ -25,6 +27,7 @@ public class TransientOrderManager implements Serializable {
 		this.order = order;
 	}
 
+	@Override
 	public Order getOrder() {
 		return order;
 	}

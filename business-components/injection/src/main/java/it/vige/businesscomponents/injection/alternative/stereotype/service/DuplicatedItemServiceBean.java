@@ -38,4 +38,24 @@ public class DuplicatedItemServiceBean implements ItemService {
 		return items;
 	}
 
+	@Override
+	public List<Item> getExcludedList() {
+		return items;
+	}
+
+	@Override
+	public void createTimer() {
+		
+	}
+
+	@Override
+	public boolean awaitTimerCall() {
+		return false;
+	}
+
+	@Override
+	public String getInterceptorResults() {
+		return null;
+	}
+
 }

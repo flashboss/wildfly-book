@@ -4,12 +4,14 @@ import static it.vige.businesscomponents.injection.interceptor.service.History.g
 import static java.util.logging.Logger.getLogger;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.util.List;
 import java.util.logging.Logger;
 
 import javax.inject.Inject;
+import javax.naming.NamingException;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -42,12 +44,21 @@ public class InterceptorsTestCase {
 
 	@Test
 	public void testAuditInterceptor() {
-		logger.info("Start interecptor test");
+		logger.info("Start interceptor test");
 		Item item = new Item();
 		item.setName("testItem");
 		itemService.create(item);
 		List<Item> items = itemService.getList();
-		assertEquals(1, items.size());
+		assertEquals(0, items.size());
 		assertEquals(2, getItemHistory().size());
 	}
+
+	@Test
+	public void testTimeout() throws NamingException {
+		itemService.getExcludedList();
+		itemService.createTimer();
+		assertTrue(itemService.awaitTimerCall());
+		assertEquals("@Timeout", itemService.getInterceptorResults());
+	}
+
 }

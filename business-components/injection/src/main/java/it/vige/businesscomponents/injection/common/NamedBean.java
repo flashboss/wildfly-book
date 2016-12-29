@@ -2,7 +2,7 @@ package it.vige.businesscomponents.injection.common;
 
 import javax.inject.Named;
 
-@Named
+@Named("my_named_test")
 public class NamedBean {
 
 	public double giveMeThePrize() {

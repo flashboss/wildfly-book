@@ -35,6 +35,7 @@ import java.util.logging.Logger;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -66,6 +67,7 @@ public class ContainerInjectionTestCase {
 	private CommonManagedBean cmb;
 
 	@Inject
+	@Named("my_named_test")
 	private NamedBean nb;
 
 	@Deployment

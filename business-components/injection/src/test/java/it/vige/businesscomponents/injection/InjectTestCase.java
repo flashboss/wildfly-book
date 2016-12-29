@@ -11,8 +11,10 @@ import static org.jboss.shrinkwrap.api.asset.EmptyAsset.INSTANCE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.logging.Logger;
 
 import javax.enterprise.context.SessionScoped;
@@ -35,13 +37,15 @@ import it.vige.businesscomponents.injection.inject.any.Bank;
 import it.vige.businesscomponents.injection.inject.any.BankProducer;
 import it.vige.businesscomponents.injection.inject.any.BankType;
 import it.vige.businesscomponents.injection.inject.impl.BookService;
+import it.vige.businesscomponents.injection.inject.impl.Comment;
 import it.vige.businesscomponents.injection.inject.impl.CommentService;
 import it.vige.businesscomponents.injection.inject.impl.CommentWriter;
 import it.vige.businesscomponents.injection.inject.impl.Revision;
 import it.vige.businesscomponents.injection.inject.impl.RevisionService;
-import it.vige.businesscomponents.injection.inject.impl.TransientOrderManager;
 import it.vige.businesscomponents.injection.inject.model.Book;
 import it.vige.businesscomponents.injection.inject.produces.UserNumberBean;
+import it.vige.businesscomponents.injection.inject.veto.MockBean;
+import it.vige.businesscomponents.injection.inject.veto.TestBean;
 
 @RunWith(Arquillian.class)
 public class InjectTestCase {
@@ -88,7 +92,7 @@ public class InjectTestCase {
 	private BeanManager beanManager;
 
 	@Inject
-	private TransientOrderManager orderManager;
+	private Comment<String> orderManager;
 
 	@Deployment
 	public static JavaArchive createJavaDeployment() {
@@ -98,6 +102,7 @@ public class InjectTestCase {
 		jar.addPackage(Book.class.getPackage());
 		jar.addPackage(UserNumberBean.class.getPackage());
 		jar.addPackage(Bank.class.getPackage());
+		jar.addPackage(MockBean.class.getPackage());
 		jar.addAsManifestResource(INSTANCE, "beans.xml");
 		return jar;
 	}
@@ -154,5 +159,30 @@ public class InjectTestCase {
 		String message = "the order is marked as @TransientReference so, after it is created, it will be removed. A session scoped can inject a dependent bean only if there is this annotation. I we remove the annotation, we get an error because the order is not serializable";
 		assertNotNull(message, orderManager);
 		assertNotNull(message, orderManager.getOrder());
+	}
+
+	/**
+	 * Tests the veto packages
+	 */
+	@Test
+	public void testVeto() {
+		String message = "the bean cannot be injected because its package is marked as vetoed";
+		try {
+			beanManager.getBeans(UserNumberBean.class).iterator().next();
+		} catch (NoSuchElementException ex) {
+			fail("the bean never fails because the vetoed is not declared");
+		}
+		try {
+			beanManager.getBeans(MockBean.class).iterator().next();
+			fail(message);
+		} catch (NoSuchElementException ex) {
+			logger.info(message);
+		}
+		try {
+			beanManager.getBeans(TestBean.class).iterator().next();
+			fail(message);
+		} catch (NoSuchElementException ex) {
+			logger.info(message);
+		}
 	}
 }
