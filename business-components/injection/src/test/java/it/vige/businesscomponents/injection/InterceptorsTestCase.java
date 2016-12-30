@@ -31,8 +31,8 @@ public class InterceptorsTestCase {
 	private static final Logger logger = getLogger(InterceptorsTestCase.class.getName());
 
 	@Deployment
-	public static JavaArchive createJavaDeployment() {
-		final JavaArchive jar = create(JavaArchive.class, "interceptors-test.jar");
+	public static JavaArchive createCDIDeployment() {
+		final JavaArchive jar = create(JavaArchive.class, "interceptors-cdi-test.jar");
 		jar.addPackage(Audit.class.getPackage());
 		jar.addPackage(Item.class.getPackage());
 		jar.addAsManifestResource(new FileAsset(new File("src/main/resources/META-INF/beans-interceptors.xml")),

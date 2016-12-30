@@ -12,7 +12,6 @@ import javax.ejb.Timeout;
 import javax.ejb.Timer;
 import javax.ejb.TimerService;
 import javax.interceptor.ExcludeClassInterceptors;
-import javax.interceptor.ExcludeDefaultInterceptors;
 import javax.interceptor.Interceptors;
 
 import it.vige.businesscomponents.injection.interceptor.Audit;
@@ -31,7 +30,6 @@ public class ItemServiceBean implements ItemService {
 	@Resource
 	private TimerService timerService;
 
-	@ExcludeDefaultInterceptors
 	@ExcludeClassInterceptors
 	@Override
 	public void createTimer() {
@@ -72,7 +70,6 @@ public class ItemServiceBean implements ItemService {
 		latch.countDown();
 	}
 
-	@ExcludeDefaultInterceptors
 	@ExcludeClassInterceptors
 	public boolean awaitTimerCall() {
 		try {
