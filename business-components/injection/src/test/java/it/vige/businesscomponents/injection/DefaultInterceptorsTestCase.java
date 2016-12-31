@@ -30,8 +30,6 @@ public class DefaultInterceptorsTestCase {
 
 	@ArquillianResource
 	private InitialContext iniCtx;
-	
-	public static boolean executed = false;
 
 	@Deployment
 	public static WebArchive createEJBDeployment() {
@@ -49,9 +47,9 @@ public class DefaultInterceptorsTestCase {
 		final SimpleInterface ejbInstance = home.createSimple();
 		logger.info("executed jndi call");
 		ejbInstance.setText(hello);
-		assertEquals(executed, false);
+		assertEquals(SimpleStatelessBean.executed, false);
 		assertEquals(hello, ejbInstance.getText());
-		assertEquals(executed, true);
+		assertEquals(SimpleStatelessBean.executed, true);
 	}
 
 }

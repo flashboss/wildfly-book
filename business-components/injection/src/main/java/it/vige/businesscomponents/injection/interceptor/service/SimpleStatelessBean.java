@@ -3,6 +3,8 @@ package it.vige.businesscomponents.injection.interceptor.service;
 import javax.interceptor.ExcludeDefaultInterceptors;
 
 public class SimpleStatelessBean {
+	
+	public static boolean executed = false;
 
 	private String text;
 

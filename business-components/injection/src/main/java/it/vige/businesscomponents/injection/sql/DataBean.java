@@ -1,5 +1,8 @@
 package it.vige.businesscomponents.injection.sql;
 
+import static javax.annotation.Resource.AuthenticationType.APPLICATION;
+import static javax.annotation.Resource.AuthenticationType.CONTAINER;
+
 import javax.annotation.Resource;
 import javax.annotation.sql.DataSourceDefinition;
 import javax.annotation.sql.DataSourceDefinitions;
@@ -12,10 +15,10 @@ import javax.sql.DataSource;
 @Stateless
 public class DataBean {
 
-	@Resource(lookup = "java:comp/ds1")
+	@Resource(lookup = "java:comp/ds1", authenticationType = APPLICATION, shareable=false)
 	private DataSource myData1;
 
-	@Resource(lookup = "java:comp/ds2")
+	@Resource(lookup = "java:comp/ds2", authenticationType = CONTAINER, shareable=true)
 	private DataSource myData2;
 
 	public DataSource getMyData1() {
