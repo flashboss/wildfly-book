@@ -48,8 +48,8 @@ public class SecurityTestCase {
 		manager.call(new Callable<Object>() {
 			public Object call() throws Exception {
 
-				Movie movie1 = new Movie("Quentin Tarantino", "Reservoir Dogs", 1992);
-				Movie movie2 = new Movie("Joel Coen", "Fargo", 1996);
+				Movie movie1 = new Movie("Sabina Guzzanti", "La trattativa", 2014);
+				Movie movie2 = new Movie("Roberto Saviano", "Gomorra", 2008);
 				Movie movie3 = new Movie("Joel Coen", "The Big Lebowski", 1998);
 				movies.addMovie(movie1);
 				movies.addMovie(movie2);
@@ -72,8 +72,8 @@ public class SecurityTestCase {
 	public void testAsEmployee() throws Exception {
 		employee.call(new Callable<Object>() {
 			public Object call() throws Exception {
-				Movie movie1 = new Movie("Quentin Tarantino", "Reservoir Dogs", 1992);
-				Movie movie2 = new Movie("Joel Coen", "Fargo", 1996);
+				Movie movie1 = new Movie("Sabina Guzzanti", "La trattativa", 2014);
+				Movie movie2 = new Movie("Roberto Saviano", "Gomorra", 2008);
 				Movie movie3 = new Movie("Joel Coen", "The Big Lebowski", 1998);
 				movies.addMovie(movie1);
 				movies.addMovie(movie2);
@@ -99,7 +99,7 @@ public class SecurityTestCase {
 	@Test
 	public void testUnauthenticated() throws Exception {
 		try {
-			movies.addMovie(new Movie("Quentin Tarantino", "Reservoir Dogs", 1992));
+			movies.addMovie(new Movie("Sabina Guzzanti", "La trattativa", 2014));
 			fail("Unauthenticated users should not be able to add movies");
 		} catch (EJBAccessException e) {
 			logger.info("It go here. Good");

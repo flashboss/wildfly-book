@@ -1,6 +1,6 @@
 package it.vige.businesscomponents.injection.context;
 
-public class Bean {
+public class CountBean {
 
 	private int counter;
 

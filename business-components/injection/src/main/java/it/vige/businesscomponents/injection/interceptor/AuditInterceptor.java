@@ -18,7 +18,7 @@ import javax.interceptor.InvocationContext;
  * AuditInterceptor binds to {@link @Audit} annotation, so methods or beans
  * which @Audit annotation is applied to, will be intercepted.
  *
- * @author ievgen.shulga
+ * @author Luca Stancapiano
  */
 @Interceptor
 @Audit

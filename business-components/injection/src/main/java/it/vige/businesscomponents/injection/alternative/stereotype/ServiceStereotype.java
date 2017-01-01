@@ -19,7 +19,7 @@ import it.vige.businesscomponents.injection.interceptor.Logging;
  * indicate that all beans to which it is applied are @Alternatives. An
  * alternative stereotype lets us classify beans by deployment scenario.
  *
- * @author ievgen.shulga
+ * @author Luca Stancapiano
  */
 @Stereotype
 @Alternative

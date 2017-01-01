@@ -25,7 +25,7 @@ public class UserNumberBean implements Serializable {
 
 	@Random
 	@Inject
-	Instance<Integer> randomInt;
+	private Instance<Integer> randomInt;
 
 	public UserNumberBean() {
 	}

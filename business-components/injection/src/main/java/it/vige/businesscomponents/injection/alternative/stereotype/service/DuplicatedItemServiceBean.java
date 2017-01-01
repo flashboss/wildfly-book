@@ -13,7 +13,7 @@ import it.vige.businesscomponents.injection.interceptor.service.ItemService;
 @ServiceStereotype
 public class DuplicatedItemServiceBean implements ItemService {
 
-	List<Item> items;
+	private List<Item> items;
 
 	@PostConstruct
 	public void init() {

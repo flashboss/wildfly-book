@@ -10,6 +10,7 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.util.Iterator;
 import java.util.logging.Logger;
 
@@ -25,9 +26,11 @@ import javax.enterprise.inject.spi.Producer;
 import javax.enterprise.inject.spi.ProducerFactory;
 import javax.enterprise.inject.spi.Unmanaged;
 import javax.enterprise.inject.spi.Unmanaged.UnmanagedInstance;
+import javax.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.shrinkwrap.api.asset.FileAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,6 +38,7 @@ import org.junit.runner.RunWith;
 import it.vige.businesscomponents.injection.inject.spi.AnotherFactory;
 import it.vige.businesscomponents.injection.inject.spi.Car;
 import it.vige.businesscomponents.injection.inject.spi.NamedAnnotation;
+import it.vige.businesscomponents.injection.inject.spi.ObserverExtension;
 import it.vige.businesscomponents.injection.inject.spi.Taxi;
 import it.vige.businesscomponents.injection.inject.spi.TaxiManager;
 import it.vige.businesscomponents.injection.inject.spi.Toy;
@@ -44,11 +48,17 @@ public class InjectSPITestCase {
 
 	private static final Logger logger = getLogger(InjectSPITestCase.class.getName());
 
+	@Inject
+	private ObserverExtension observerExtension;
+
 	@Deployment
 	public static JavaArchive createJavaDeployment() {
 		final JavaArchive jar = create(JavaArchive.class, "inject-spi-test.jar");
 		jar.addPackage(Car.class.getPackage());
 		jar.addAsManifestResource(INSTANCE, "beans.xml");
+		jar.addAsManifestResource(
+				new FileAsset(new File("src/main/resources/META-INF/services/javax.enterprise.inject.spi.Extension")),
+				"services/javax.enterprise.inject.spi.Extension");
 		return jar;
 	}
 
@@ -142,6 +152,62 @@ public class InjectSPITestCase {
 		assertTrue(producer.getInjectionPoints().isEmpty());
 		Toy jessie = producer.produce(beanManager.<Toy>createCreationalContext(null));
 		assertEquals("Jessie", jessie.getName());
+	}
+
+	@Test
+	public void testExtension() {
+		assertEquals(
+				"the extension works at the start of the cdi engine, so it is not started by a bean. In this case it works before the injection",
+				1, observerExtension.getBeforeBeanDiscovery());
+		assertEquals("In this case we see the process annotated types", 24,
+				observerExtension.getProcessAnnotatedType());
+		assertEquals("In this case we see the process annotated types with annotattions", 2,
+				observerExtension.getProcessAnnotatedTypeWithAnnotations());
+		assertEquals("In this case we see the after discovery", 1, observerExtension.getAfterBeanDiscovery());
+		assertEquals("In this case we see the process bean", 391, observerExtension.getProcessBean());
+		assertEquals("In this case we see the process bean attributes", 79,
+				observerExtension.getProcessBeanAttributes());
+		assertEquals("In this case we see the process injection point", 86,
+				observerExtension.getProcessInjectionPoint());
+		assertEquals("In this case we see the process injection target", 20,
+				observerExtension.getProcessInjectionTarget());
+		assertEquals("In this case we see the process managed bean", 20, observerExtension.getProcessManagedBean());
+		assertEquals("In this case we see the process observer method", 0,
+				observerExtension.getProcessObserverMethod());
+		assertEquals("In this case we see the process producer", 59, observerExtension.getProcessProducer());
+		assertEquals("In this case we see the process producer field", 0, observerExtension.getProcessProducerField());
+		assertEquals("In this case we see the process producer method", 59,
+				observerExtension.getProcessProducerMethod());
+		assertEquals("In this case we see the process session bean", 0, observerExtension.getProcessSessionBean());
+		assertEquals("In this case we see the process synthetic annotated type", 12,
+				observerExtension.getProcessSyntheticAnnotatedType());
+		assertEquals("In this case we see the producer", 0, observerExtension.getProducer());
+		assertEquals("In this case we see the producer factory", 0, observerExtension.getProducerFactory());
+		assertEquals("In this case we see the after deployment validation", 1,
+				observerExtension.getAfterDeploymentValidation());
+		assertEquals("In this case we see the after type discovery", 1, observerExtension.getAfterTypeDiscovery());
+		assertEquals("In this case we see the annotated", 0, observerExtension.getAnnotated());
+		assertEquals("In this case we see the annotated callable", 0, observerExtension.getAnnotatedCallable());
+		assertEquals("In this case we see the annotated constructor", 0, observerExtension.getAnnotatedConstructor());
+		assertEquals("In this case we see the annotated field", 0, observerExtension.getAnnotatedField());
+		assertEquals("In this case we see the annotated member", 0, observerExtension.getAnnotatedMember());
+		assertEquals("In this case we see the annotated method", 0, observerExtension.getAnnotatedMethod());
+		assertEquals("In this case we see the annotated parameter", 0, observerExtension.getAnnotatedParameter());
+		assertEquals("In this case we see the annotated type", 0, observerExtension.getAnnotatedType());
+		assertEquals("In this case we see the bean", 0, observerExtension.getBean());
+		assertEquals("In this case we see the bean attributes", 0, observerExtension.getBeanAttributes());
+		assertEquals("In this case we see the bean manager", 0, observerExtension.getBeanManager());
+		assertEquals("In this case we see the before shutdown", 0, observerExtension.getBeforeShutdown());
+		assertEquals("In this case we see the cdi provider", 0, observerExtension.getCDIProvider());
+		assertEquals("In this case we see the decorator", 0, observerExtension.getDecorator());
+		assertEquals("In this case we see the event metadata", 0, observerExtension.getEventMetadata());
+		assertEquals("In this case we see the extension", 0, observerExtension.getExtension());
+		assertEquals("In this case we see the injection point", 0, observerExtension.getInjectionPoint());
+		assertEquals("In this case we see the injection target factory", 0,
+				observerExtension.getInjectionTargetFactory());
+		assertEquals("In this case we see the interceptor", 0, observerExtension.getInterceptor());
+		assertEquals("In this case we see the observer method", 0, observerExtension.getObserverMethod());
+		assertEquals("In this case we see the passivation capable", 0, observerExtension.getPassivationCapable());
 	}
 
 	@SuppressWarnings("unchecked")

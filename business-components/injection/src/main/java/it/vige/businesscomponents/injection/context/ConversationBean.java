@@ -7,7 +7,7 @@ import javax.enterprise.context.ConversationScoped;
 import javax.inject.Inject;
 
 @ConversationScoped
-public class ConversationBean extends Bean implements Serializable {
+public class ConversationBean extends CountBean implements Serializable {
 
 	private static final long serialVersionUID = -5575830634866764183L;
 
