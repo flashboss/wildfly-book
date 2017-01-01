@@ -12,8 +12,10 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.logging.Logger;
 
+import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.AnnotatedField;
 import javax.enterprise.inject.spi.AnnotatedMember;
 import javax.enterprise.inject.spi.AnnotatedMethod;
@@ -22,6 +24,7 @@ import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.CDI;
 import javax.enterprise.inject.spi.CDIProvider;
+import javax.enterprise.inject.spi.InjectionTarget;
 import javax.enterprise.inject.spi.Producer;
 import javax.enterprise.inject.spi.ProducerFactory;
 import javax.enterprise.inject.spi.Unmanaged;
@@ -159,15 +162,15 @@ public class InjectSPITestCase {
 		assertEquals(
 				"the extension works at the start of the cdi engine, so it is not started by a bean. In this case it works before the injection",
 				1, observerExtension.getBeforeBeanDiscovery());
-		assertEquals("In this case we see the process annotated types", 24,
+		assertEquals("In this case we see the process annotated types", 27,
 				observerExtension.getProcessAnnotatedType());
 		assertEquals("In this case we see the process annotated types with annotattions", 2,
 				observerExtension.getProcessAnnotatedTypeWithAnnotations());
 		assertEquals("In this case we see the after discovery", 1, observerExtension.getAfterBeanDiscovery());
-		assertEquals("In this case we see the process bean", 391, observerExtension.getProcessBean());
+		assertEquals("In this case we see the process bean", 392, observerExtension.getProcessBean());
 		assertEquals("In this case we see the process bean attributes", 79,
 				observerExtension.getProcessBeanAttributes());
-		assertEquals("In this case we see the process injection point", 86,
+		assertEquals("In this case we see the process injection point", 87,
 				observerExtension.getProcessInjectionPoint());
 		assertEquals("In this case we see the process injection target", 20,
 				observerExtension.getProcessInjectionTarget());
@@ -181,33 +184,42 @@ public class InjectSPITestCase {
 		assertEquals("In this case we see the process session bean", 0, observerExtension.getProcessSessionBean());
 		assertEquals("In this case we see the process synthetic annotated type", 12,
 				observerExtension.getProcessSyntheticAnnotatedType());
-		assertEquals("In this case we see the producer", 0, observerExtension.getProducer());
 		assertEquals("In this case we see the producer factory", 0, observerExtension.getProducerFactory());
 		assertEquals("In this case we see the after deployment validation", 1,
 				observerExtension.getAfterDeploymentValidation());
 		assertEquals("In this case we see the after type discovery", 1, observerExtension.getAfterTypeDiscovery());
-		assertEquals("In this case we see the annotated", 0, observerExtension.getAnnotated());
-		assertEquals("In this case we see the annotated callable", 0, observerExtension.getAnnotatedCallable());
-		assertEquals("In this case we see the annotated constructor", 0, observerExtension.getAnnotatedConstructor());
-		assertEquals("In this case we see the annotated field", 0, observerExtension.getAnnotatedField());
-		assertEquals("In this case we see the annotated member", 0, observerExtension.getAnnotatedMember());
-		assertEquals("In this case we see the annotated method", 0, observerExtension.getAnnotatedMethod());
-		assertEquals("In this case we see the annotated parameter", 0, observerExtension.getAnnotatedParameter());
-		assertEquals("In this case we see the annotated type", 0, observerExtension.getAnnotatedType());
-		assertEquals("In this case we see the bean", 0, observerExtension.getBean());
-		assertEquals("In this case we see the bean attributes", 0, observerExtension.getBeanAttributes());
-		assertEquals("In this case we see the bean manager", 0, observerExtension.getBeanManager());
-		assertEquals("In this case we see the before shutdown", 0, observerExtension.getBeforeShutdown());
-		assertEquals("In this case we see the cdi provider", 0, observerExtension.getCDIProvider());
-		assertEquals("In this case we see the decorator", 0, observerExtension.getDecorator());
-		assertEquals("In this case we see the event metadata", 0, observerExtension.getEventMetadata());
-		assertEquals("In this case we see the extension", 0, observerExtension.getExtension());
-		assertEquals("In this case we see the injection point", 0, observerExtension.getInjectionPoint());
-		assertEquals("In this case we see the injection target factory", 0,
-				observerExtension.getInjectionTargetFactory());
-		assertEquals("In this case we see the interceptor", 0, observerExtension.getInterceptor());
-		assertEquals("In this case we see the observer method", 0, observerExtension.getObserverMethod());
-		assertEquals("In this case we see the passivation capable", 0, observerExtension.getPassivationCapable());
+	}
+
+	@Test
+	public void testInjectionTarget() {
+		BeanManager beanManager = current().getBeanManager();
+		// CDI uses an AnnotatedType object to read the annotations of a class
+		AnnotatedType<String> type = beanManager.createAnnotatedType(String.class);
+		// The extension uses an InjectionTarget to delegate instantiation,
+		// dependency injection
+		// and lifecycle callbacks to the CDI container
+		InjectionTarget<String> it = beanManager.createInjectionTarget(type);
+		// each instance needs its own CDI CreationalContext
+		CreationalContext<String> ctx = beanManager.createCreationalContext(null);
+		// instantiate the framework component and inject its dependencies
+		String instance = it.produce(ctx); // call the constructor
+		it.inject(instance, ctx); // call initializer methods and perform field
+									// injection
+		it.postConstruct(instance); // call the @PostConstruct method
+		// destroy the framework component instance and clean up dependent
+		// objects
+		assertNotNull("the String instance is injected now", instance);
+		assertTrue("the String instance is injected now but it's empty", instance.isEmpty());
+		it.preDestroy(instance); // call the @PreDestroy method
+		it.dispose(instance); // it is now safe to discard the instance
+		ctx.release(); // clean up dependent objects
+	}
+
+	@Test
+	public void registerBean() {
+		BeanManager beanManager = current().getBeanManager();
+		Set<Bean<?>> securityManager = beanManager.getBeans(SecurityManager.class);
+		assertEquals("The bean is created by the ObserverExtension", 1, securityManager.size());
 	}
 
 	@SuppressWarnings("unchecked")
