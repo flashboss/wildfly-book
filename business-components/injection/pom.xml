@@ -9,7 +9,7 @@
 	</parent>
 
 	<artifactId>injection</artifactId>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 	<name>Injection</name>
 	<description>Chapter 2: Working with Dependency Injection</description>
 
