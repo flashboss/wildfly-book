@@ -19,7 +19,8 @@ public class PublishService implements Service {
 	@Published
 	@Produces
 	public List<Book> getPublishedBooks() {
-		Book[] books = new Book[] { new Book("JavaEE with Wildfly", "Luca Stancapiano", PUBLISHED),
+		Book[] books = new Book[] {
+				new Book("Mastering Java EE Development with WildFly 10", "Luca Stancapiano", PUBLISHED),
 				new Book("Gatein Cookbook", "Luca Stancapiano", PUBLISHED) };
 		return asList(books);
 	}
