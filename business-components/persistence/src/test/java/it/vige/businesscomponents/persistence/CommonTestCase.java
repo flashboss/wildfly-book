@@ -33,7 +33,7 @@ public class CommonTestCase {
 		final JavaArchive jar = create(JavaArchive.class, "common-test.jar");
 		jar.addPackage(Forum.class.getPackage());
 		jar.addAsManifestResource(INSTANCE, "beans.xml");
-		jar.addAsManifestResource(new FileAsset(new File("src/main/resources/META-INF/persistence.xml")),
+		jar.addAsManifestResource(new FileAsset(new File("src/main/resources/META-INF/persistence-test.xml")),
 				"persistence.xml");
 		jar.addAsResource(new FileAsset(new File("src/main/resources/forums.import.sql")), "forums.import.sql");
 		return jar;

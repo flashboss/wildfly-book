@@ -9,7 +9,7 @@
 	</parent>
 
 	<artifactId>persistence</artifactId>
-	<packaging>ejb</packaging>
+	<packaging>jar</packaging>
 	<name>Persistence</name>
 	<description>Chapter 3: Persistence</description>
 
@@ -53,9 +53,6 @@
 								version=1</content>
 						</file>
 					</additionalConfig>
-					<additionalProjectFacets>
-						<jst.ejb>3.2</jst.ejb>
-					</additionalProjectFacets>
 					<additionalProjectnatures>
 						<projectnature>org.eclipse.jem.workbench.JavaEMFNature</projectnature>
 						<projectnature>org.eclipse.wst.common.modulecore.ModuleCoreNature</projectnature>
@@ -65,14 +62,6 @@
 					<workspace>${user.home}/.eclipse/workspace</workspace>
 					<wtpdefaultserver>JBossAS</wtpdefaultserver>
 					<wtpversion>3.6</wtpversion>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-ejb-plugin</artifactId>
-				<configuration>
-					<generateClient>false</generateClient>
-					<ejbVersion>3.2</ejbVersion>
 				</configuration>
 			</plugin>
 		</plugins>

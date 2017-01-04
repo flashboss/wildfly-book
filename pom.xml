@@ -214,4 +214,35 @@
 		<module>clustering</module>
 		<module>class-loading</module>
 	</modules>
+	
+	<profiles>
+		<profile>
+			<id>deploy</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.wildfly.plugins</groupId>
+						<artifactId>wildfly-maven-plugin</artifactId>
+						<version>1.0.2.Final</version>
+						<executions>
+							<execution>
+								<id>deploy-application</id>
+								<phase>install</phase>
+								<goals>
+									<goal>deploy</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>del-resources</id>
+								<phase>clean</phase>
+								<goals>
+									<goal>undeploy</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>
