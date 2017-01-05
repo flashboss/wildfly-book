@@ -31,7 +31,7 @@ public class DecoratorTestCase {
 	public static JavaArchive createJavaDeployment() {
 		final JavaArchive jar = create(JavaArchive.class, "decorator-test.jar");
 		jar.addPackage(Coder.class.getPackage());
-		jar.addAsManifestResource(new FileAsset(new File("src/main/resources/META-INF/beans-decorator.xml")),
+		jar.addAsManifestResource(new FileAsset(new File("src/test/resources/META-INF/beans-decorator.xml")),
 				"beans.xml");
 		return jar;
 	}

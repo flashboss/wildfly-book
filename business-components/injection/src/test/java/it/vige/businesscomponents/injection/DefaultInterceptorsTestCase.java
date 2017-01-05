@@ -36,7 +36,7 @@ public class DefaultInterceptorsTestCase {
 		final WebArchive war = create(WebArchive.class, "interceptors-ejb-test.war");
 		war.addClasses(DefaultInterceptor.class, SimpleStatelessBean.class, SimpleInterface.class, SimpleHome.class,
 				DefaultInterceptorsTestCase.class);
-		war.addAsWebInfResource(new FileAsset(new File("src/main/resources/META-INF/ejb-jar.xml")), "ejb-jar.xml");
+		war.addAsWebInfResource(new FileAsset(new File("src/test/resources/META-INF/ejb-jar.xml")), "ejb-jar.xml");
 		return war;
 	}
 

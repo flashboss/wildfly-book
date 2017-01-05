@@ -37,7 +37,7 @@ public class AlternativeStereotypeTestCase {
 		jar.addPackage(ServiceStereotype.class.getPackage());
 		jar.addPackage(DuplicatedItemServiceBean.class.getPackage());
 		jar.addAsManifestResource(
-				new FileAsset(new File("src/main/resources/META-INF/beans-alternative-stereotype.xml")), "beans.xml");
+				new FileAsset(new File("src/test/resources/META-INF/beans-alternative-stereotype.xml")), "beans.xml");
 		return jar;
 	}
 

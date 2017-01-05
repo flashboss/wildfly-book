@@ -37,7 +37,7 @@ public class AlternativeTestCase {
 		final JavaArchive jar = create(JavaArchive.class, "alternative-test.jar");
 		jar.addPackage(Coder.class.getPackage());
 		jar.addPackage(CoderBrutalImpl.class.getPackage());
-		jar.addAsManifestResource(new FileAsset(new File("src/main/resources/META-INF/beans-alternative.xml")),
+		jar.addAsManifestResource(new FileAsset(new File("src/test/resources/META-INF/beans-alternative.xml")),
 				"beans.xml");
 		return jar;
 	}

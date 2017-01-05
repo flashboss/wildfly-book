@@ -35,7 +35,7 @@ public class InterceptorsTestCase {
 		final JavaArchive jar = create(JavaArchive.class, "interceptors-cdi-test.jar");
 		jar.addPackage(Audit.class.getPackage());
 		jar.addPackage(Item.class.getPackage());
-		jar.addAsManifestResource(new FileAsset(new File("src/main/resources/META-INF/beans-interceptors.xml")),
+		jar.addAsManifestResource(new FileAsset(new File("src/test/resources/META-INF/beans-interceptors.xml")),
 				"beans.xml");
 		return jar;
 	}
