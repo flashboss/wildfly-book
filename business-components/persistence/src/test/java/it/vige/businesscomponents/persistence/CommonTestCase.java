@@ -1,8 +1,7 @@
 package it.vige.businesscomponents.persistence;
 
+import static it.vige.businesscomponents.persistence.Default.createJavaArchive;
 import static java.util.logging.Logger.getLogger;
-import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
-import static org.jboss.shrinkwrap.api.asset.EmptyAsset.INSTANCE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -30,11 +29,7 @@ public class CommonTestCase {
 
 	@Deployment
 	public static JavaArchive createJavaDeployment() {
-		final JavaArchive jar = create(JavaArchive.class, "common-test.jar");
-		jar.addPackage(Forum.class.getPackage());
-		jar.addAsManifestResource(INSTANCE, "beans.xml");
-		jar.addAsManifestResource(new FileAsset(new File("src/test/resources/META-INF/persistence-test.xml")),
-				"persistence.xml");
+		JavaArchive jar = createJavaArchive("common-test.jar", Forum.class.getPackage());
 		jar.addAsResource(new FileAsset(new File("src/main/resources/forums.import.sql")), "forums.import.sql");
 		return jar;
 	}
@@ -45,7 +40,7 @@ public class CommonTestCase {
 	@Test
 	@SuppressWarnings("unchecked")
 	public void testSqlScript() {
-		logger.info("starting util event test");
+		logger.info("starting common persistence test");
 		assertNotNull("The injected entity manager", entityManager);
 		List<Category> categories = entityManager.createNamedQuery("findCategories").getResultList();
 		assertEquals("one category created by the sql script", 1, categories.size());

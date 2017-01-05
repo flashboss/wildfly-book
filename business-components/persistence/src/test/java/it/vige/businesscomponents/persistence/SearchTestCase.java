@@ -1,5 +1,6 @@
 package it.vige.businesscomponents.persistence;
 
+import static it.vige.businesscomponents.persistence.Default.createJavaArchive;
 import static java.util.Calendar.DATE;
 import static java.util.Calendar.getInstance;
 import static java.util.logging.Logger.getLogger;
@@ -7,8 +8,6 @@ import static org.apache.lucene.search.BooleanClause.Occur.MUST;
 import static org.apache.lucene.search.NumericRangeQuery.newLongRange;
 import static org.apache.lucene.search.SortField.Type.LONG;
 import static org.hibernate.search.Search.getFullTextSession;
-import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
-import static org.jboss.shrinkwrap.api.asset.EmptyAsset.INSTANCE;
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
@@ -65,11 +64,7 @@ public class SearchTestCase {
 
 	@Deployment
 	public static JavaArchive createJavaDeployment() {
-		final JavaArchive jar = create(JavaArchive.class, "search-test.jar");
-		jar.addPackage(Forum.class.getPackage());
-		jar.addAsManifestResource(INSTANCE, "beans.xml");
-		jar.addAsManifestResource(new FileAsset(new File("src/test/resources/META-INF/persistence-test.xml")),
-				"persistence.xml");
+		JavaArchive jar = createJavaArchive("search-test.jar", Forum.class.getPackage());
 		jar.addAsResource(new FileAsset(new File("src/main/resources/forums.import.sql")), "forums.import.sql");
 		return jar;
 	}
