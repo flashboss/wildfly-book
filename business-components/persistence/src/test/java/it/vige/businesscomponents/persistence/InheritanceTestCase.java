@@ -42,7 +42,7 @@ public class InheritanceTestCase {
 
 	@Deployment
 	public static JavaArchive createJavaDeployment() {
-		return createJavaArchive("inheritance-test.jar", Pet.class.getPackage());
+		return createJavaArchive("inheritance-test.jar", Pet.class.getPackage(), Forum.class.getPackage());
 	}
 
 	/**
@@ -51,7 +51,7 @@ public class InheritanceTestCase {
 	@Test
 	@SuppressWarnings("unchecked")
 	public void testSingleTable() {
-		logger.info("starting util event test");
+		logger.info("starting single table inheritance test");
 		Pet pet = new Pet("jackrussell", "dog");
 		Dog dog = new Dog("mastino", "dog");
 		try {
@@ -73,9 +73,9 @@ public class InheritanceTestCase {
 	@Test
 	@SuppressWarnings("unchecked")
 	public void testTablePerClass() {
-		logger.info("starting util event test");
-		Vehicle vehicle = new Vehicle("jackrussell", "dog");
-		Car car = new Car("mastino", "dog");
+		logger.info("starting table per class inheritance test");
+		Vehicle vehicle = new Vehicle("peugeot", "car");
+		Car car = new Car("fiat", "car");
 		try {
 			userTransaction.begin();
 			entityManager.persist(vehicle);
@@ -89,5 +89,30 @@ public class InheritanceTestCase {
 		assertEquals("the vehicle table exists", 1, vehiclesFromDB.size());
 		List<Car> carsFromDB = entityManager.createNativeQuery("select * from car").getResultList();
 		assertEquals("the car table exists", 1, carsFromDB.size());
+	}
+
+	/**
+	 * Tests annotation literals in a jar archive
+	 */
+	@Test
+	@SuppressWarnings("unchecked")
+	public void testJoin() {
+		logger.info("starting joined inheritance event test");
+		Watch watch = new Watch();
+		TopicWatch topicWatch = new TopicWatch();
+		try {
+			userTransaction.begin();
+			entityManager.persist(watch);
+			entityManager.persist(topicWatch);
+			userTransaction.commit();
+		} catch (NotSupportedException | SystemException | IllegalStateException | SecurityException
+				| HeuristicMixedException | HeuristicRollbackException | RollbackException e) {
+			fail();
+		}
+		List<Watch> watchesFromDB = entityManager.createNativeQuery("select * from JBP_FORUMS_WATCH").getResultList();
+		assertEquals("the watch table exists", 2, watchesFromDB.size());
+		List<TopicWatch> topicWatchesFromDB = entityManager.createNativeQuery("select * from JBP_FORUMS_TOPICSWATCH")
+				.getResultList();
+		assertEquals("the topic watch table exists", 1, topicWatchesFromDB.size());
 	}
 }

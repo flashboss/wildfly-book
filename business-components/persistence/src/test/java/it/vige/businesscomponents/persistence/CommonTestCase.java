@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -47,5 +48,19 @@ public class CommonTestCase {
 		List<Forum> forums = entityManager.createNamedQuery("findForumsByCategoryId")
 				.setParameter("categoryId", categories.get(0)).getResultList();
 		assertEquals("two forums created by the sql script", 2, forums.size());
+	}
+
+	@Test
+	@SuppressWarnings("unchecked")
+	public void testQuery() {
+		Query query = entityManager
+				.createQuery("select f from Forum f left outer join fetch f.topics where f.id = :forumId");
+		query.setParameter("forumId", 1);
+		List<Forum> forumList = query.getResultList();
+		assertEquals("simple query ok", 1, forumList.size());
+		query = entityManager.createNamedQuery("findForumByIdFetchTopics");
+		query.setParameter("forumId", 1);
+		forumList = query.getResultList();
+		assertEquals("named query ok", 1, forumList.size());
 	}
 }

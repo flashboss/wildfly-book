@@ -10,9 +10,10 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
 public class Default {
 
-	public static JavaArchive createJavaArchive(String name, Package packagev) {
+	public static JavaArchive createJavaArchive(String name, Package... packages) {
 		final JavaArchive jar = create(JavaArchive.class, name);
-		jar.addPackage(packagev);
+		for (Package packagev : packages)
+			jar.addPackage(packagev);
 		jar.addAsManifestResource(INSTANCE, "beans.xml");
 		jar.addAsManifestResource(new FileAsset(new File("src/test/resources/META-INF/persistence-test.xml")),
 				"persistence.xml");
