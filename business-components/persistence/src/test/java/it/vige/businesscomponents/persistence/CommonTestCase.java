@@ -20,6 +20,9 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import it.vige.businesscomponents.persistence.resultset.ResultDetails;
+import it.vige.businesscomponents.persistence.resultset.ResultEntity;
+
 @RunWith(Arquillian.class)
 public class CommonTestCase {
 
@@ -30,7 +33,8 @@ public class CommonTestCase {
 
 	@Deployment
 	public static JavaArchive createJavaDeployment() {
-		JavaArchive jar = createJavaArchive("common-test.jar", Forum.class.getPackage());
+		JavaArchive jar = createJavaArchive("common-test.jar", Forum.class.getPackage(),
+				ResultEntity.class.getPackage());
 		jar.addAsResource(new FileAsset(new File("src/main/resources/forums.import.sql")), "forums.import.sql");
 		return jar;
 	}
@@ -62,5 +66,19 @@ public class CommonTestCase {
 		query.setParameter("forumId", 1);
 		forumList = query.getResultList();
 		assertEquals("named query ok", 1, forumList.size());
+	}
+
+	@Test
+	public void testResultSet() {
+		Query query = entityManager
+				.createNativeQuery(
+						"SELECT c.JBP_ID as id, c.JBP_TITLE as title, f.JBP_POST_COUNT as orderCount, f.JBP_POST_COUNT AS postCount "
+								+ "FROM JBP_FORUMS_CATEGORIES c, JBP_FORUMS_FORUMS f "
+								+ "WHERE f.JBP_CATEGORY_ID = c.JBP_ID " + "GROUP BY c.JBP_ID, c.JBP_TITLE",
+						"CustomerDetailsResult");
+		@SuppressWarnings("unchecked")
+		List<ResultDetails> resultDetails = query.getResultList();
+		assertEquals("created through the constructor", 1, resultDetails.size());
+
 	}
 }
