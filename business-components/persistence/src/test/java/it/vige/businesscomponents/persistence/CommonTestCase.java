@@ -66,6 +66,12 @@ public class CommonTestCase {
 		query.setParameter("forumId", 1);
 		forumList = query.getResultList();
 		assertEquals("named query ok", 1, forumList.size());
+		String namedQuery = "my_runtime_named_query";
+		entityManager.getEntityManagerFactory().addNamedQuery(namedQuery, query);
+		query = entityManager.createNamedQuery(namedQuery);
+		query.setParameter("forumId", 1);
+		forumList = query.getResultList();
+		assertEquals("named query ok", 1, forumList.size());
 	}
 
 	@Test

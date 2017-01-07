@@ -22,7 +22,7 @@ import org.junit.runner.RunWith;
 public class StoreProcedureTestCase {
 
 	@PersistenceContext
-	private EntityManager em;
+	private EntityManager entityManager;
 
 	@Deployment
 	public static JavaArchive createJavaDeployment() {
@@ -37,7 +37,7 @@ public class StoreProcedureTestCase {
 	@Test
 	public void testCallStoreProcedure() {
 
-		StoredProcedureQuery query = em.createStoredProcedureQuery("my_sum");
+		StoredProcedureQuery query = entityManager.createStoredProcedureQuery("my_sum");
 		query.registerStoredProcedureParameter("x", Integer.class, IN);
 		query.registerStoredProcedureParameter("y", Integer.class, IN);
 
@@ -45,6 +45,6 @@ public class StoreProcedureTestCase {
 		query.setParameter("y", 4);
 		query.execute();
 		Integer sum = (Integer) query.getSingleResult();
-		assertEquals(sum, new Integer(9));
+		assertEquals("the sum in the stored procedure", sum, new Integer(9));
 	}
 }
