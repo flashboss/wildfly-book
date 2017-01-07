@@ -21,7 +21,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
@@ -82,7 +81,6 @@ public class Forum implements Serializable {
 
 	@Id
 	@Column(name = "JBP_ID")
-	@DocumentId
 	@GeneratedValue
 	private Integer id;
 

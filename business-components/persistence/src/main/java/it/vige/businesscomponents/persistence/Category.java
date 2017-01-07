@@ -16,7 +16,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
-import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Indexed;
 
 /**
@@ -51,7 +50,6 @@ public class Category implements Serializable {
 
 	@Id
 	@Column(name = "JBP_ID")
-	@DocumentId
 	@GeneratedValue
 	private Integer id;
 

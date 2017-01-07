@@ -21,10 +21,9 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.search.annotations.DocumentId;
+import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
-import org.hibernate.search.annotations.Field;
 
 @NamedQueries({
 		@NamedQuery(name = "findAnnouncements", query = "select t from Topic as t where t.forum=:forumid and "
@@ -63,7 +62,6 @@ public class Topic implements Serializable, Comparable<Topic> {
 
 	@Id
 	@Column(name = "JBP_ID")
-	@DocumentId
 	@GeneratedValue
 	private Integer id;
 

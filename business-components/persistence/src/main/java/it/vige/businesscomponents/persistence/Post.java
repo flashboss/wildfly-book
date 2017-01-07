@@ -38,7 +38,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.search.annotations.DateBridge;
-import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
@@ -99,7 +98,6 @@ public class Post implements Serializable {
 	@Column(name = "JBP_EDIT_DATE")
 	private Date date;
 
-	@DocumentId
 	@Id
 	@Column(name = "JBP_ID")
 	@GeneratedValue

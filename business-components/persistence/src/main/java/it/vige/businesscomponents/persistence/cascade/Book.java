@@ -11,11 +11,15 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "book", indexes = { @Index(name = "index_title", columnList = "title", unique = true),
+		@Index(name = "index_publisher", columnList = "publisher", unique = false) })
 public class Book {
 
 	@Id
@@ -25,6 +29,8 @@ public class Book {
 	@Column(name = "title", nullable = false)
 	private String title;
 
+	private String publisher;
+
 	@ManyToMany(cascade = { PERSIST, MERGE })
 	@JoinTable(name = "Book_Author", joinColumns = {
 			@JoinColumn(name = "book_id", referencedColumnName = "id") }, inverseJoinColumns = {
@@ -33,7 +39,7 @@ public class Book {
 
 	public Book() {
 	}
-	
+
 	public Book(String title) {
 		this.title = title;
 	}
@@ -52,5 +58,13 @@ public class Book {
 
 	public void setAuthors(List<Author> authors) {
 		this.authors = authors;
+	}
+
+	public String getPublisher() {
+		return publisher;
+	}
+
+	public void setPublisher(String publisher) {
+		this.publisher = publisher;
 	}
 }
