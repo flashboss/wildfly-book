@@ -12,11 +12,5 @@
 	<packaging>pom</packaging>
 	<name>Wildfly Clustering</name>
 	<description>Part 5 - Clustering</description>
-
-	<modules>
-		<module>web-sessions</module>
-		<module>service-propagation</module>
-		<module>share-data</module>
-	</modules>
 	
 </project>

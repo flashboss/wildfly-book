@@ -1,1 +1,0 @@
-Dependencies: com.h2database.h2

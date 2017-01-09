@@ -12,10 +12,5 @@
 	<packaging>pom</packaging>
 	<name>Wildfly Class Loading</name>
 	<description>Part 6 - Class loading</description>
-
-	<modules>
-		<module>deployment</module>
-		<module>osgi</module>
-	</modules>
 	
 </project>

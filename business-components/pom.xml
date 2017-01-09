@@ -12,13 +12,5 @@
 	<packaging>pom</packaging>
 	<name>Wildfly Business Components</name>
 	<description>Part 2- Service and business components</description>
-
-	<modules>
-		<module>injection</module>
-		<module>persistence</module>
-		<module>business-logic</module>
-		<module>transactions</module>
-		<module>services</module>
-	</modules>
 	
 </project>

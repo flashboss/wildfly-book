@@ -12,11 +12,6 @@
 	<packaging>pom</packaging>
 	<name>Wildfly Web Programming</name>
 	<description>Part 4 - Web programming</description>
-
-	<modules>
-		<module>servlets-jsp</module>
-		<module>java-server-faces</module>
-	</modules>
 	
 	<profiles>
 		<profile>

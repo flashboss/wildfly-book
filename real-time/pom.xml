@@ -12,14 +12,5 @@
 	<packaging>pom</packaging>
 	<name>Wildfly Real Time</name>
 	<description>Part 3 - Asynchronous and real time</description>
-
-	<modules>
-		<module>web-sockets</module>
-		<module>messaging</module>
-		<module>java-mail</module>
-		<module>asynchronous-rest</module>
-		<module>asynchronous-ejb</module>
-		<module>batches-workflows</module>
-	</modules>
 	
 </project>
