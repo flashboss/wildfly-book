@@ -4,11 +4,13 @@ import static java.util.Arrays.asList;
 
 import java.util.List;
 
+import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 @Stateless
+@Remote
 public class MyPosts {
 
 	@PersistenceContext

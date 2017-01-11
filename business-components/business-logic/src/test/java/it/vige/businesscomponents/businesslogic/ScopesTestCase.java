@@ -2,8 +2,10 @@ package it.vige.businesscomponents.businesslogic;
 
 import static java.util.logging.Logger.getLogger;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
+import static org.jboss.shrinkwrap.api.asset.EmptyAsset.INSTANCE;
 import static org.junit.Assert.assertEquals;
 
+import java.io.File;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -11,6 +13,7 @@ import javax.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.shrinkwrap.api.asset.FileAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,12 +27,15 @@ public class ScopesTestCase {
 	private MyPosts myPosts;
 
 	@Inject
+	@Hard
 	private MyHardPosts myHardPosts;
 
 	@Deployment
 	public static JavaArchive createJavaDeployment() {
 		final JavaArchive jar = create(JavaArchive.class, "scopes-test.jar");
 		jar.addPackage(MyPosts.class.getPackage());
+		jar.addAsManifestResource(new FileAsset(new File("src/test/resources/META-INF/persistence-test.xml")),
+				"persistence.xml");
 		return jar;
 	}
 

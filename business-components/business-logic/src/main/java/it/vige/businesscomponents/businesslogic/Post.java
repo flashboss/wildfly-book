@@ -3,6 +3,7 @@ package it.vige.businesscomponents.businesslogic;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Post {
@@ -14,6 +15,9 @@ public class Post {
 	private String message;
 	
 	private int day;
+	
+	@ManyToOne
+	private Topic topic;
 	
 	public Post() {
 		
@@ -41,6 +45,14 @@ public class Post {
 
 	public Integer getId() {
 		return id;
+	}
+
+	public Topic getTopic() {
+		return topic;
+	}
+
+	public void setTopic(Topic topic) {
+		this.topic = topic;
 	}
 
 }
