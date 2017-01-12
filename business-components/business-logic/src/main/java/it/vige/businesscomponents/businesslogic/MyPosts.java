@@ -17,6 +17,10 @@ public class MyPosts {
 	private EntityManager entityManager;
 
 	private List<Post> lastRequestedPosts;
+	
+	public MyPosts() {
+		
+	}
 
 	public List<Post> getLastPosts() {
 		return entityManager.createQuery("from Post", Post.class).getResultList();

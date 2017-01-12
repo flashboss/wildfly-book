@@ -2,7 +2,6 @@ package it.vige.businesscomponents.businesslogic;
 
 import static java.util.logging.Logger.getLogger;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
-import static org.jboss.shrinkwrap.api.asset.EmptyAsset.INSTANCE;
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
@@ -44,7 +43,7 @@ public class ScopesTestCase {
 		logger.info("Start stateful test");
 		myPosts.getPostsByDay(0);
 		List<Post> posts = myPosts.getLastRequestedPosts();
-		assertEquals(0, posts.size());
+		assertEquals(2, posts.size());
 		myHardPosts.getPostsByDay(0);
 		List<Post> hardPosts = myHardPosts.getLastRequestedPosts();
 		assertEquals(2, hardPosts.size());

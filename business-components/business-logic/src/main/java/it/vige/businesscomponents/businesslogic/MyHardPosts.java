@@ -7,4 +7,8 @@ import javax.ejb.Stateless;
 @Remote
 @Hard
 public class MyHardPosts extends MyPosts {
+	
+	public MyHardPosts() {
+		
+	}
 }
