@@ -29,12 +29,17 @@ public class ScopesTestCase {
 	@Hard
 	private MyHardPosts myHardPosts;
 
+	@Inject
+	@Harder
+	private MyHarderPosts myHarderPosts;
+
 	@Deployment
-	public static JavaArchive createJavaDeployment() {
+	public static JavaArchive createEJBDeployment() {
 		final JavaArchive jar = create(JavaArchive.class, "scopes-test.jar");
 		jar.addPackage(MyPosts.class.getPackage());
 		jar.addAsManifestResource(new FileAsset(new File("src/test/resources/META-INF/persistence-test.xml")),
 				"persistence.xml");
+		jar.toString(true);
 		return jar;
 	}
 
@@ -47,5 +52,8 @@ public class ScopesTestCase {
 		myHardPosts.getPostsByDay(0);
 		List<Post> hardPosts = myHardPosts.getLastRequestedPosts();
 		assertEquals(2, hardPosts.size());
+		myHarderPosts.getPostsByDay(0);
+		List<Post> harderPosts = myHarderPosts.getLastRequestedPosts();
+		assertEquals(2, harderPosts.size());
 	}
 }
