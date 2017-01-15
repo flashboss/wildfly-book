@@ -2,7 +2,7 @@ package it.vige.businesscomponents.businesslogic.context.old;
 
 import javax.ejb.EJBLocalObject;
 
-public interface Ejb21Local extends EJBLocalObject {
+public interface Ejb21StateLocal extends EJBLocalObject {
 
 	int go(int speed);
 

@@ -4,7 +4,7 @@ import java.rmi.RemoteException;
 
 import javax.ejb.EJBObject;
 
-public interface Ejb21Remote extends EJBObject {
+public interface Ejb21StateRemote extends EJBObject {
 
 	int go(int speed) throws RemoteException;
 

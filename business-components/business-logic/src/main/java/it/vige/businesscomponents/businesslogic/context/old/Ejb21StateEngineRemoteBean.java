@@ -19,13 +19,13 @@ import javax.ejb.RemoveException;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateful;
 
-import it.vige.businesscomponents.businesslogic.context.old.Ejb21Remote;
-import it.vige.businesscomponents.businesslogic.context.old.Ejb21RemoteHome;
+import it.vige.businesscomponents.businesslogic.context.old.Ejb21StateRemote;
+import it.vige.businesscomponents.businesslogic.context.old.Ejb21StateRemoteHome;
 
 @Stateful(name = "ejb21StateEngineRemote")
-@RemoteHome(value = Ejb21RemoteHome.class)
-@Remote(value = Ejb21Remote.class)
-public class Ejb21StateEngineRemoteBean implements Ejb21Remote {
+@RemoteHome(value = Ejb21StateRemoteHome.class)
+@Remote(value = Ejb21StateRemote.class)
+public class Ejb21StateEngineRemoteBean implements Ejb21StateRemote {
 
 	private static final Logger logger = getLogger(Ejb21StateEngineRemoteBean.class.getName());
 	private int speed;
@@ -74,7 +74,7 @@ public class Ejb21StateEngineRemoteBean implements Ejb21Remote {
 		Map<String, Object> contextData = context.getContextData();
 		EJBHome ejbHome = context.getEJBHome();
 		EJBObject ejbObject = context.getEJBObject();
-		Ejb21Remote stateRemoteEngine = context.getBusinessObject(Ejb21Remote.class);
+		Ejb21StateRemote stateRemoteEngine = context.getBusinessObject(Ejb21StateRemote.class);
 		boolean isCallerInRole = context.isCallerInRole("admin");
 		logger.info("stateRemoteEngineBean principal: " + principal);
 		logger.info("stateRemoteEngineBean contextData:" + contextData);

@@ -19,8 +19,8 @@ import it.vige.businesscomponents.businesslogic.context.nnn.EngineLocal;
 import it.vige.businesscomponents.businesslogic.context.nnn.EngineRemote;
 import it.vige.businesscomponents.businesslogic.context.nnn.StateEngineLocal;
 import it.vige.businesscomponents.businesslogic.context.nnn.StateEngineRemote;
-import it.vige.businesscomponents.businesslogic.context.old.Ejb21Local;
-import it.vige.businesscomponents.businesslogic.context.old.Ejb21Remote;
+import it.vige.businesscomponents.businesslogic.context.old.Ejb21StateLocal;
+import it.vige.businesscomponents.businesslogic.context.old.Ejb21StateRemote;
 
 @RunWith(Arquillian.class)
 public class SessionContextTestCase {
@@ -34,7 +34,7 @@ public class SessionContextTestCase {
 	private StateEngineRemote stateEngineRemote;
 
 	@EJB
-	private Ejb21Remote ejb21StateEngineRemote;
+	private Ejb21StateRemote ejb21StateEngineRemote;
 
 	@EJB
 	private EngineLocal engineLocal;
@@ -43,7 +43,7 @@ public class SessionContextTestCase {
 	private StateEngineLocal stateEngineLocal;
 
 	@EJB
-	private Ejb21Local ejb21StateEngineLocal;
+	private Ejb21StateLocal ejb21StateEngineLocal;
 
 	@Deployment
 	public static JavaArchive createEJBDeployment() {

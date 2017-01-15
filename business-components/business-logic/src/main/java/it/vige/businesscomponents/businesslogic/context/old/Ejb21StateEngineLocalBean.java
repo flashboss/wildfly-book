@@ -18,13 +18,13 @@ import javax.ejb.RemoveException;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateful;
 
-import it.vige.businesscomponents.businesslogic.context.old.Ejb21Local;
-import it.vige.businesscomponents.businesslogic.context.old.Ejb21LocalHome;
+import it.vige.businesscomponents.businesslogic.context.old.Ejb21StateLocal;
+import it.vige.businesscomponents.businesslogic.context.old.Ejb21StateLocalHome;
 
 @Stateful(name = "ejb21StateEngineLocal")
-@LocalHome(value = Ejb21LocalHome.class)
-@Local(value = Ejb21Local.class)
-public class Ejb21StateEngineLocalBean implements Ejb21Local {
+@LocalHome(value = Ejb21StateLocalHome.class)
+@Local(value = Ejb21StateLocal.class)
+public class Ejb21StateEngineLocalBean implements Ejb21StateLocal {
 
 	private static final Logger logger = getLogger(Ejb21StateEngineLocalBean.class.getName());
 	private int speed;
@@ -72,7 +72,7 @@ public class Ejb21StateEngineLocalBean implements Ejb21Local {
 		Map<String, Object> contextData = context.getContextData();
 		EJBLocalHome ejbLocalHome = context.getEJBLocalHome();
 		EJBLocalObject ejbLocalObject = context.getEJBLocalObject();
-		Ejb21Local stateLocalEngine = context.getBusinessObject(Ejb21Local.class);
+		Ejb21StateLocal stateLocalEngine = context.getBusinessObject(Ejb21StateLocal.class);
 		boolean isCallerInRole = context.isCallerInRole("admin");
 		logger.info("stateLocalEngineBean principal: " + principal);
 		logger.info("stateLocalEngineBean contextData:" + contextData);
