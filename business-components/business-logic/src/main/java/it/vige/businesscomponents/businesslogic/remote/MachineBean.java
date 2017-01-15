@@ -1,23 +1,29 @@
 package it.vige.businesscomponents.businesslogic.remote;
 
-import javax.annotation.Resource;
-import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 
-@Stateless(name="machine")
+@Stateless(name = "machine")
 public class MachineBean implements Machine {
-	
-	@Resource
-	private SessionContext context;
+
+	private int speed;
 
 	@Override
 	public int go(int speed) {
-		return speed++;
+		return this.speed += speed;
 	}
 
 	@Override
 	public int retry(int speed) {
-		return speed--;
+		return this.speed -= speed;
+	}
+
+	@Override
+	public int getSpeed() {
+		return speed;
+	}
+
+	public void setSpeed(int speed) {
+		this.speed = speed;
 	}
 
 }

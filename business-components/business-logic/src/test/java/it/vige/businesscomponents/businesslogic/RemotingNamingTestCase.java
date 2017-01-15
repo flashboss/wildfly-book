@@ -6,6 +6,7 @@ import static javax.naming.Context.PROVIDER_URL;
 import static javax.naming.Context.SECURITY_CREDENTIALS;
 import static javax.naming.Context.SECURITY_PRINCIPAL;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
+import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.util.Properties;
@@ -25,6 +26,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import it.vige.businesscomponents.businesslogic.remote.Machine;
+import it.vige.businesscomponents.businesslogic.remote.StateMachine;
 
 @RunWith(Arquillian.class)
 public class RemotingNamingTestCase {
@@ -44,35 +46,55 @@ public class RemotingNamingTestCase {
 		return ear;
 	}
 
-	private void execute() throws NamingException {
-		Machine machine = lookup();
-		logger.info(machine + "");
-		int result = machine.go(1);
-		logger.info(result + "");
-	}
-
 	@Test
 	@RunAsClient
-	public void testRemoteNaming() throws Exception {
+	public void testStatelessRemoteNaming() throws Exception {
 		logger.info("starting remoting ejb client test");
 
 		try {
 			createInitialContext();
-			execute();
+			Machine machine = lookup(Machine.class, "machine");
+			logger.info(machine + "");
+			int result = machine.go(1);
+			assertEquals(machine.getSpeed(), 1);
+			logger.info(result + "");
+			machine = lookup(Machine.class, "machine");
+			logger.info(machine + "");
+			assertEquals(machine.getSpeed(), 1);
 		} finally {
 			closeContext();
 		}
 	}
 
-	private Machine lookup() throws NamingException {
+	@Test
+	@RunAsClient
+	public void testStatefulRemoteNaming() throws Exception {
+		logger.info("starting remoting ejb client test");
+
+		try {
+			createInitialContext();
+			StateMachine machine = lookup(StateMachine.class, "stateMachine");
+			logger.info(machine + "");
+			int result = machine.go(1);
+			assertEquals(machine.getSpeed(), 1);
+			logger.info(result + "");
+			machine = lookup(StateMachine.class, "stateMachine");
+			logger.info(machine + "");
+			assertEquals(machine.getSpeed(), 0);
+		} finally {
+			closeContext();
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private <T> T lookup(Class<T> machine, String beanName) throws NamingException {
 
 		final String appName = "remoting-remote-naming-test";
 		final String moduleName = "remoting";
 		final String distinctName = "";
-		final String beanName = "machine";
-		final String viewClassName = Machine.class.getName();
+		final String viewClassName = machine.getName();
 
-		return (Machine) context
+		return (T) context
 				.lookup("" + appName + "/" + moduleName + "/" + distinctName + "/" + beanName + "!" + viewClassName);
 	}
 
