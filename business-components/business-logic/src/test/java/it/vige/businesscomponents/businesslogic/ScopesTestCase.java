@@ -39,7 +39,6 @@ public class ScopesTestCase {
 		jar.addPackage(MyPosts.class.getPackage());
 		jar.addAsManifestResource(new FileAsset(new File("src/test/resources/META-INF/persistence-test.xml")),
 				"persistence.xml");
-		jar.toString(true);
 		return jar;
 	}
 
