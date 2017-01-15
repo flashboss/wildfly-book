@@ -14,9 +14,11 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import it.vige.businesscomponents.businesslogic.context.EngineLocal;
-import it.vige.businesscomponents.businesslogic.context.EngineRemote;
 import it.vige.businesscomponents.businesslogic.context.MyData;
+import it.vige.businesscomponents.businesslogic.context.nnn.EngineLocal;
+import it.vige.businesscomponents.businesslogic.context.nnn.EngineRemote;
+import it.vige.businesscomponents.businesslogic.context.nnn.StateEngineLocal;
+import it.vige.businesscomponents.businesslogic.context.nnn.StateEngineRemote;
 import it.vige.businesscomponents.businesslogic.context.old.Ejb21Local;
 import it.vige.businesscomponents.businesslogic.context.old.Ejb21Remote;
 
@@ -29,18 +31,24 @@ public class SessionContextTestCase {
 	private EngineRemote engineRemote;
 
 	@EJB
-	private Ejb21Remote stateEngineRemote;
+	private StateEngineRemote stateEngineRemote;
+
+	@EJB
+	private Ejb21Remote ejb21StateEngineRemote;
 
 	@EJB
 	private EngineLocal engineLocal;
 
 	@EJB
-	private Ejb21Local stateEngineLocal;
+	private StateEngineLocal stateEngineLocal;
+
+	@EJB
+	private Ejb21Local ejb21StateEngineLocal;
 
 	@Deployment
 	public static JavaArchive createEJBDeployment() {
 		final JavaArchive jar = create(JavaArchive.class, "session-context-test.jar");
-		jar.addPackages(true, EngineRemote.class.getPackage());
+		jar.addPackages(true, MyData.class.getPackage());
 		return jar;
 	}
 
@@ -60,7 +68,7 @@ public class SessionContextTestCase {
 
 	@Test
 	public void testStatefulRemoteNaming() throws Exception {
-		logger.info("starting session stateful test");
+		logger.info("starting session stateful remote test");
 
 		logger.info(stateEngineRemote + "");
 		int result = stateEngineRemote.go(1);
@@ -70,6 +78,20 @@ public class SessionContextTestCase {
 		assertEquals(stateEngineRemote.getSpeed(), 1);
 		stateEngineRemote.add(new MyData());
 		stateEngineRemote.log();
+	}
+
+	@Test
+	public void testEjb21StatefulRemoteNaming() throws Exception {
+		logger.info("starting session stateful test");
+
+		logger.info(ejb21StateEngineRemote + "");
+		int result = ejb21StateEngineRemote.go(1);
+		assertEquals(ejb21StateEngineRemote.getSpeed(), 1);
+		logger.info(result + "");
+		logger.info(ejb21StateEngineRemote + "");
+		assertEquals(ejb21StateEngineRemote.getSpeed(), 1);
+		ejb21StateEngineRemote.add(new MyData());
+		ejb21StateEngineRemote.log();
 	}
 
 	@Test
@@ -88,7 +110,7 @@ public class SessionContextTestCase {
 
 	@Test
 	public void testStatefulLocalNaming() throws Exception {
-		logger.info("starting session local stateful test");
+		logger.info("starting session local stateless test");
 
 		logger.info(stateEngineLocal + "");
 		int result = stateEngineLocal.go(1);
@@ -98,5 +120,19 @@ public class SessionContextTestCase {
 		assertEquals(stateEngineLocal.getSpeed(), 1);
 		stateEngineLocal.add(new MyData());
 		stateEngineLocal.log();
+	}
+
+	@Test
+	public void testEjb21StatefulLocalNaming() throws Exception {
+		logger.info("starting session local stateful test");
+
+		logger.info(ejb21StateEngineLocal + "");
+		int result = ejb21StateEngineLocal.go(1);
+		assertEquals(ejb21StateEngineLocal.getSpeed(), 1);
+		logger.info(result + "");
+		logger.info(ejb21StateEngineLocal + "");
+		assertEquals(ejb21StateEngineLocal.getSpeed(), 1);
+		ejb21StateEngineLocal.add(new MyData());
+		ejb21StateEngineLocal.log();
 	}
 }
