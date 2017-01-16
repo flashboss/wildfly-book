@@ -19,6 +19,8 @@ import it.vige.businesscomponents.businesslogic.context.nnn.EngineLocal;
 import it.vige.businesscomponents.businesslogic.context.nnn.EngineRemote;
 import it.vige.businesscomponents.businesslogic.context.nnn.StateEngineLocal;
 import it.vige.businesscomponents.businesslogic.context.nnn.StateEngineRemote;
+import it.vige.businesscomponents.businesslogic.context.old.Ejb21Local;
+import it.vige.businesscomponents.businesslogic.context.old.Ejb21Remote;
 import it.vige.businesscomponents.businesslogic.context.old.Ejb21StateLocal;
 import it.vige.businesscomponents.businesslogic.context.old.Ejb21StateRemote;
 
@@ -34,6 +36,9 @@ public class SessionContextTestCase {
 	private StateEngineRemote stateEngineRemote;
 
 	@EJB
+	private Ejb21Remote ejb21EngineRemote;
+
+	@EJB
 	private Ejb21StateRemote ejb21StateEngineRemote;
 
 	@EJB
@@ -41,6 +46,9 @@ public class SessionContextTestCase {
 
 	@EJB
 	private StateEngineLocal stateEngineLocal;
+
+	@EJB
+	private Ejb21Local ejb21EngineLocal;
 
 	@EJB
 	private Ejb21StateLocal ejb21StateEngineLocal;
@@ -78,6 +86,20 @@ public class SessionContextTestCase {
 		assertEquals(stateEngineRemote.getSpeed(), 1);
 		stateEngineRemote.add(new MyData());
 		stateEngineRemote.log();
+	}
+
+	@Test
+	public void testEjb21StatelessRemoteNaming() throws Exception {
+		logger.info("starting ejb21 stateless test");
+
+		logger.info(ejb21EngineRemote + "");
+		int result = ejb21EngineRemote.go(1);
+		assertEquals(ejb21EngineRemote.getSpeed(), 1);
+		logger.info(result + "");
+		logger.info(ejb21EngineRemote + "");
+		assertEquals(ejb21EngineRemote.getSpeed(), 1);
+		ejb21EngineRemote.add(new MyData());
+		ejb21EngineRemote.log();
 	}
 
 	@Test
@@ -120,6 +142,20 @@ public class SessionContextTestCase {
 		assertEquals(stateEngineLocal.getSpeed(), 1);
 		stateEngineLocal.add(new MyData());
 		stateEngineLocal.log();
+	}
+
+	@Test
+	public void testEjb21StatelessLocalNaming() throws Exception {
+		logger.info("starting ejb21 local stateless test");
+
+		logger.info(ejb21EngineLocal + "");
+		int result = ejb21EngineLocal.go(1);
+		assertEquals(ejb21EngineLocal.getSpeed(), 1);
+		logger.info(result + "");
+		logger.info(ejb21EngineLocal + "");
+		assertEquals(ejb21EngineLocal.getSpeed(), 1);
+		ejb21EngineLocal.add(new MyData());
+		ejb21EngineLocal.log();
 	}
 
 	@Test
