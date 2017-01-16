@@ -1,6 +1,8 @@
 package it.vige.businesscomponents.businesslogic.context.nnn;
 
 import static java.util.logging.Logger.getLogger;
+import static javax.ejb.TransactionAttributeType.MANDATORY;
+import static javax.ejb.TransactionManagementType.BEAN;
 
 import java.security.Principal;
 import java.util.Map;
@@ -15,8 +17,11 @@ import javax.ejb.PrePassivate;
 import javax.ejb.Remove;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateful;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionManagement;
 
 @Stateful(name = "stateEngineLocal")
+@TransactionManagement(BEAN)
 public class StateEngineLocalBean implements StateEngineLocal {
 
 	private static final Logger logger = getLogger(StateEngineLocalBean.class.getName());
@@ -32,6 +37,7 @@ public class StateEngineLocalBean implements StateEngineLocal {
 	}
 
 	@Override
+	@TransactionAttribute(MANDATORY)
 	public int retry(int speed) {
 		return this.speed -= speed;
 	}
