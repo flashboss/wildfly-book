@@ -5,9 +5,12 @@ import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import javax.ejb.EJB;
+import javax.inject.Inject;
+import javax.transaction.UserTransaction;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -33,6 +36,9 @@ import it.vige.businesscomponents.businesslogic.context.old.Ejb21StateRemoteHome
 public class SessionContextTestCase {
 
 	private static final Logger logger = getLogger(SessionContextTestCase.class.getName());
+
+	@Inject
+	private UserTransaction userTransaction;
 
 	@EJB
 	private EngineRemote engineRemote;
@@ -135,6 +141,10 @@ public class SessionContextTestCase {
 		ejb21StateEngineRemote.log();
 		Ejb21StateRemote ejb21StateEngineRemote2 = ejb21StateEngineRemoteHome.create();
 		assertNotEquals("interfaces are not the same", ejb21StateEngineRemote, ejb21StateEngineRemote2);
+		Ejb21StateRemote ejb21StateEngineRemote3 = ejb21StateEngineRemoteHome.create("input data");
+		assertNotEquals("interfaces are not the same", ejb21StateEngineRemote2, ejb21StateEngineRemote3);
+		Ejb21StateRemote ejb21StateEngineRemote4 = ejb21StateEngineRemoteHome.create(new ArrayList<String>());
+		assertNotEquals("interfaces are not the same", ejb21StateEngineRemote3, ejb21StateEngineRemote4);
 	}
 
 	@Test
@@ -154,7 +164,7 @@ public class SessionContextTestCase {
 	@Test
 	public void testStatefulLocalNaming() throws Exception {
 		logger.info("starting session local stateful test");
-
+		userTransaction.begin();
 		logger.info(stateEngineLocal + "");
 		int result = stateEngineLocal.go(1);
 		assertEquals(stateEngineLocal.getSpeed(), 1);
@@ -163,6 +173,7 @@ public class SessionContextTestCase {
 		assertEquals(stateEngineLocal.getSpeed(), 1);
 		stateEngineLocal.add(new MyData());
 		stateEngineLocal.log();
+		userTransaction.commit();
 	}
 
 	@Test
@@ -195,5 +206,9 @@ public class SessionContextTestCase {
 		ejb21StateEngineLocal.log();
 		Ejb21StateLocal ejb21StateEngineLocal2 = ejb21StateEngineLocalHome.create();
 		assertNotEquals("interfaces are not the same", ejb21StateEngineLocal, ejb21StateEngineLocal2);
+		Ejb21StateLocal ejb21StateEngineLocal3 = ejb21StateEngineLocalHome.create("input data");
+		assertNotEquals("interfaces are not the same", ejb21StateEngineLocal2, ejb21StateEngineLocal3);
+		Ejb21StateLocal ejb21StateEngineLocal4 = ejb21StateEngineLocalHome.create(new ArrayList<String>());
+		assertNotEquals("interfaces are not the same", ejb21StateEngineLocal3, ejb21StateEngineLocal4);
 	}
 }

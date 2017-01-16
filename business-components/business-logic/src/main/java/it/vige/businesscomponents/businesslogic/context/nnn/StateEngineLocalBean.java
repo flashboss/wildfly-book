@@ -7,6 +7,12 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.annotation.Resource;
+import javax.ejb.AfterBegin;
+import javax.ejb.AfterCompletion;
+import javax.ejb.BeforeCompletion;
+import javax.ejb.PostActivate;
+import javax.ejb.PrePassivate;
+import javax.ejb.Remove;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateful;
 
@@ -56,6 +62,36 @@ public class StateEngineLocalBean implements StateEngineLocal {
 		logger.info("stateEngineLocalBean invokedBusinessInterface:" + invokedBusinessInterface);
 		logger.info("stateEngineLocalBean engineLocal:" + engineLocal);
 		logger.info("stateEngineLocalBean isCallerInRole:" + isCallerInRole);
+	}
+	
+	@PostActivate
+	public void activate() {
+		logger.info("the bean is active");
+	}
+	
+	@PrePassivate
+	public void passivate() {
+		logger.info("the bean is passivating");
+	}
+	
+	@Remove
+	public void remove() {
+		logger.info("the bean is removing");
+	}
+	
+	@AfterBegin
+	public void afterBegin() {
+		logger.info("the bean is begun");
+	}
+	
+	@BeforeCompletion
+	public void beforeCompletion() {
+		logger.info("the bean is completing");
+	}
+	
+	@AfterCompletion
+	public void afterCompletion() {
+		logger.info("the bean is completed");
 	}
 
 }

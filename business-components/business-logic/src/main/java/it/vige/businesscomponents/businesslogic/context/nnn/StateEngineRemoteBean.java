@@ -2,16 +2,19 @@ package it.vige.businesscomponents.businesslogic.context.nnn;
 
 import static java.util.logging.Logger.getLogger;
 
+import java.rmi.RemoteException;
 import java.security.Principal;
 import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.annotation.Resource;
+import javax.ejb.EJBException;
 import javax.ejb.SessionContext;
+import javax.ejb.SessionSynchronization;
 import javax.ejb.Stateful;
 
 @Stateful(name = "stateEngineRemote")
-public class StateEngineRemoteBean implements StateEngineRemote {
+public class StateEngineRemoteBean implements StateEngineRemote, SessionSynchronization {
 
 	private static final Logger logger = getLogger(StateEngineRemoteBean.class.getName());
 
@@ -56,6 +59,21 @@ public class StateEngineRemoteBean implements StateEngineRemote {
 		logger.info("stateEngineRemoteBean invokedBusinessInterface:" + invokedBusinessInterface);
 		logger.info("stateEngineRemoteBean engineRemote:" + engineRemote);
 		logger.info("stateEngineRemoteBean isCallerInRole:" + isCallerInRole);
+	}
+
+	@Override
+	public void afterBegin() throws EJBException, RemoteException {
+		logger.info("the bean is begun");
+	}
+
+	@Override
+	public void beforeCompletion() throws EJBException, RemoteException {
+		logger.info("the bean is completing");
+	}
+
+	@Override
+	public void afterCompletion(boolean committed) throws EJBException, RemoteException {
+		logger.info("the bean is completed");
 	}
 
 }

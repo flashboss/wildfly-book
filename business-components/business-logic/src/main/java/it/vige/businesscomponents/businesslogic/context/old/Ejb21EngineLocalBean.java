@@ -2,6 +2,7 @@ package it.vige.businesscomponents.businesslogic.context.old;
 
 import static java.util.logging.Logger.getLogger;
 
+import java.rmi.RemoteException;
 import java.security.Principal;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -14,14 +15,16 @@ import javax.ejb.Init;
 import javax.ejb.Local;
 import javax.ejb.LocalHome;
 import javax.ejb.RemoveException;
+import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 
 @Stateless(name = "ejb21EngineLocal")
 @LocalHome(value = Ejb21LocalHome.class)
 @Local(value = Ejb21Local.class)
-public class Ejb21EngineLocalBean implements Ejb21Local {
+public class Ejb21EngineLocalBean implements Ejb21Local, SessionBean {
 
+	private static final long serialVersionUID = -1785386056310291324L;
 	private static final Logger logger = getLogger(Ejb21EngineLocalBean.class.getName());
 	private int speed;
 
@@ -89,6 +92,26 @@ public class Ejb21EngineLocalBean implements Ejb21Local {
 	public boolean isIdentical(EJBLocalObject obj) throws EJBException {
 		logger.info("isIdentical");
 		return false;
+	}
+
+	@Override
+	public void setSessionContext(SessionContext ctx) throws EJBException, RemoteException {
+		logger.info("setSessionContext");
+	}
+
+	@Override
+	public void ejbRemove() throws EJBException, RemoteException {
+		logger.info("ejbRemove");
+	}
+
+	@Override
+	public void ejbActivate() throws EJBException, RemoteException {
+		logger.info("ejbActivate");
+	}
+
+	@Override
+	public void ejbPassivate() throws EJBException, RemoteException {
+		logger.info("ejbPassivate");
 	}
 
 }
