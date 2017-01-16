@@ -72,31 +72,30 @@ public class Ejb21EngineRemoteBean implements Ejb21Remote {
 
 	@Override
 	public EJBHome getEJBHome() throws RemoteException {
-		// TODO Auto-generated method stub
+		logger.info("getEJBHome");
 		return null;
 	}
 
 	@Override
 	public Object getPrimaryKey() throws RemoteException {
-		// TODO Auto-generated method stub
+		logger.info("getPrimaryKey");
 		return null;
 	}
 
 	@Override
 	public void remove() throws RemoteException, RemoveException {
-		// TODO Auto-generated method stub
-
+		logger.info("remove");
 	}
 
 	@Override
 	public Handle getHandle() throws RemoteException {
-		// TODO Auto-generated method stub
+		logger.info("getHandle");
 		return null;
 	}
 
 	@Override
 	public boolean isIdentical(EJBObject ejbo) throws RemoteException {
-		// TODO Auto-generated method stub
+		logger.info("isIdentical");
 		return false;
 	}
 

@@ -84,25 +84,24 @@ public class Ejb21StateEngineLocalBean implements Ejb21StateLocal {
 
 	@Override
 	public EJBLocalHome getEJBLocalHome() throws EJBException {
-		// TODO Auto-generated method stub
+		logger.info("getEJBLocalHome");
 		return null;
 	}
 
 	@Override
 	public Object getPrimaryKey() throws EJBException {
-		// TODO Auto-generated method stub
+		logger.info("getPrimaryKey");
 		return null;
 	}
 
 	@Override
 	public void remove() throws RemoveException, EJBException {
-		// TODO Auto-generated method stub
-
+		logger.info("remove");
 	}
 
 	@Override
 	public boolean isIdentical(EJBLocalObject obj) throws EJBException {
-		// TODO Auto-generated method stub
+		logger.info("isIdentical");
 		return false;
 	}
 

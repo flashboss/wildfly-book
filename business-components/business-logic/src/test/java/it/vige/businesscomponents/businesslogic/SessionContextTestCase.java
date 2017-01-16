@@ -62,7 +62,7 @@ public class SessionContextTestCase {
 
 	@Test
 	public void testStatelessRemoteNaming() throws Exception {
-		logger.info("starting session stateless test");
+		logger.info("starting session remote stateless test");
 
 		logger.info(engineRemote + "");
 		int result = engineRemote.go(1);
@@ -76,7 +76,7 @@ public class SessionContextTestCase {
 
 	@Test
 	public void testStatefulRemoteNaming() throws Exception {
-		logger.info("starting session stateful remote test");
+		logger.info("starting session remote stateful test");
 
 		logger.info(stateEngineRemote + "");
 		int result = stateEngineRemote.go(1);
@@ -90,7 +90,7 @@ public class SessionContextTestCase {
 
 	@Test
 	public void testEjb21StatelessRemoteNaming() throws Exception {
-		logger.info("starting ejb21 stateless test");
+		logger.info("starting ejb21 remote stateless test");
 
 		logger.info(ejb21EngineRemote + "");
 		int result = ejb21EngineRemote.go(1);
@@ -104,7 +104,7 @@ public class SessionContextTestCase {
 
 	@Test
 	public void testEjb21StatefulRemoteNaming() throws Exception {
-		logger.info("starting session stateful test");
+		logger.info("starting ejb21 remote stateful test");
 
 		logger.info(ejb21StateEngineRemote + "");
 		int result = ejb21StateEngineRemote.go(1);
@@ -132,7 +132,7 @@ public class SessionContextTestCase {
 
 	@Test
 	public void testStatefulLocalNaming() throws Exception {
-		logger.info("starting session local stateless test");
+		logger.info("starting session local stateful test");
 
 		logger.info(stateEngineLocal + "");
 		int result = stateEngineLocal.go(1);
@@ -160,7 +160,7 @@ public class SessionContextTestCase {
 
 	@Test
 	public void testEjb21StatefulLocalNaming() throws Exception {
-		logger.info("starting session local stateful test");
+		logger.info("starting ejb21 local stateful test");
 
 		logger.info(ejb21StateEngineLocal + "");
 		int result = ejb21StateEngineLocal.go(1);
