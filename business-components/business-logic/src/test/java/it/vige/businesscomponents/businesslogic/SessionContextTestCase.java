@@ -3,6 +3,7 @@ package it.vige.businesscomponents.businesslogic;
 import static java.util.logging.Logger.getLogger;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 import java.util.logging.Logger;
 
@@ -20,9 +21,13 @@ import it.vige.businesscomponents.businesslogic.context.nnn.EngineRemote;
 import it.vige.businesscomponents.businesslogic.context.nnn.StateEngineLocal;
 import it.vige.businesscomponents.businesslogic.context.nnn.StateEngineRemote;
 import it.vige.businesscomponents.businesslogic.context.old.Ejb21Local;
+import it.vige.businesscomponents.businesslogic.context.old.Ejb21LocalHome;
 import it.vige.businesscomponents.businesslogic.context.old.Ejb21Remote;
+import it.vige.businesscomponents.businesslogic.context.old.Ejb21RemoteHome;
 import it.vige.businesscomponents.businesslogic.context.old.Ejb21StateLocal;
+import it.vige.businesscomponents.businesslogic.context.old.Ejb21StateLocalHome;
 import it.vige.businesscomponents.businesslogic.context.old.Ejb21StateRemote;
+import it.vige.businesscomponents.businesslogic.context.old.Ejb21StateRemoteHome;
 
 @RunWith(Arquillian.class)
 public class SessionContextTestCase {
@@ -39,7 +44,13 @@ public class SessionContextTestCase {
 	private Ejb21Remote ejb21EngineRemote;
 
 	@EJB
+	private Ejb21RemoteHome ejb21EngineRemoteHome;
+
+	@EJB
 	private Ejb21StateRemote ejb21StateEngineRemote;
+
+	@EJB
+	private Ejb21StateRemoteHome ejb21StateEngineRemoteHome;
 
 	@EJB
 	private EngineLocal engineLocal;
@@ -51,7 +62,13 @@ public class SessionContextTestCase {
 	private Ejb21Local ejb21EngineLocal;
 
 	@EJB
+	private Ejb21LocalHome ejb21EngineLocalHome;
+
+	@EJB
 	private Ejb21StateLocal ejb21StateEngineLocal;
+
+	@EJB
+	private Ejb21StateLocalHome ejb21StateEngineLocalHome;
 
 	@Deployment
 	public static JavaArchive createEJBDeployment() {
@@ -100,6 +117,8 @@ public class SessionContextTestCase {
 		assertEquals(ejb21EngineRemote.getSpeed(), 1);
 		ejb21EngineRemote.add(new MyData());
 		ejb21EngineRemote.log();
+		Ejb21Remote ejb21EngineRemote2 = ejb21EngineRemoteHome.create();
+		assertEquals("interfaces are the same", ejb21EngineRemote, ejb21EngineRemote2);
 	}
 
 	@Test
@@ -114,6 +133,8 @@ public class SessionContextTestCase {
 		assertEquals(ejb21StateEngineRemote.getSpeed(), 1);
 		ejb21StateEngineRemote.add(new MyData());
 		ejb21StateEngineRemote.log();
+		Ejb21StateRemote ejb21StateEngineRemote2 = ejb21StateEngineRemoteHome.create();
+		assertNotEquals("interfaces are not the same", ejb21StateEngineRemote, ejb21StateEngineRemote2);
 	}
 
 	@Test
@@ -156,6 +177,8 @@ public class SessionContextTestCase {
 		assertEquals(ejb21EngineLocal.getSpeed(), 1);
 		ejb21EngineLocal.add(new MyData());
 		ejb21EngineLocal.log();
+		Ejb21Local ejb21EngineLocal2 = ejb21EngineLocalHome.create();
+		assertEquals("interfaces are the same", ejb21EngineLocal, ejb21EngineLocal2);
 	}
 
 	@Test
@@ -170,5 +193,7 @@ public class SessionContextTestCase {
 		assertEquals(ejb21StateEngineLocal.getSpeed(), 1);
 		ejb21StateEngineLocal.add(new MyData());
 		ejb21StateEngineLocal.log();
+		Ejb21StateLocal ejb21StateEngineLocal2 = ejb21StateEngineLocalHome.create();
+		assertNotEquals("interfaces are not the same", ejb21StateEngineLocal, ejb21StateEngineLocal2);
 	}
 }
