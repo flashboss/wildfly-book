@@ -43,16 +43,17 @@ public class ScopesTestCase {
 	}
 
 	@Test
-	public void testStateful() {
+	public void testScopes() {
 		logger.info("Start stateful test");
 		myPosts.getPostsByDay(0);
 		List<Post> posts = myPosts.getLastRequestedPosts();
-		assertEquals(2, posts.size());
+		assertEquals("two posts", 2, posts.size());
 		myHardPosts.getPostsByDay(0);
 		List<Post> hardPosts = myHardPosts.getLastRequestedPosts();
-		assertEquals(2, hardPosts.size());
+		assertEquals("two posts", 2, hardPosts.size());
 		myHarderPosts.getPostsByDay(0);
 		List<Post> harderPosts = myHarderPosts.getLastRequestedPosts();
-		assertEquals(2, harderPosts.size());
+		assertEquals("four posts", 2, harderPosts.size());
+		assertEquals("through the dependson the singleton will get two new posts", 2, myHarderPosts.getPosts().size());
 	}
 }

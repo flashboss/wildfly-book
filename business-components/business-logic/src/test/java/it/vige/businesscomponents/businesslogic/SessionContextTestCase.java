@@ -4,12 +4,14 @@ import static java.util.logging.Logger.getLogger;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.inject.Inject;
+import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -23,6 +25,7 @@ import it.vige.businesscomponents.businesslogic.context.nnn.EngineLocal;
 import it.vige.businesscomponents.businesslogic.context.nnn.EngineRemote;
 import it.vige.businesscomponents.businesslogic.context.nnn.StateEngineLocal;
 import it.vige.businesscomponents.businesslogic.context.nnn.StateEngineRemote;
+import it.vige.businesscomponents.businesslogic.context.old.BeanCallingOtherBeans;
 import it.vige.businesscomponents.businesslogic.context.old.Ejb21Local;
 import it.vige.businesscomponents.businesslogic.context.old.Ejb21LocalHome;
 import it.vige.businesscomponents.businesslogic.context.old.Ejb21Remote;
@@ -39,6 +42,9 @@ public class SessionContextTestCase {
 
 	@Inject
 	private UserTransaction userTransaction;
+
+	@EJB
+	private BeanCallingOtherBeans beanCallingOtherBeans;
 
 	@EJB
 	private EngineRemote engineRemote;
@@ -162,18 +168,26 @@ public class SessionContextTestCase {
 	}
 
 	@Test
-	public void testStatefulLocalNaming() throws Exception {
+	public void testStatefulLocalNaming() {
 		logger.info("starting session local stateful test");
-		userTransaction.begin();
-		logger.info(stateEngineLocal + "");
-		int result = stateEngineLocal.go(1);
-		assertEquals(stateEngineLocal.getSpeed(), 1);
-		logger.info(result + "");
-		logger.info(stateEngineLocal + "");
-		assertEquals(stateEngineLocal.getSpeed(), 1);
-		stateEngineLocal.add(new MyData());
-		stateEngineLocal.log();
-		userTransaction.commit();
+		try {
+			userTransaction.begin();
+			logger.info(stateEngineLocal + "");
+			int result = stateEngineLocal.go(1);
+			assertEquals(stateEngineLocal.getSpeed(), 1);
+			logger.info(result + "");
+			logger.info(stateEngineLocal + "");
+			assertEquals(stateEngineLocal.getSpeed(), 1);
+			stateEngineLocal.add(new MyData());
+			stateEngineLocal.log();
+			userTransaction.commit();
+		} catch (Exception ex) {
+			try {
+				userTransaction.rollback();
+			} catch (IllegalStateException | SecurityException | SystemException e) {
+				logger.severe("extreme error. The rollback doesn't work");
+			}
+		}
 	}
 
 	@Test
@@ -210,5 +224,11 @@ public class SessionContextTestCase {
 		assertNotEquals("interfaces are not the same", ejb21StateEngineLocal2, ejb21StateEngineLocal3);
 		Ejb21StateLocal ejb21StateEngineLocal4 = ejb21StateEngineLocalHome.create(new ArrayList<String>());
 		assertNotEquals("interfaces are not the same", ejb21StateEngineLocal3, ejb21StateEngineLocal4);
+	}
+
+	public void testEJBs() throws Exception {
+		logger.info("starting ejbs test");
+		assertNotNull(beanCallingOtherBeans.getEjb21Local());
+		assertNotNull(beanCallingOtherBeans.getEjb21StateLocal());
 	}
 }
