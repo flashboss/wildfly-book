@@ -19,9 +19,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(Arquillian.class)
-public class CommitTest {
+public class CommitTestCase {
 
-	private static final Logger logger = getLogger(CommitTest.class.getName());
+	private static final Logger logger = getLogger(CommitTestCase.class.getName());
 
 	@EJB
 	private Bank bank;
