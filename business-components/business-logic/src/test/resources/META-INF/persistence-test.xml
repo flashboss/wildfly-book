@@ -12,7 +12,6 @@ http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
 			<!-- Only format when you need to debug, because it slows things down -->
 			<property name="hibernate.format_sql" value="false" />
 			<property name="hibernate.show_sql" value="false" />
-			<property name="javax.persistence.sql-load-script-source" value="store.import.sql" />
 		</properties>
 	</persistence-unit>
 </persistence>
