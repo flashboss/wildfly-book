@@ -27,7 +27,9 @@ public class Account {
 		this.credit = credit;
 	}
 
-	public void add(double credit) {
+	public void add(double credit) throws Exception {
+		if (credit == -20)
+			throw new Exception();
 		this.credit += credit;
 	}
 

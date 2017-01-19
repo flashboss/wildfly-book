@@ -3,6 +3,7 @@ package it.vige.businesscomponents.transactions;
 import static java.util.logging.Logger.getLogger;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.util.logging.Logger;
@@ -40,12 +41,26 @@ public class CommitTestCase {
 	}
 
 	@Test
-	public void testCMT() throws Exception {
+	public void testCMTOK() throws Exception {
 		logger.info("start CMT test");
 		bank.move(123, 345, 566.9);
 		Account from = entityManager.find(Account.class, 123);
 		Account to = entityManager.find(Account.class, 345);
 		assertEquals("the amont is reduced", 4988.97, from.getCredit(), 0.0);
 		assertEquals("the amont is increased", 3122.77, to.getCredit(), 0.0);
+	}
+
+	@Test
+	public void testCMTFail() {
+		logger.info("start CMT test");
+		try {
+			bank.move(123, 345, -20);
+			fail("The add method generates an Exception");
+		} catch (Exception ex) {
+			Account from = entityManager.find(Account.class, 123);
+			Account to = entityManager.find(Account.class, 345);
+			assertEquals("the amont is reduced", 4988.97, from.getCredit(), 0.0);
+			assertEquals("the amont is not encreased", 3122.77, to.getCredit(), 0.0);
+		}
 	}
 }
