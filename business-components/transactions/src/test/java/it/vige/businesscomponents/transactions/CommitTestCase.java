@@ -9,8 +9,11 @@ import java.io.File;
 import java.util.logging.Logger;
 
 import javax.ejb.EJB;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.SystemException;
+import javax.transaction.UserTransaction;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -25,10 +28,16 @@ public class CommitTestCase {
 	private static final Logger logger = getLogger(CommitTestCase.class.getName());
 
 	@EJB
-	private Bank bank;
+	private PoorBank poorBank;
+
+	@EJB
+	private RichBank richBank;
 
 	@PersistenceContext
 	private EntityManager entityManager;
+
+	@Inject
+	private UserTransaction userTransaction;
 
 	@Deployment
 	public static JavaArchive createEJBDeployment() {
@@ -41,9 +50,9 @@ public class CommitTestCase {
 	}
 
 	@Test
-	public void testCMTOK() throws Exception {
+	public void testNoTransactionOK() throws Exception {
 		logger.info("start CMT test");
-		bank.move(123, 345, 566.9);
+		poorBank.move(123, 345, 566.9);
 		Account from = entityManager.find(Account.class, 123);
 		Account to = entityManager.find(Account.class, 345);
 		assertEquals("the amont is reduced", 4988.97, from.getCredit(), 0.0);
@@ -51,16 +60,52 @@ public class CommitTestCase {
 	}
 
 	@Test
-	public void testCMTFail() {
+	public void testNoTransactionFail() {
 		logger.info("start CMT test");
 		try {
-			bank.move(123, 345, -20);
+			poorBank.move(1231, 3451, -20);
 			fail("The add method generates an Exception");
 		} catch (Exception ex) {
-			Account from = entityManager.find(Account.class, 123);
-			Account to = entityManager.find(Account.class, 345);
-			assertEquals("the amont is reduced", 4988.97, from.getCredit(), 0.0);
-			assertEquals("the amont is not encreased", 3122.77, to.getCredit(), 0.0);
+			Account from = entityManager.find(Account.class, 1231);
+			Account to = entityManager.find(Account.class, 3451);
+			assertEquals("the amont is reduced", 5575.87, from.getCredit(), 0.0);
+			assertEquals("the amont is not encreased", 2555.87, to.getCredit(), 0.0);
+		}
+	}
+
+	@Test
+	public void testTransactionFail() {
+		logger.info("start CMT test");
+		try {
+			userTransaction.begin();
+			poorBank.move(2231, 4451, -20);
+			fail("The add method generates an Exception");
+			userTransaction.commit();
+		} catch (Exception ex) {
+			try {
+				userTransaction.rollback();
+				Account from = entityManager.find(Account.class, 2231);
+				Account to = entityManager.find(Account.class, 4451);
+				assertEquals("the amont is reduced", 5555.87, from.getCredit(), 0.0);
+				assertEquals("the amont is not encreased", 2555.87, to.getCredit(), 0.0);
+			} catch (IllegalStateException | SecurityException | SystemException e) {
+				fail("not good");
+			}
+		}
+	}
+
+	@Test
+	public void testTransactionalEJBFail() {
+		logger.info("start CMT test");
+		try {
+			richBank.move(3231, 5451, -20);
+			fail("The add method generates an Exception");
+		} catch (Exception ex) {
+			Account from = entityManager.find(Account.class, 3231);
+			Account to = entityManager.find(Account.class, 5451);
+			assertEquals("the amont is reduced", 5555.87, from.getCredit(), 0.0);
+			assertEquals("the amont is not encreased", 2555.87, to.getCredit(), 0.0);
+
 		}
 	}
 }
