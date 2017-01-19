@@ -1,18 +1,20 @@
 package it.vige.businesscomponents.transactions;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
-public abstract class Bank {
+public class Bank {
+
+	@PersistenceContext
+	private EntityManager entityManager;
 
 	public void move(int accountToTake, int accountToPut, double amount) throws Exception {
-		Account from = getEntityManager().find(Account.class, accountToTake);
-		Account to = getEntityManager().find(Account.class, accountToPut);
+		Account from = entityManager.find(Account.class, accountToTake);
+		Account to = entityManager.find(Account.class, accountToPut);
 		from.less(amount);
 		to.add(amount);
-		getEntityManager().merge(from);
-		getEntityManager().merge(to);
+		entityManager.merge(from);
+		entityManager.merge(to);
 	}
-
-	protected abstract EntityManager getEntityManager();
 
 }

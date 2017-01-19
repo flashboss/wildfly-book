@@ -2,6 +2,7 @@ package it.vige.businesscomponents.transactions;
 
 import static java.util.logging.Logger.getLogger;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
+import static org.jboss.shrinkwrap.api.asset.EmptyAsset.INSTANCE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -30,7 +31,7 @@ public class CommitTestCase {
 	@EJB
 	private PoorBank poorBank;
 
-	@EJB
+	@Inject
 	private RichBank richBank;
 
 	@PersistenceContext
@@ -46,6 +47,7 @@ public class CommitTestCase {
 		jar.addAsManifestResource(new FileAsset(new File("src/test/resources/META-INF/persistence-test.xml")),
 				"persistence.xml");
 		jar.addAsResource(new FileAsset(new File("src/test/resources/store.import.sql")), "store.import.sql");
+		jar.addAsManifestResource(INSTANCE, "beans.xml");
 		return jar;
 	}
 
