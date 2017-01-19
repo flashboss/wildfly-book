@@ -35,6 +35,7 @@ public class CommitTestCase {
 		jar.addPackage(Account.class.getPackage());
 		jar.addAsManifestResource(new FileAsset(new File("src/test/resources/META-INF/persistence-test.xml")),
 				"persistence.xml");
+		jar.addAsResource(new FileAsset(new File("src/test/resources/store.import.sql")), "store.import.sql");
 		return jar;
 	}
 
