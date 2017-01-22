@@ -55,41 +55,41 @@ public class CommitTestCase {
 	public void testNoTransactionOK() throws Exception {
 		logger.info("start CMT test");
 		poorBank.move(123, 345, 566.9);
-		Account from = entityManager.find(Account.class, 123);
 		Account to = entityManager.find(Account.class, 345);
-		assertEquals("the amont is reduced", 4988.97, from.getCredit(), 0.0);
-		assertEquals("the amont is increased", 3122.77, to.getCredit(), 0.0);
+		Account from = entityManager.find(Account.class, 123);
+		assertEquals("the amount is encreased", 3122.77, to.getCredit(), 0.0);
+		assertEquals("the amount is reduced", 4988.97, from.getCredit(), 0.0);
 	}
 
 	@Test
 	public void testNoTransactionFail() {
-		logger.info("start CMT test");
+		logger.info("start no transaction test");
 		try {
-			poorBank.move(1231, 3451, -20);
+			poorBank.move(1231, 3451, 20000);
 			fail("The add method generates an Exception");
 		} catch (Exception ex) {
-			Account from = entityManager.find(Account.class, 1231);
 			Account to = entityManager.find(Account.class, 3451);
-			assertEquals("the amont is reduced", 5575.87, from.getCredit(), 0.0);
-			assertEquals("the amont is not encreased", 2555.87, to.getCredit(), 0.0);
+			Account from = entityManager.find(Account.class, 1231);
+			assertEquals("the amount is encreased", 22555.87, to.getCredit(), 0.0);
+			assertEquals("the amount is not reduced", 5555.87, from.getCredit(), 0.0);
 		}
 	}
 
 	@Test
 	public void testTransactionFail() {
-		logger.info("start CMT test");
+		logger.info("start bean fail test");
 		try {
 			userTransaction.begin();
-			poorBank.move(2231, 4451, -20);
+			poorBank.move(2231, 4451, 20000);
 			fail("The add method generates an Exception");
 			userTransaction.commit();
 		} catch (Exception ex) {
 			try {
 				userTransaction.rollback();
-				Account from = entityManager.find(Account.class, 2231);
 				Account to = entityManager.find(Account.class, 4451);
-				assertEquals("the amont is reduced", 5555.87, from.getCredit(), 0.0);
-				assertEquals("the amont is not encreased", 2555.87, to.getCredit(), 0.0);
+				Account from = entityManager.find(Account.class, 2231);
+				assertEquals("the amount is not encreased", 2555.87, to.getCredit(), 0.0);
+				assertEquals("the amount is not reduced", 5555.87, from.getCredit(), 0.0);
 			} catch (IllegalStateException | SecurityException | SystemException e) {
 				fail("not good");
 			}
@@ -98,15 +98,15 @@ public class CommitTestCase {
 
 	@Test
 	public void testTransactionalEJBFail() {
-		logger.info("start CMT test");
+		logger.info("start ejb fail test");
 		try {
-			richBank.move(3231, 5451, -20);
+			richBank.move(3231, 5451, 20000);
 			fail("The add method generates an Exception");
 		} catch (Exception ex) {
-			Account from = entityManager.find(Account.class, 3231);
 			Account to = entityManager.find(Account.class, 5451);
-			assertEquals("the amont is reduced", 5555.87, from.getCredit(), 0.0);
-			assertEquals("the amont is not encreased", 2555.87, to.getCredit(), 0.0);
+			Account from = entityManager.find(Account.class, 3231);
+			assertEquals("the amount is not encreased", 2555.87, to.getCredit(), 0.0);
+			assertEquals("the amount is not reduced", 5555.87, from.getCredit(), 0.0);
 
 		}
 	}
