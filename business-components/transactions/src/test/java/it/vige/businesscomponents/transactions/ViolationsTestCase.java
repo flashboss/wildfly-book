@@ -1,20 +1,14 @@
 package it.vige.businesscomponents.transactions;
 
-import static it.vige.businesscomponents.transactions.concurrent.ConcurrentStatus.foundTransactionScopedBean;
 import static it.vige.businesscomponents.transactions.concurrent.ConcurrentStatus.latch;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.logging.Logger.getLogger;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
 import static org.jboss.shrinkwrap.api.asset.EmptyAsset.INSTANCE;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.concurrent.Callable;
+import java.io.File;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Future;
 import java.util.logging.Logger;
 
 import javax.annotation.Resource;
@@ -23,14 +17,16 @@ import javax.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.shrinkwrap.api.asset.FileAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import it.vige.businesscomponents.transactions.concurrent.MyCallableTask;
-import it.vige.businesscomponents.transactions.concurrent.MyTaskWithTransaction;
-import it.vige.businesscomponents.transactions.concurrent.Product;
+import it.vige.businesscomponents.transactions.concurrent.QueryReadAccount;
+import it.vige.businesscomponents.transactions.concurrent.QueryWriteAccount;
+import it.vige.businesscomponents.transactions.concurrent.ReadAccount;
+import it.vige.businesscomponents.transactions.concurrent.WriteAccount;
 
 @RunWith(Arquillian.class)
 public class ViolationsTestCase {
@@ -40,52 +36,84 @@ public class ViolationsTestCase {
 	@Resource(name = "DefaultManagedExecutorService")
 	private ManagedExecutorService defaultExecutor;
 
-	private Callable<Product> callableTask;
-
-	private Collection<Callable<Product>> callableTasks = new ArrayList<>();
+	@Inject
+	private ReadAccount readAccount;
 
 	@Inject
-	private MyTaskWithTransaction taskWithTransaction;
+	private WriteAccount writeAccount;
+
+	@Inject
+	private QueryReadAccount queryReadAccount;
+
+	@Inject
+	private QueryWriteAccount queryWriteAccount;
 
 	@Deployment
 	public static JavaArchive createEJBDeployment() {
 		final JavaArchive jar = create(JavaArchive.class, "violations-test.jar");
 		jar.addPackage(MyCallableTask.class.getPackage());
+		jar.addClass(Account.class);
+		jar.addAsManifestResource(new FileAsset(new File("src/test/resources/META-INF/persistence-test.xml")),
+				"persistence.xml");
+		jar.addAsResource(new FileAsset(new File("src/test/resources/store.import.sql")), "store.import.sql");
 		jar.addAsManifestResource(INSTANCE, "beans.xml");
 		return jar;
 	}
 
-	@Before
-	public void setup() {
-		callableTask = new MyCallableTask(1);
-		for (int i = 0; i < 5; i++) {
-			callableTasks.add(new MyCallableTask(i));
-		}
-	}
-
 	@Test
-	public void testSubmitWithCallableDefault() throws Exception {
-		logger.info("start concurrent test");
+	public void testDirtyRead() throws Exception {
+		logger.info("start dirty read");
+		readAccount.setAccountNumber(123);
+		readAccount.setFirstWaitTime(1000);
+		readAccount.setSecondWaitTime(0);
+		writeAccount.setAccountNumber(123);
+		writeAccount.setAmount(456.77);
+		writeAccount.setWaitTime(2000);
 		latch = new CountDownLatch(1);
-		Future<Product> future = defaultExecutor.submit(callableTask);
-		assertTrue(latch.await(2000, MILLISECONDS));
-		assertEquals(1, future.get().getId());
+		defaultExecutor.submit(writeAccount);
+		defaultExecutor.submit(readAccount);
+		latch.await(3000, MILLISECONDS);
+		assertEquals("the transaction B add an amount to the credit", 6012.639999999999, writeAccount.getResult(), 0.0);
+		assertEquals("the amount in the transaction A is not changed because transaction B is not ended", 5555.87,
+				readAccount.getFirstResult(), 0.0);
 	}
 
 	@Test
-	public void testInvokeAllWithCallableDefault() throws Exception {
-		List<Future<Product>> results = defaultExecutor.invokeAll(callableTasks);
-		int count = 0;
-		for (Future<Product> f : results) {
-			assertEquals(count++, f.get().getId());
-		}
-	}
-
-	@Test
-	public void testSubmitWithTransaction() throws Exception {
+	public void testNonrepeatableRead() throws Exception {
+		logger.info("start nonrepeatable read");
+		readAccount.setAccountNumber(345);
+		readAccount.setFirstWaitTime(0);
+		readAccount.setSecondWaitTime(2000);
+		writeAccount.setAccountNumber(345);
+		writeAccount.setAmount(456.77);
+		writeAccount.setWaitTime(1000);
 		latch = new CountDownLatch(1);
-		defaultExecutor.submit(taskWithTransaction);
-		assertTrue(latch.await(2000, MILLISECONDS));
-		assertTrue(foundTransactionScopedBean);
+		defaultExecutor.submit(writeAccount);
+		defaultExecutor.submit(readAccount);
+		latch.await(3000, MILLISECONDS);
+		assertEquals("the transaction B add an amount to the credit", 3012.64, writeAccount.getResult(), 0.0);
+		assertEquals("the first read of the transaction A before the transaction B ends", 2555.87,
+				readAccount.getFirstResult(), 0.0);
+		assertEquals("the second read of the transaction A after the transaction B ends", 2555.87,
+				readAccount.getSecondResult(), 0.0);
+	}
+
+	@Test
+	public void testPhantomRead() throws Exception {
+		logger.info("start phantom read");
+		queryReadAccount.setFirstWaitTime(0);
+		queryReadAccount.setSecondWaitTime(2000);
+		queryWriteAccount.setAccountNumber(953);
+		queryWriteAccount.setAmount(456.77);
+		queryWriteAccount.setWaitTime(1000);
+		latch = new CountDownLatch(1);
+		defaultExecutor.submit(queryWriteAccount);
+		defaultExecutor.submit(queryReadAccount);
+		latch.await(3000, MILLISECONDS);
+		assertEquals("the transaction B add a new account", 456.77, queryWriteAccount.getResult(), 0.0);
+		assertEquals("the first query in the transaction A before the transaction ends", 8,
+				queryReadAccount.getFirstResult());
+		assertEquals("the second query in the transaction A after the transaction ends", 9,
+				queryReadAccount.getSecondResult());
 	}
 }
