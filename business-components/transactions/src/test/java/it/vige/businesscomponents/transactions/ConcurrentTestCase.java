@@ -28,8 +28,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import it.vige.businesscomponents.transactions.concurrent.ConcurrentStatus;
 import it.vige.businesscomponents.transactions.concurrent.MyCallableTask;
 import it.vige.businesscomponents.transactions.concurrent.MyTaskWithTransaction;
+import it.vige.businesscomponents.transactions.concurrent.MyTransactionScopedBean;
 import it.vige.businesscomponents.transactions.concurrent.Product;
 
 @RunWith(Arquillian.class)
@@ -48,9 +50,13 @@ public class ConcurrentTestCase {
 	private MyTaskWithTransaction taskWithTransaction;
 
 	@Deployment
-	public static JavaArchive createEJBDeployment() {
+	public static JavaArchive createJavaDeployment() {
 		final JavaArchive jar = create(JavaArchive.class, "concurrent-test.jar");
-		jar.addPackage(MyCallableTask.class.getPackage());
+		jar.addClass(MyCallableTask.class);
+		jar.addClass(MyTaskWithTransaction.class);
+		jar.addClass(Product.class);
+		jar.addClass(MyTransactionScopedBean.class);
+		jar.addClass(ConcurrentStatus.class);
 		jar.addAsManifestResource(INSTANCE, "beans.xml");
 		return jar;
 	}

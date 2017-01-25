@@ -2,6 +2,7 @@ package it.vige.businesscomponents.transactions;
 
 import static it.vige.businesscomponents.transactions.concurrent.ConcurrentStatus.latch;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static java.util.logging.Logger.getLogger;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
 import static org.jboss.shrinkwrap.api.asset.EmptyAsset.INSTANCE;
@@ -9,6 +10,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Future;
 import java.util.logging.Logger;
 
 import javax.annotation.Resource;
@@ -17,11 +19,19 @@ import javax.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.as.arquillian.api.ServerSetup;
+import org.jboss.as.arquillian.api.ServerSetupTask;
+import org.jboss.as.arquillian.container.ManagementClient;
+import org.jboss.as.controller.client.helpers.standalone.DeploymentPlan;
+import org.jboss.as.controller.client.helpers.standalone.ServerDeploymentActionResult;
+import org.jboss.as.controller.client.helpers.standalone.ServerDeploymentManager;
+import org.jboss.as.controller.client.helpers.standalone.ServerDeploymentPlanResult;
 import org.jboss.shrinkwrap.api.asset.FileAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import it.vige.businesscomponents.transactions.ReadUncommittedTestCase.DeployedXmlDataSourceTestCaseSetup;
 import it.vige.businesscomponents.transactions.concurrent.MyCallableTask;
 import it.vige.businesscomponents.transactions.concurrent.QueryReadAccount;
 import it.vige.businesscomponents.transactions.concurrent.QueryWriteAccount;
@@ -29,9 +39,12 @@ import it.vige.businesscomponents.transactions.concurrent.ReadAccount;
 import it.vige.businesscomponents.transactions.concurrent.WriteAccount;
 
 @RunWith(Arquillian.class)
-public class ViolationsTestCase {
+@ServerSetup(DeployedXmlDataSourceTestCaseSetup.class)
+public class ReadUncommittedTestCase {
 
-	private static final Logger logger = getLogger(ViolationsTestCase.class.getName());
+	private static final Logger logger = getLogger(ReadUncommittedTestCase.class.getName());
+
+	public static final String TEST_DS_XML = "readuncommitted-ds.xml";
 
 	@Resource(name = "DefaultManagedExecutorService")
 	private ManagedExecutorService defaultExecutor;
@@ -49,15 +62,45 @@ public class ViolationsTestCase {
 	private QueryWriteAccount queryWriteAccount;
 
 	@Deployment
-	public static JavaArchive createEJBDeployment() {
-		final JavaArchive jar = create(JavaArchive.class, "violations-test.jar");
+	public static JavaArchive createJavaDeployment() {
+		final JavaArchive jar = create(JavaArchive.class, "readuncommitted-test.jar");
 		jar.addPackage(MyCallableTask.class.getPackage());
 		jar.addClass(Account.class);
-		jar.addAsManifestResource(new FileAsset(new File("src/test/resources/META-INF/persistence-test.xml")),
+		jar.addAsManifestResource(new FileAsset(new File("src/test/resources/isolations/readuncommitted-test.xml")),
 				"persistence.xml");
 		jar.addAsResource(new FileAsset(new File("src/test/resources/store.import.sql")), "store.import.sql");
+		jar.addAsManifestResource(new FileAsset(new File("src/test/resources/META-INF/MANIFEST.MF")), "MANIFEST.MF");
 		jar.addAsManifestResource(INSTANCE, "beans.xml");
 		return jar;
+	}
+
+	static class DeployedXmlDataSourceTestCaseSetup implements ServerSetupTask {
+
+		@Override
+		public void setup(final ManagementClient managementClient, final String containerId) throws Exception {
+			final ServerDeploymentManager manager = ServerDeploymentManager.Factory
+					.create(managementClient.getControllerClient());
+			final DeploymentPlan plan = manager.newDeploymentPlan()
+					.add(new File("src/test/resources/isolations/" + TEST_DS_XML)).andDeploy().build();
+			final Future<ServerDeploymentPlanResult> future = manager.execute(plan);
+			final ServerDeploymentPlanResult result = future.get(20, SECONDS);
+			final ServerDeploymentActionResult actionResult = result.getDeploymentActionResult(plan.getId());
+			if (actionResult != null) {
+				final Throwable deploymentException = actionResult.getDeploymentException();
+				if (deploymentException != null) {
+					throw new RuntimeException(deploymentException);
+				}
+			}
+		}
+
+		@Override
+		public void tearDown(final ManagementClient managementClient, final String containerId) throws Exception {
+			final ServerDeploymentManager manager = ServerDeploymentManager.Factory
+					.create(managementClient.getControllerClient());
+			final DeploymentPlan undeployPlan = manager.newDeploymentPlan().undeploy(TEST_DS_XML).andRemoveUndeployed()
+					.build();
+			manager.execute(undeployPlan).get();
+		}
 	}
 
 	@Test
