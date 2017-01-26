@@ -31,7 +31,7 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import it.vige.businesscomponents.transactions.ReadCommittedTestCase.DeployedXmlDataSourceTestCaseSetup;
+import it.vige.businesscomponents.transactions.ReadCommittedTestCase.ReadCommittedTestCaseSetup;
 import it.vige.businesscomponents.transactions.concurrent.MyCallableTask;
 import it.vige.businesscomponents.transactions.concurrent.QueryReadAccount;
 import it.vige.businesscomponents.transactions.concurrent.QueryWriteAccount;
@@ -39,7 +39,7 @@ import it.vige.businesscomponents.transactions.concurrent.ReadAccount;
 import it.vige.businesscomponents.transactions.concurrent.WriteAccount;
 
 @RunWith(Arquillian.class)
-@ServerSetup(DeployedXmlDataSourceTestCaseSetup.class)
+@ServerSetup(ReadCommittedTestCaseSetup.class)
 public class ReadCommittedTestCase {
 
 	private static final Logger logger = getLogger(ReadCommittedTestCase.class.getName());
@@ -74,7 +74,7 @@ public class ReadCommittedTestCase {
 		return jar;
 	}
 
-	static class DeployedXmlDataSourceTestCaseSetup implements ServerSetupTask {
+	static class ReadCommittedTestCaseSetup implements ServerSetupTask {
 
 		@Override
 		public void setup(final ManagementClient managementClient, final String containerId) throws Exception {
