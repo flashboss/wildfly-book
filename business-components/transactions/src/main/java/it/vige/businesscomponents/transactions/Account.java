@@ -14,6 +14,14 @@ public class Account {
 
 	private double credit;
 
+	public Account() {
+	}
+
+	public Account(int number, double credit) {
+		this.number = number;
+		this.credit = credit;
+	}
+
 	public int getNumber() {
 		return number;
 	}
