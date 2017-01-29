@@ -83,12 +83,6 @@
 					<type>pom</type>
 					<scope>import</scope>
 				</dependency>
-				<dependency>
-					<groupId>org.jboss.narayana.jts</groupId>
-					<artifactId>narayana-jts-idlj</artifactId>
-					<version>5.3.3.Final</version>
-					<scope>test</scope>
-				</dependency>
 			</dependencies>
 			<!-- Server configuration executions. -->
 			<build>
