@@ -101,7 +101,6 @@ public class ModelsTestCase {
 			conn.setAutoCommit(false);
 			Statement insertAccount = null;
 			Statement getAccount = null;
-			boolean gotExpectedException = false;
 			Savepoint savepoint = null;
 			Savepoint mySavepoint = null;
 			try {
@@ -109,22 +108,14 @@ public class ModelsTestCase {
 				insertAccount = conn.createStatement();
 				insertAccount.executeUpdate(insert + "48112, 436564.87)");
 			} catch (SQLException e) {
-				gotExpectedException = true;
+				fail("Failed to get expected exception from setSavepoint");
 			}
-			if (gotExpectedException) {
-				fail("Failed to get expected exception from setSavepoint inside tx");
-			}
-			gotExpectedException = false;
 			try {
 				mySavepoint = conn.setSavepoint("mySavepoint");
 				insertAccount.executeUpdate(insert + "48113, 436564.87)");
 			} catch (SQLException e) {
-				gotExpectedException = true;
+				fail("Failed to get expected exception from setSavepoint(String)");
 			}
-			if (gotExpectedException) {
-				fail("Failed to get expected exception from setSavepoint(String) inside tx");
-			}
-			gotExpectedException = false;
 			try {
 				insertAccount.executeUpdate(insert + "48114, 436564.87)");
 				conn.rollback(mySavepoint);
@@ -133,19 +124,9 @@ public class ModelsTestCase {
 				assertFalse(getAccount.executeQuery(get + "48113").first());
 				assertFalse(getAccount.executeQuery(get + "48114").first());
 			} catch (SQLException e) {
-				gotExpectedException = true;
-			}
-			if (gotExpectedException) {
 				fail("Failed to get expected exception from rollback(String)");
 			}
-			try {
-				conn.releaseSavepoint(savepoint);
-			} catch (SQLException e) {
-				gotExpectedException = true;
-			}
-			if (gotExpectedException) {
-				fail("Failed to get expected exception from releaseSavepoint(String)");
-			}
+			conn.releaseSavepoint(savepoint);
 		} catch (SQLException e) {
 			fail("We need a working connection here");
 			logger.info("I cannot connect");
@@ -167,7 +148,7 @@ public class ModelsTestCase {
 
 	@Test
 	public void testChainedTransaction() throws Exception {
-		logger.info("start chainded transactions test");
+		logger.info("start chained transactions test");
 		userTransaction.begin();
 		Account account = new Account(28111, 436564.87);
 		entityManager.persist(account);
