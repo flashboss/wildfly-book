@@ -5,6 +5,8 @@ import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
 import static org.jboss.shrinkwrap.api.asset.EmptyAsset.INSTANCE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -22,6 +24,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
+import javax.transaction.NotSupportedException;
 import javax.transaction.UserTransaction;
 
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -32,6 +35,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import it.vige.businesscomponents.transactions.concurrent.MyCallableTask;
+import it.vige.businesscomponents.transactions.models.NoConcurrentWriteAccount;
 
 @RunWith(Arquillian.class)
 public class ModelsTestCase {
@@ -45,6 +49,9 @@ public class ModelsTestCase {
 	private EntityManager entityManager;
 
 	@Inject
+	private NoConcurrentWriteAccount writeAccount;
+
+	@Inject
 	private UserTransaction userTransaction;
 
 	@Resource(name = "DefaultManagedExecutorService")
@@ -55,6 +62,7 @@ public class ModelsTestCase {
 		final JavaArchive jar = create(JavaArchive.class, "models-test.jar");
 		jar.addPackage(MyCallableTask.class.getPackage());
 		jar.addClass(Account.class);
+		jar.addPackage(NoConcurrentWriteAccount.class.getPackage());
 		jar.addAsManifestResource(new FileAsset(new File("src/test/resources/META-INF/persistence-test.xml")),
 				"persistence.xml");
 		jar.addAsManifestResource(INSTANCE, "beans.xml");
@@ -147,10 +155,29 @@ public class ModelsTestCase {
 	@Test
 	public void testNTM() throws Exception {
 		logger.info("start NTM test");
+		userTransaction.begin();
+		try {
+			userTransaction.begin();
+			fail("No nested transactions in Wildfly");
+		} catch (NotSupportedException ex) {
+			logger.info("Wildfly doesn't need the nested exception but it can use the chained transactions");
+		}
+
 	}
 
 	@Test
 	public void testChainedTransaction() throws Exception {
 		logger.info("start chainded transactions test");
+		userTransaction.begin();
+		Account account = new Account(28111, 436564.87);
+		entityManager.persist(account);
+		writeAccount.setAccountNumber(45699);
+		writeAccount.setAmount(2224.988);
+		writeAccount.run();
+		userTransaction.rollback();
+		assertNull("The account not exists because created in the rollbacked transaction",
+				entityManager.find(Account.class, 28111));
+		assertNotNull("The account exists because created in a new chained transaction",
+				entityManager.find(Account.class, 45699));
 	}
 }
