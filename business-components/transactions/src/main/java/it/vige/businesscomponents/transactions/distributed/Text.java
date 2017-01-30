@@ -22,7 +22,6 @@ public class Text {
 	}
 
 	public Text(Format format, String value) {
-		super();
 		this.format = format;
 		this.value = value;
 	}

@@ -21,7 +21,6 @@ public class Image {
 	}
 	
 	public Image(String name, byte[] file) {
-		super();
 		this.name = name;
 		this.file = file;
 	}
