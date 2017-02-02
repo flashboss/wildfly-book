@@ -66,6 +66,12 @@
 					<type>pom</type>
 					<scope>import</scope>
 				</dependency>
+				<dependency>
+					<groupId>org.jboss.resteasy</groupId>
+					<artifactId>resteasy-client</artifactId>
+					<version>3.0.19.Final</version>
+					<scope>test</scope>
+				</dependency>
 			</dependencies>
 			<!-- Server configuration executions. -->
 			<build>

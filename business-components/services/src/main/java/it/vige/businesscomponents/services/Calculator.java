@@ -9,42 +9,56 @@ import javax.ejb.Stateless;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 
 @Path("/calculator")
 @Stateless
 public class Calculator {
 
 	@GET
+	@Path("/sum")
 	@Produces("text/plain")
-	public double sum(double... values) {
+	public double sum(@QueryParam("value") double... values) {
 		return execute(SUM, values);
 	}
 
 	@GET
+	@Path("/sub")
 	@Produces("text/plain")
-	public double sub(double... values) {
+	public double sub(@QueryParam("value") double... values) {
 		return execute(SUB, values);
 
 	}
 
 	@GET
+	@Path("/multi")
 	@Produces("text/plain")
-	public double multi(double... values) {
+	public double multi(@QueryParam("value") double... values) {
 		return execute(MULTI, values);
 
 	}
 
 	@GET
+	@Path("/divide")
 	@Produces("text/plain")
-	public double divide(double... values) {
+	public double divide(@QueryParam("value") double... values) {
 		return execute(DIV, values);
 
 	}
 
+	private double[] init(double... values) {
+		if (values.length == 0) {
+			values = new double[] { 0, 0 };
+		} else if (values.length == 1)
+			values = new double[] { values[0], 0 };
+		return values;
+	}
+
 	private double execute(Operation operation, double... values) {
-		double result = 0;
-		for (double value : values)
-			result = calculate(operation, result, value);
+		init(values);
+		double result = values[0];
+		for (int i = 1; i < values.length; i++)
+			result = calculate(operation, result, values[i]);
 		return result;
 	}
 
