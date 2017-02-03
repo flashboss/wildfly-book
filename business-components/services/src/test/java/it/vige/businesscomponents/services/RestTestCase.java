@@ -5,10 +5,13 @@ import static javax.ws.rs.client.ClientBuilder.newClient;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
 import static org.jboss.shrinkwrap.api.asset.EmptyAsset.INSTANCE;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.net.URL;
 import java.util.logging.Logger;
 
+import javax.net.ssl.HostnameVerifier;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
@@ -46,7 +49,7 @@ public class RestTestCase {
 		Response response = target.request().get();
 		double value = response.readEntity(Double.class);
 		response.close(); // You should close connections!
-		assertEquals("value", 10.0, value, 0.0);
+		assertEquals("sum implemented: ", 10.0, value, 0.0);
 	}
 
 	@Test
@@ -57,7 +60,16 @@ public class RestTestCase {
 		Response response = target.request().get();
 		double value = response.readEntity(Double.class);
 		response.close(); // You should close connections!
-		assertEquals("value", 34.0, value, 0.0);
+		assertEquals("subtract implemented: ", 34.0, value, 0.0);
+	}
+
+	@Test
+	public void testSSLContext() throws Exception {
+		logger.info("start SSL Context test");
+		Client client = newClient();
+		HostnameVerifier hostnameVerifier = client.getHostnameVerifier();
+		assertNotNull("Java Utility", hostnameVerifier);
+		assertNull("no SSL by default", client.getSslContext());
 	}
 
 }
