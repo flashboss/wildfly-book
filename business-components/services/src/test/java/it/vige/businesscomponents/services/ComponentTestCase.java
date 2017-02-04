@@ -71,6 +71,17 @@ public class ComponentTestCase {
 		assertTrue("by default there are not instances", instances.isEmpty());
 		Map<String, Object> properties = configuration.getProperties();
 		assertTrue("by default there are not properties", properties.isEmpty());
+		MyComponent myComponent = new MyComponent();
+		client.register(myComponent);
+		instances = configuration.getInstances();
+		assertFalse("Added instance", instances.isEmpty());
+		for (Object instance : instances) {
+			if (instance instanceof MyComponent)
+				assertTrue("MyComponent is registered and active", configuration.isEnabled((Feature) instance));
+		}
+		assertEquals("Added property through MyComponent", 1, properties.size());
+		boolean property = (Boolean) properties.get("configured_myComponent");
+		assertEquals("configured_myComponent ok!", true, property);
 		assertEquals("type CLIENT by default", CLIENT, configuration.getRuntimeType());
 	}
 
@@ -87,13 +98,12 @@ public class ComponentTestCase {
 			if (MyComponent.class.isAssignableFrom(clazz)) {
 				Map<Class<?>, Integer> contracts = configuration.getContracts(clazz);
 				int priority = contracts.get(Feature.class);
-				assertTrue("Only Feature, DynamicFeature, InjectorFactory, "
-						+ "StringParameterUnmarshaller, StringConverter, " + "ContextResolver, WriterInterceptor, "
-						+ "ReaderInterceptor, ContainerResponseFilter, "
-						+ "ContainerRequestFilter, PostProcessInterceptor, "
-						+ "PreProcessInterceptor, ClientExecutionInterceptor, "
-						+ "ClientResponseFilter, ClientRequestFilter, ClientExceptionMapper, "
-						+ "ExceptionMapper, MessageBodyWriter, " + "MessageBodyReader or ParamConverterProvider "
+				assertTrue("Only standard: Feature, DynamicFeature, WriterInterceptor, "
+						+ "ReaderInterceptor, ContainerResponseFilter, " + "ContainerRequestFilter, "
+						+ "ClientResponseFilter, ClientRequestFilter, " + "ExceptionMapper, MessageBodyWriter, "
+						+ "MessageBodyReader,ParamConverterProvider or implemented: InjectorFactory, "
+						+ "StringParameterUnmarshaller, StringConverter, " + "ContextResolver, PostProcessInterceptor, "
+						+ "PreProcessInterceptor, ClientExecutionInterceptor, ClientExceptionMapper"
 						+ "can be registered as contracts. Registered priority", priority == 1200);
 			}
 		}

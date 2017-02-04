@@ -46,7 +46,7 @@ public class Calculator {
 
 	@PUT
 	@Path("/div")
-	@Produces(TEXT_PLAIN)
+	@Produces(APPLICATION_JSON)
 	public double divide(double... values) {
 		return execute(DIV, values);
 
