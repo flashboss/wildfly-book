@@ -2,16 +2,19 @@ package it.vige.businesscomponents.services;
 
 import static java.util.logging.Logger.getLogger;
 import static javax.ws.rs.HttpMethod.DELETE;
+import static javax.ws.rs.HttpMethod.HEAD;
 import static javax.ws.rs.HttpMethod.OPTIONS;
 import static javax.ws.rs.client.ClientBuilder.newClient;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
 import static org.jboss.shrinkwrap.api.asset.EmptyAsset.INSTANCE;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 import java.net.URL;
 import java.util.logging.Logger;
 
 import javax.ws.rs.client.Client;
+import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
@@ -61,6 +64,24 @@ public class OtherTestCase {
 		assertEquals("delete implemented: ", 99.66, value, 0.0);
 		client.close();
 		assertEquals("The filter registerCall is called", DELETE, calledMethod);
+		client = newClient();
+		target = client.target(url + "services/receiver/header");
+		Builder builder = target.request().header("my_new_header", "Hi all");
+		response = builder.get();
+		calledMethod = response.getHeaderString("calledMethod");
+		String valueStr = response.readEntity(String.class);
+		assertEquals("head implemented: ", "Hi all", valueStr);
+		client.close();
+		assertNotEquals("The filter registerOperation is called", HEAD, calledMethod);
+		client = newClient();
+		target = client.target(url + "services/receiver/headerWithContext");
+		builder = target.request().header("my_new_header", "Hi allll");
+		response = builder.get();
+		calledMethod = response.getHeaderString("calledMethod");
+		valueStr = response.readEntity(String.class);
+		assertEquals("head implemented: ", "Hi allll", valueStr);
+		client.close();
+		assertNotEquals("The filter registerOperation is called", HEAD, calledMethod);
 	}
 
 }

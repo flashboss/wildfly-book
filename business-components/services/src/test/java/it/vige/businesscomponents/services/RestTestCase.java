@@ -4,7 +4,6 @@ import static it.vige.businesscomponents.services.RegisterOperation.calledMethod
 import static java.util.Arrays.asList;
 import static java.util.logging.Logger.getLogger;
 import static javax.ws.rs.HttpMethod.GET;
-import static javax.ws.rs.HttpMethod.HEAD;
 import static javax.ws.rs.HttpMethod.POST;
 import static javax.ws.rs.HttpMethod.PUT;
 import static javax.ws.rs.client.ClientBuilder.newClient;
@@ -14,7 +13,6 @@ import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
 import static org.jboss.shrinkwrap.api.asset.EmptyAsset.INSTANCE;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
@@ -114,7 +112,7 @@ public class RestTestCase {
 	}
 
 	@Test
-	public void testJaxRSOtherRequestTypes() throws Exception {
+	public void testJaxRSPut() throws Exception {
 		logger.info("start JaxRS other request types test");
 		Client client = newClient();
 		WebTarget target = client.target(url + "services/calculator/div");
@@ -125,11 +123,6 @@ public class RestTestCase {
 		client.close();
 		assertEquals("sum implemented: ", 0.6716417910447761, value, 0.0);
 		assertEquals("The filter registerOperation is called", PUT, calledMethod);
-		client = newClient();
-		target = client.target(url + "services/calculator/div");
-		target.request().header("my_new_header", "Hi all");
-		client.close();
-		assertNotEquals("The filter registerOperation is not called", HEAD, calledMethod);
 	}
 
 	@Test
