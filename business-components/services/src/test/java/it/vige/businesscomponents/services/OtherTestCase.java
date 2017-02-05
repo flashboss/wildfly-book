@@ -5,6 +5,7 @@ import static javax.ws.rs.HttpMethod.DELETE;
 import static javax.ws.rs.HttpMethod.HEAD;
 import static javax.ws.rs.HttpMethod.OPTIONS;
 import static javax.ws.rs.client.ClientBuilder.newClient;
+import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
 import static org.jboss.shrinkwrap.api.asset.EmptyAsset.INSTANCE;
 import static org.junit.Assert.assertEquals;
@@ -75,7 +76,7 @@ public class OtherTestCase {
 		assertNotEquals("The filter registerOperation is called", HEAD, calledMethod);
 		client = newClient();
 		target = client.target(url + "services/receiver/headerWithContext");
-		builder = target.request().header("my_new_header", "Hi allll");
+		builder = target.request(TEXT_PLAIN).header("my_new_header", "Hi allll");
 		response = builder.get();
 		calledMethod = response.getHeaderString("calledMethod");
 		valueStr = response.readEntity(String.class);

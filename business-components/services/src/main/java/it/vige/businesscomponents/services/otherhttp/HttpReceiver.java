@@ -32,7 +32,6 @@ public class HttpReceiver {
 
 	@GET
 	@Path("/header")
-	@Produces(TEXT_PLAIN)
 	public String header(@HeaderParam("my_new_header") String my_new_header) {
 		return my_new_header;
 	}

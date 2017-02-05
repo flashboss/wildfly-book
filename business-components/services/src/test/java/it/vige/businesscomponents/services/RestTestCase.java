@@ -9,6 +9,7 @@ import static javax.ws.rs.HttpMethod.PUT;
 import static javax.ws.rs.client.ClientBuilder.newClient;
 import static javax.ws.rs.client.Entity.entity;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
 import static org.jboss.shrinkwrap.api.asset.EmptyAsset.INSTANCE;
@@ -117,7 +118,7 @@ public class RestTestCase {
 		Client client = newClient();
 		WebTarget target = client.target(url + "services/calculator/div");
 		Entity<List<Double>> valuesAsList = entity(asList(new Double[] { 4.5, 6.7 }), APPLICATION_JSON);
-		Response response = target.request().put(valuesAsList);
+		Response response = target.request(APPLICATION_JSON_TYPE).put(valuesAsList);
 		double value = response.readEntity(Double.class);
 		response.close();
 		client.close();

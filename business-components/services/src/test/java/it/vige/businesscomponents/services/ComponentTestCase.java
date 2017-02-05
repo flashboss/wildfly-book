@@ -1,14 +1,18 @@
 package it.vige.businesscomponents.services;
 
+import static io.undertow.util.Headers.CONTENT_MD5_STRING;
+import static io.undertow.util.Headers.CONTENT_TYPE_STRING;
 import static java.util.logging.Logger.getLogger;
 import static javax.ws.rs.RuntimeType.CLIENT;
 import static javax.ws.rs.client.ClientBuilder.newClient;
+import static javax.ws.rs.core.MediaType.TEXT_HTML;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
 import static org.jboss.shrinkwrap.api.asset.EmptyAsset.INSTANCE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,21 +20,32 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.container.DynamicFeature;
 import javax.ws.rs.core.Configuration;
 import javax.ws.rs.core.Feature;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
 import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
+import org.jboss.shrinkwrap.api.asset.FileAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import it.vige.businesscomponents.services.components.ContentMD5Writer;
+import it.vige.businesscomponents.services.components.MyClientRequestFilter;
+import it.vige.businesscomponents.services.components.MyClientResponseFilter;
 import it.vige.businesscomponents.services.components.MyComponent;
+import it.vige.businesscomponents.services.components.OtherClientRequestFilter;
+import it.vige.businesscomponents.services.components.OtherClientResponseFilter;
 
 @RunWith(Arquillian.class)
 public class ComponentTestCase {
@@ -45,6 +60,7 @@ public class ComponentTestCase {
 		final WebArchive war = create(WebArchive.class, "component-test.war");
 		war.addPackage(MyComponent.class.getPackage());
 		war.addAsWebInfResource(INSTANCE, "beans.xml");
+		war.addAsWebInfResource(new FileAsset(new File("src/test/resources/web.xml")), "web.xml");
 		return war;
 	}
 
@@ -109,4 +125,42 @@ public class ComponentTestCase {
 		}
 	}
 
+	@Test
+	@RunAsClient
+	public void testMD5() throws Exception {
+		logger.info("start JaxRS Post test");
+		Client client = newClient();
+		client.register(ContentMD5Writer.class);
+		Response response = client.target(url + "myjaxrs/simple/valuesget").request().get();
+		String md5 = response.getHeaderString(CONTENT_MD5_STRING);
+		assertEquals("Content-MD5: ", "hcEzFGyuhOARcfBb4bM1sw==", md5);
+
+	}
+
+	@Test
+	@RunAsClient
+	public void testGet() throws Exception {
+		logger.info("Registering Client Level Filters");
+		Client client = ClientBuilder.newClient();
+		client.register(new OtherClientResponseFilter());
+		WebTarget target = client.target(url + "myjaxrs/simple/");
+		target.register(new OtherClientRequestFilter());
+
+		WebTarget resourceTarget = target.path("/valuesget");
+		resourceTarget = resourceTarget.queryParam("OrderID", "111").queryParam("UserName", "Luke");
+		resourceTarget.register(new MyClientResponseFilter());
+		resourceTarget.register(new MyClientRequestFilter());
+
+		logger.info("Invoking REST Service: " + resourceTarget.getUri().toString());
+		Invocation invocation = resourceTarget.request().buildGet();
+		Response response = invocation.invoke();
+		String respContent = "";
+
+		if (response.hasEntity())
+			respContent = response.readEntity(String.class);
+
+		assertEquals("Response--> ", "111-Luke", respContent);
+		assertEquals("Content Type after changing in ClientResponseFilter: ", TEXT_HTML,
+				response.getHeaderString(CONTENT_TYPE_STRING));
+	}
 }
