@@ -67,6 +67,12 @@
 					<scope>import</scope>
 				</dependency>
 				<dependency>
+					<groupId>org.apache.httpcomponents</groupId>
+					<artifactId>httpclient</artifactId>
+					<version>4.5.2</version>
+					<scope>test</scope>
+				</dependency>
+				<dependency>
 					<groupId>org.jboss.resteasy</groupId>
 					<artifactId>resteasy-client</artifactId>
 					<version>3.0.19.Final</version>
@@ -152,7 +158,7 @@
 									<!-- Parameters to test cases. -->
 									<systemPropertyVariables
 										combine.children="append">
-										<jboss.server.config.file.name>standalone-full.xml</jboss.server.config.file.name> 
+										<jboss.server.config.file.name>standalone-full.xml</jboss.server.config.file.name>
 									</systemPropertyVariables>
 								</configuration>
 							</execution>
