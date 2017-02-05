@@ -43,14 +43,15 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import it.vige.businesscomponents.services.components.ClientFirstReaderInterceptor;
+import it.vige.businesscomponents.services.components.ClientSecondReaderInterceptor;
 import it.vige.businesscomponents.services.components.ContentMD5Writer;
 import it.vige.businesscomponents.services.components.MyClientRequestFilter;
 import it.vige.businesscomponents.services.components.MyClientResponseFilter;
 import it.vige.businesscomponents.services.components.MyComponent;
 import it.vige.businesscomponents.services.components.OtherClientRequestFilter;
 import it.vige.businesscomponents.services.components.OtherClientResponseFilter;
-import it.vige.businesscomponents.services.components.ServerFirstReaderInterceptor;
-import it.vige.businesscomponents.services.components.ServerSecondReaderInterceptor;
+import it.vige.businesscomponents.services.components.ServerReaderInterceptor;
 
 @RunWith(Arquillian.class)
 public class ComponentTestCase {
@@ -174,13 +175,14 @@ public class ComponentTestCase {
 	public void testReader() throws Exception {
 		logger.info("start JaxRS Post test");
 		Client client = newClient();
-		client.register(ServerFirstReaderInterceptor.class);
-		client.register(ServerSecondReaderInterceptor.class);
+		client.register(ClientFirstReaderInterceptor.class);
+		client.register(ClientSecondReaderInterceptor.class);
+		client.register(ServerReaderInterceptor.class);
 		Entity<String> value = entity("my test", TEXT_PLAIN);
 		Response response = client.target(url + "myjaxrs/simple/values").request().post(value);
 		String result = response.readEntity(String.class);
-		assertEquals("Response--> ",
-				"Order successfully placed .Request changed in ServerFirstReaderInterceptor1. Request changed in ServerSecondReaderInterceptor.",
+		assertEquals("The ServerReaderInterceptor is not registered because has SERVER runtime type ",
+				"Order successfully placed .Request changed in ClientFirstReaderInterceptor. Request changed in ClientSecondReaderInterceptor.",
 				result);
 	}
 }
