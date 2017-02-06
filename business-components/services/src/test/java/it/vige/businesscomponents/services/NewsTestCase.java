@@ -42,8 +42,8 @@ public class NewsTestCase {
 		final WebArchive war = create(WebArchive.class, "news-test.war");
 		war.addPackage(Param.class.getPackage());
 		war.addAsWebInfResource(INSTANCE, "beans.xml");
-		war.addAsWebInfResource(new FileAsset(new File("src/test/resources/web.xml")), "web.xml");
 		war.addAsWebResource(new FileAsset(new File("src/test/resources/index.html")), "index.html");
+		war.addAsWebInfResource(new FileAsset(new File("src/test/resources/web.xml")), "web.xml");
 		return war;
 	}
 

@@ -14,6 +14,7 @@ import javax.ws.rs.core.HttpHeaders;
 
 @Path("/receiver")
 @Stateless
+@Logged
 public class HttpReceiver {
 
 	@OPTIONS

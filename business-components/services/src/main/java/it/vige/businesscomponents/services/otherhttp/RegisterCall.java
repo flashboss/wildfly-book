@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 
+@Logged
 public class RegisterCall implements ContainerRequestFilter {
 
 	@Override

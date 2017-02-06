@@ -56,7 +56,7 @@ public class OtherTestCase {
 		double value = response.readEntity(Double.class);
 		assertEquals("options implemented: ", 88.99, value, 0.0);
 		client.close();
-		assertEquals("The filter registerCall is called", OPTIONS, calledMethod);
+		assertEquals("The filter registerCall is called only for @Logged services", OPTIONS, calledMethod);
 		client = newClient();
 		target = client.target(url + "services/receiver/delete");
 		response = target.request().delete();
@@ -64,7 +64,7 @@ public class OtherTestCase {
 		value = response.readEntity(Double.class);
 		assertEquals("delete implemented: ", 99.66, value, 0.0);
 		client.close();
-		assertEquals("The filter registerCall is called", DELETE, calledMethod);
+		assertEquals("The filter registerCall is called only for @Logged services", DELETE, calledMethod);
 		client = newClient();
 		target = client.target(url + "services/receiver/header");
 		Builder builder = target.request().header("my_new_header", "Hi all");
@@ -73,7 +73,7 @@ public class OtherTestCase {
 		String valueStr = response.readEntity(String.class);
 		assertEquals("head implemented: ", "Hi all", valueStr);
 		client.close();
-		assertNotEquals("The filter registerOperation is called", HEAD, calledMethod);
+		assertNotEquals("The filter registerCall is called only for @Logged services", HEAD, calledMethod);
 		client = newClient();
 		target = client.target(url + "services/receiver/headerWithContext");
 		builder = target.request(TEXT_PLAIN).header("my_new_header", "Hi allll");
@@ -82,7 +82,7 @@ public class OtherTestCase {
 		valueStr = response.readEntity(String.class);
 		assertEquals("head implemented: ", "Hi allll", valueStr);
 		client.close();
-		assertNotEquals("The filter registerOperation is called", HEAD, calledMethod);
+		assertNotEquals("The filter registerCall is called only for @Logged services", HEAD, calledMethod);
 	}
 
 }

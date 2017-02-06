@@ -51,7 +51,6 @@ import it.vige.businesscomponents.services.components.MyClientResponseFilter;
 import it.vige.businesscomponents.services.components.MyComponent;
 import it.vige.businesscomponents.services.components.OtherClientRequestFilter;
 import it.vige.businesscomponents.services.components.OtherClientResponseFilter;
-import it.vige.businesscomponents.services.components.ServerReaderInterceptor;
 
 @RunWith(Arquillian.class)
 public class ComponentTestCase {
@@ -177,7 +176,6 @@ public class ComponentTestCase {
 		Client client = newClient();
 		client.register(ClientFirstReaderInterceptor.class);
 		client.register(ClientSecondReaderInterceptor.class);
-		client.register(ServerReaderInterceptor.class);
 		Entity<String> value = entity("my test", TEXT_PLAIN);
 		Response response = client.target(url + "myjaxrs/simple/values").request().post(value);
 		String result = response.readEntity(String.class);
