@@ -84,6 +84,7 @@ public class RestTestCase {
 			Entity<List<Double>> valuesAsList = entity(asList(new Double[] { 4.5, 6.7 }), TEXT_PLAIN);
 			response = target.request().post(valuesAsList);
 			value = response.readEntity(Double.class);
+			fail();
 		} catch (ProcessingException ex) {
 			assertEquals("TEXT_PLAIN not supported",
 					"RESTEASY003145: Unable to find a MessageBodyReader of content-type */* and type class java.lang.Double",
