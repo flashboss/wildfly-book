@@ -22,7 +22,6 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
@@ -43,6 +42,7 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import it.vige.businesscomponents.services.components.BlockChainFilter;
 import it.vige.businesscomponents.services.components.ClientFirstReaderInterceptor;
 import it.vige.businesscomponents.services.components.ClientSecondReaderInterceptor;
 import it.vige.businesscomponents.services.components.ContentMD5Writer;
@@ -146,7 +146,7 @@ public class ComponentTestCase {
 	@RunAsClient
 	public void testGet() throws Exception {
 		logger.info("Registering Client Level Filters");
-		Client client = ClientBuilder.newClient();
+		Client client = newClient();
 		client.register(new OtherClientResponseFilter());
 		WebTarget target = client.target(url + "myjaxrs/simple/");
 		target.register(new OtherClientRequestFilter());
@@ -170,7 +170,7 @@ public class ComponentTestCase {
 	}
 
 	@Test
-	//@RunAsClient
+	@RunAsClient
 	public void testReader() throws Exception {
 		logger.info("start JaxRS Post test");
 		Client client = newClient();
@@ -182,5 +182,28 @@ public class ComponentTestCase {
 		assertEquals("The ServerReaderInterceptor is not registered because has SERVER runtime type ",
 				"Order successfully placed .Request changed in ClientFirstReaderInterceptor. Request changed in ClientSecondReaderInterceptor.",
 				result);
+	}
+
+	@Test
+	@RunAsClient
+	public void testAbort() throws Exception {
+		logger.info("Registering Client Abort Filters");
+		Client client = newClient();
+		client.register(new MyClientResponseFilter());
+		client.register(new MyClientRequestFilter());
+		client.register(new BlockChainFilter());
+		WebTarget target = client.target(url + "myjaxrs/simple/");
+		target.register(new OtherClientRequestFilter());
+
+		WebTarget resourceTarget = target.path("/valuesget");
+		resourceTarget = resourceTarget.queryParam("OrderID", "111").queryParam("UserName", "Luke");
+
+		logger.info("Invoking REST Service: " + resourceTarget.getUri().toString());
+		Invocation invocation = resourceTarget.request().buildGet();
+		Response response = invocation.invoke();
+
+		assertEquals(
+				"MyClientRequestFilter is not executed because BlockChainFilter blocks it. So no header is saved: ", "",
+				response.getHeaderString(CONTENT_TYPE_STRING));
 	}
 }

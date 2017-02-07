@@ -14,7 +14,7 @@ import javax.ws.rs.client.ClientResponseFilter;
 import javax.ws.rs.ext.Provider;
 
 @Provider
-@Priority(ENTITY_CODER + 1)
+@Priority(ENTITY_CODER + 2)
 public class MyClientResponseFilter implements ClientResponseFilter {
 
 	private static final Logger logger = getLogger(MyClientResponseFilter.class.getName());
