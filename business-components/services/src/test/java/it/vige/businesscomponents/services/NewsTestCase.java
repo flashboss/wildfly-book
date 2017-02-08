@@ -43,18 +43,28 @@ public class NewsTestCase {
 		war.addPackage(Param.class.getPackage());
 		war.addAsWebInfResource(INSTANCE, "beans.xml");
 		war.addAsWebResource(new FileAsset(new File("src/test/resources/index.html")), "index.html");
+		war.addAsWebResource(new FileAsset(new File("src/test/resources/form.html")), "form.html");
 		war.addAsWebInfResource(new FileAsset(new File("src/test/resources/web.xml")), "web.xml");
 		return war;
 	}
 
 	@Test
-	public void testJaxRSPost() throws Exception {
-		logger.info("start JaxRS post test");
+	public void testJaxRSPostWithBean() throws Exception {
+		logger.info("start JaxRS post with bean test");
 		driver.get(url + "");
 		driver.findElement(id("data")).sendKeys("my_data");
 		driver.findElement(xpath("html/body/form/input[2]")).click();
 		assertEquals("the page result is: ", "6|my_data|" + APPLICATION_FORM_URLENCODED,
 				driver.findElement(xpath("html/body")).getText());
+	}
+
+	@Test
+	public void testJaxRSPostWithForm() throws Exception {
+		logger.info("start JaxRS post with form test");
+		driver.get(url + "form.html");
+		driver.findElement(id("data")).sendKeys("my_data");
+		driver.findElement(xpath("html/body/form/input[2]")).click();
+		assertEquals("the page result is: ", "my_data", driver.findElement(xpath("html/body")).getText());
 	}
 
 }

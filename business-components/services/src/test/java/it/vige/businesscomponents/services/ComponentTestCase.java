@@ -193,7 +193,6 @@ public class ComponentTestCase {
 		client.register(new MyClientRequestFilter());
 		client.register(new BlockChainFilter());
 		WebTarget target = client.target(url + "myjaxrs/simple/");
-		target.register(new OtherClientRequestFilter());
 
 		WebTarget resourceTarget = target.path("/valuesget");
 		resourceTarget = resourceTarget.queryParam("OrderID", "111").queryParam("UserName", "Luke");
