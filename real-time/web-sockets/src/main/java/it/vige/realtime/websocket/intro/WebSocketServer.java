@@ -6,7 +6,6 @@ import static java.util.logging.Logger.getLogger;
 import static javax.naming.InitialContext.doLookup;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.logging.Logger;
 
 import javax.enterprise.concurrent.ManagedExecutorService;
@@ -22,8 +21,6 @@ import javax.websocket.server.ServerEndpoint;
 public class WebSocketServer {
 
 	private Logger logger = getLogger(WebSocketServer.class.getName());
-	
-	public static Date sentMessage;
 
 	@OnOpen
 	public void onOpen(Session session) throws NamingException {
@@ -47,7 +44,6 @@ public class WebSocketServer {
 
 	@OnMessage
 	public String onMessage(String message, Session session) {
-		sentMessage = new Date();
 		return "Server received [" + message + "]";
 	}
 

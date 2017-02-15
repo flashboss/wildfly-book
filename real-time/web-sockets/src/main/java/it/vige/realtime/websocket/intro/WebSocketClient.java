@@ -17,10 +17,6 @@ public class WebSocketClient {
 
 	public static boolean postConstructCalled = false;
 
-	public static boolean injectionOK = false;
-
-	private static String name;
-
 	private static final BlockingDeque<String> queue = new LinkedBlockingDeque<>();
 
 	@PostConstruct
@@ -42,14 +38,8 @@ public class WebSocketClient {
 		return queue.poll(5, SECONDS);
 	}
 
-	public static String getName() {
-		return name;
-	}
-
 	public static void reset() {
 		queue.clear();
 		postConstructCalled = false;
-		injectionOK = false;
-		name = null;
 	}
 }

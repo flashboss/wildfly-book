@@ -58,20 +58,6 @@
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
-			<dependencies>
-				<dependency>
-					<groupId>org.apache.httpcomponents</groupId>
-					<artifactId>httpclient</artifactId>
-					<version>4.5.2</version>
-					<scope>test</scope>
-				</dependency>
-				<dependency>
-					<groupId>org.jboss.resteasy</groupId>
-					<artifactId>resteasy-client</artifactId>
-					<version>3.0.19.Final</version>
-					<scope>test</scope>
-				</dependency>
-			</dependencies>
 			<!-- Server configuration executions. -->
 			<build>
 				<testResources>
