@@ -8,6 +8,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 
 import javax.annotation.PostConstruct;
 import javax.websocket.ClientEndpoint;
+import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
@@ -41,5 +42,9 @@ public class WebSocketClient {
 	public static void reset() {
 		queue.clear();
 		postConstructCalled = false;
+	}
+
+	@OnClose
+	public void close(final Session session) throws IOException {
 	}
 }

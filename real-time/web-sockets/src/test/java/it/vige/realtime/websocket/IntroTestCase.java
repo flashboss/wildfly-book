@@ -42,8 +42,7 @@ public class IntroTestCase {
 		final WebArchive war = create(WebArchive.class, "intro-test.war");
 		war.addPackage(WebSocketServer.class.getPackage());
 		war.addAsWebInfResource(INSTANCE, "beans.xml");
-		war.addAsWebResource(new FileAsset(new File("src/test/resources/index.html")), "index.html");
-		war.addAsWebInfResource(new FileAsset(new File("src/test/resources/web.xml")), "web.xml");
+		war.addAsWebInfResource(new FileAsset(new File("src/main/webapp/WEB-INF/web.xml")), "web.xml");
 		return war;
 	}
 
