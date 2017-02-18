@@ -1,11 +1,20 @@
 package it.vige.realtime.websocket;
 
+import static io.undertow.websockets.core.WebSocketVersion.V13;
+import static it.vige.realtime.websocket.session.SessionSocketClient.awake;
+import static it.vige.realtime.websocket.session.SessionSocketClient.sessionClient;
 import static java.nio.ByteBuffer.allocate;
 import static java.util.logging.Level.SEVERE;
 import static java.util.logging.Logger.getLogger;
 import static javax.websocket.ContainerProvider.getWebSocketContainer;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
 import static org.jboss.shrinkwrap.api.asset.EmptyAsset.INSTANCE;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,6 +24,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import java.util.logging.Logger;
 
 import javax.websocket.EncodeException;
@@ -61,83 +72,88 @@ public class SessionTestCase {
 	@Test
 	public void testSessionServer() throws Exception {
 		logger.info("start websocket server session test");
-
-		final WebSocketContainer serverContainer = getWebSocketContainer();
-		serverContainer.connectToServer(SessionSocketClient.class, url.toURI().resolve("session"));
-
-		session(SessionSocketClient.sessionClient);
+		session();
 	}
 
-	private void session(Session session) {
-		logger.info("id: " + session.getId());
-		logger.info("negotiatedSubprotocol: " + session.getNegotiatedSubprotocol());
-		Set<Session> sessions = session.getOpenSessions();
-		for (Session s : sessions) {
-			session(s);
-		}
-		Map<String, String> pathParameters = session.getPathParameters();
+	private void session() throws Exception {
+		connect();
+		assertFalse("id: ", sessionClient.getId().isEmpty());
+		assertTrue("negotiatedSubprotocol: ", sessionClient.getNegotiatedSubprotocol().isEmpty());
+		Set<Session> sessions = sessionClient.getOpenSessions();
+		assertTrue("openSessions: ", sessions.isEmpty());
+		Map<String, String> pathParameters = sessionClient.getPathParameters();
+		assertTrue("pathParameters: ", pathParameters.isEmpty());
 		for (String key : pathParameters.keySet()) {
 			logger.info("pathParameters: " + key + " - " + pathParameters.get(key));
 		}
-		logger.info("protocolVersion: " + session.getProtocolVersion());
-		logger.info("queryString: " + session.getQueryString());
-		Map<String, List<String>> requestParameters = session.getRequestParameterMap();
+		assertEquals("protocolVersion: ", V13.toHttpHeaderValue(), sessionClient.getProtocolVersion());
+		assertNull("queryString: ", sessionClient.getQueryString());
+		Map<String, List<String>> requestParameters = sessionClient.getRequestParameterMap();
+		assertTrue("requestParameters: ", requestParameters.isEmpty());
 		for (String key : requestParameters.keySet()) {
 			logger.info("requestParameters: " + key + " - " + requestParameters.get(key));
 		}
-		logger.info("requestURI: " + session.getRequestURI());
-		logger.info("userPrincipal: " + session.getUserPrincipal());
-		Map<String, Object> userProperties = session.getUserProperties();
+		assertEquals("requestURI: ", "http://127.0.0.1:8080/session-test/session", sessionClient.getRequestURI() + "");
+		assertNull("userPrincipal: ", sessionClient.getUserPrincipal());
+		Map<String, Object> userProperties = sessionClient.getUserProperties();
+		assertTrue("userProperties: ", userProperties.isEmpty());
 		for (String key : userProperties.keySet()) {
 			logger.info("userProperties: " + key + " - " + userProperties.get(key));
 		}
-		logger.info("secure: " + session.isSecure());
-		logger.info("open: " + session.isOpen());
-		container(session);
-		messageHandlers(session);
-		max(session);
-		extensions(session.getNegotiatedExtensions().iterator());
-		async(session);
-		basic(session);
+		assertFalse("secure: ", sessionClient.isSecure());
+		assertTrue("open: ", sessionClient.isOpen());
+		// container();
+		// messageHandlers();
+		// max();
+		List<Extension> negotiatedExtensions = sessionClient.getNegotiatedExtensions();
+		assertTrue("negotiatedExtensions: ", negotiatedExtensions.isEmpty());
+		extensions(negotiatedExtensions.iterator());
+		async();
+		basic();
 	}
 
-	private void container(Session session) {
-		WebSocketContainer container = session.getContainer();
-		logger.info("defaultAsyncSendTimeout: " + container.getDefaultAsyncSendTimeout());
-		logger.info("defaultMaxBinaryMessageBufferSize: " + container.getDefaultMaxBinaryMessageBufferSize());
-		logger.info("defaultMaxSessionIdleTimeout: " + container.getDefaultMaxSessionIdleTimeout());
-		logger.info("defaultMaxTextMessageBufferSize: " + container.getDefaultMaxTextMessageBufferSize());
+	private void container() {
+		WebSocketContainer container = sessionClient.getContainer();
+		assertEquals("defaultAsyncSendTimeout: ", 0, container.getDefaultAsyncSendTimeout());
+		assertEquals("defaultMaxBinaryMessageBufferSize: ", 0, container.getDefaultMaxBinaryMessageBufferSize());
+		assertEquals("defaultMaxSessionIdleTimeout: ", 0, container.getDefaultMaxSessionIdleTimeout());
+		assertEquals("defaultMaxTextMessageBufferSize: ", 0, container.getDefaultMaxTextMessageBufferSize());
 		container.setAsyncSendTimeout(4);
 		container.setDefaultMaxBinaryMessageBufferSize(5);
 		container.setDefaultMaxSessionIdleTimeout(6);
 		container.setDefaultMaxTextMessageBufferSize(7);
-		logger.info("defaultAsyncSendTimeout: " + container.getDefaultAsyncSendTimeout());
-		logger.info("defaultMaxBinaryMessageBufferSize: " + container.getDefaultMaxBinaryMessageBufferSize());
-		logger.info("defaultMaxSessionIdleTimeout: " + container.getDefaultMaxSessionIdleTimeout());
-		logger.info("defaultMaxTextMessageBufferSize: " + container.getDefaultMaxTextMessageBufferSize());
-		extensions(container.getInstalledExtensions().iterator());
+		assertEquals("defaultAsyncSendTimeout: ", 4, container.getDefaultAsyncSendTimeout());
+		assertEquals("defaultMaxBinaryMessageBufferSize: ", 5, container.getDefaultMaxBinaryMessageBufferSize());
+		assertEquals("defaultMaxSessionIdleTimeout: ", 6, container.getDefaultMaxSessionIdleTimeout());
+		assertEquals("defaultMaxTextMessageBufferSize: ", 7, container.getDefaultMaxTextMessageBufferSize());
+		Set<Extension> installedExtensions = container.getInstalledExtensions();
+		assertTrue("installedExtensions: ", installedExtensions.isEmpty());
+		extensions(installedExtensions.iterator());
 	}
 
-	private void messageHandlers(Session session) {
-		Set<MessageHandler> messageHandlers = session.getMessageHandlers();
+	private void messageHandlers() {
+		Set<MessageHandler> messageHandlers = sessionClient.getMessageHandlers();
+		assertEquals("messageHandler: ", 1, messageHandlers.size());
 		for (MessageHandler messageHandler : messageHandlers) {
 			logger.info("messageHandler: " + messageHandler);
 		}
 		MessageHandler messageHandler = new SessionMessageHandler();
-		session.addMessageHandler(messageHandler);
-		session.removeMessageHandler(messageHandler);
+		sessionClient.addMessageHandler(messageHandler);
+		messageHandlers = sessionClient.getMessageHandlers();
+		assertEquals("messageHandler: ", 2, messageHandlers.size());
+		sessionClient.removeMessageHandler(messageHandler);
 	}
 
-	private void max(Session session) {
-		logger.info("maxBinaryMessageBufferSize: " + session.getMaxBinaryMessageBufferSize());
-		logger.info("maxIdleTimeout: " + session.getMaxIdleTimeout());
-		logger.info("maxTextMessageBufferSize: " + session.getMaxTextMessageBufferSize());
-		session.setMaxBinaryMessageBufferSize(4);
-		session.setMaxIdleTimeout(7);
-		session.setMaxTextMessageBufferSize(8);
-		logger.info("maxBinaryMessageBufferSize: " + session.getMaxBinaryMessageBufferSize());
-		logger.info("maxIdleTimeout: " + session.getMaxIdleTimeout());
-		logger.info("maxTextMessageBufferSize: " + session.getMaxTextMessageBufferSize());
+	private void max() {
+		assertEquals("maxBinaryMessageBufferSize: ", 0, sessionClient.getMaxBinaryMessageBufferSize());
+		assertEquals("maxIdleTimeout: ", 0, sessionClient.getMaxIdleTimeout());
+		assertEquals("maxTextMessageBufferSize: ", 0, sessionClient.getMaxTextMessageBufferSize());
+		sessionClient.setMaxBinaryMessageBufferSize(4);
+		sessionClient.setMaxIdleTimeout(7);
+		sessionClient.setMaxTextMessageBufferSize(8);
+		assertEquals("maxBinaryMessageBufferSize: ", 4, sessionClient.getMaxBinaryMessageBufferSize());
+		assertEquals("maxIdleTimeout: ", 7, sessionClient.getMaxIdleTimeout());
+		assertEquals("maxTextMessageBufferSize: ", 8, sessionClient.getMaxTextMessageBufferSize());
 	}
 
 	private void extensions(Iterator<Extension> extensions) {
@@ -152,31 +168,59 @@ public class SessionTestCase {
 		}
 	}
 
-	private void async(Session session) {
-		Async async = session.getAsyncRemote();
+	private void async() throws Exception {
+		Async async = sessionClient.getAsyncRemote();
 		remoteEndpoint(async);
-		logger.info("async getSendTimeout: " + async.getSendTimeout());
+		async.setBatchingAllowed(true);
+		assertTrue("remoteEndpoint batchingAllowed: ", async.getBatchingAllowed());
+		assertEquals("async getSendTimeout: ", 0, async.getSendTimeout());
 		async.setSendTimeout(45);
-		logger.info("async getSendTimeout: " + async.getSendTimeout());
+		assertEquals("async getSendTimeout: ", 45, async.getSendTimeout());
 		ByteBuffer byteBuffer = allocate(11);
-		async.sendBinary(byteBuffer);
+		Future<Void> future = async.sendBinary(byteBuffer);
+		try {
+			assertNull("no result because is a void", future.get());
+		} catch (InterruptedException | ExecutionException e) {
+			logger.log(SEVERE, "error", e);
+			fail();
+		}
+		connect();
+		async = sessionClient.getAsyncRemote();
+		async.setSendTimeout(45);
 		SendHandler sendHandler = new SendHandler() {
 			@Override
 			public void onResult(SendResult result) {
-				logger.info("session sendHandler result ok: " + result.isOK());
-				logger.info("session sendHandler result exception: " + result.getException());
+				assertOK(result);
 			}
 		};
 		async.sendBinary(byteBuffer, sendHandler);
-		async.sendObject(666);
+		future = async.sendObject(666);
+		try {
+			future.get();
+		} catch (InterruptedException | ExecutionException e) {
+			logger.log(SEVERE, "error", e);
+			fail();
+		}
+		connect();
+		async = sessionClient.getAsyncRemote();
+		async.setSendTimeout(45);
 		async.sendObject("my test 2", sendHandler);
-		async.sendText("my text");
+		future = async.sendText("my text");
+		try {
+			future.get();
+		} catch (InterruptedException | ExecutionException e) {
+			logger.log(SEVERE, "error", e);
+			fail();
+		}
 		async.sendText("my text 2", sendHandler);
 	}
 
-	private void basic(Session session) {
-		Basic basic = session.getBasicRemote();
+	private void basic() throws Exception {
+		connect();
+		Basic basic = sessionClient.getBasicRemote();
 		remoteEndpoint(basic);
+		basic.setBatchingAllowed(true);
+		assertFalse("remoteEndpoint batchingAllowed: ", basic.getBatchingAllowed());
 		ByteBuffer byteBuffer = allocate(23);
 		try {
 			basic.sendBinary(byteBuffer);
@@ -184,10 +228,13 @@ public class SessionTestCase {
 			basic.sendObject(555);
 			basic.sendText("my text");
 			basic.sendText("my text 2", false);
-			logger.info("basic sendStream: " + basic.getSendStream());
-			logger.info("basic sendWriter: " + basic.getSendWriter());
+			connect();
+			basic = sessionClient.getBasicRemote();
+			assertNotNull("basic sendStream: " + basic.getSendStream());
+			assertNotNull("basic sendWriter: " + basic.getSendWriter());
 		} catch (IOException | EncodeException e) {
 			logger.log(SEVERE, "error", e);
+			fail();
 		}
 	}
 
@@ -197,11 +244,24 @@ public class SessionTestCase {
 			ByteBuffer byteBuffer = allocate(23);
 			remoteEndpoint.sendPing(byteBuffer);
 			remoteEndpoint.sendPong(byteBuffer);
-			logger.info("remoteEndpoint batchingAllowed: " + remoteEndpoint.getBatchingAllowed());
-			remoteEndpoint.setBatchingAllowed(false);
-			logger.info("remoteEndpoint batchingAllowed: " + remoteEndpoint.getBatchingAllowed());
+			assertFalse("remoteEndpoint batchingAllowed: ", remoteEndpoint.getBatchingAllowed());
 		} catch (IOException e) {
 			logger.log(SEVERE, "error", e);
+			fail();
 		}
+	}
+
+	private void assertOK(SendResult result) {
+		assertTrue("session sendHandler result ok: ", result.isOK());
+		assertNull("session sendHandler result exception: ", result.getException());
+	}
+
+	private void connect() throws Exception {
+		while (sessionClient != null && !sessionClient.isOpen()) {
+			break;
+		}
+		final WebSocketContainer serverContainer = getWebSocketContainer();
+		serverContainer.connectToServer(SessionSocketClient.class, url.toURI().resolve("session"));
+		awake();
 	}
 }
