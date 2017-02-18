@@ -102,14 +102,15 @@ public class SessionTestCase {
 		}
 		assertFalse("secure: ", sessionClient.isSecure());
 		assertTrue("open: ", sessionClient.isOpen());
-		// container();
-		// messageHandlers();
-		// max();
 		List<Extension> negotiatedExtensions = sessionClient.getNegotiatedExtensions();
 		assertTrue("negotiatedExtensions: ", negotiatedExtensions.isEmpty());
 		extensions(negotiatedExtensions.iterator());
 		async();
 		basic();
+		connect();
+		container();
+		messageHandlers();
+		max();
 	}
 
 	private void container() {
