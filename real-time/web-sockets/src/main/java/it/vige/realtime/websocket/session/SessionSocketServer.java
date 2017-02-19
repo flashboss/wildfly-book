@@ -16,11 +16,14 @@ import javax.websocket.server.ServerEndpoint;
 @ServerEndpoint(value = "/session")
 public class SessionSocketServer {
 
+	public static Session sessionServer;
+
 	private Logger logger = getLogger(SessionSocketServer.class.getName());
 
 	@OnOpen
 	public void onOpen(Session session) throws NamingException {
 		logger.info("Open session:" + session.getId());
+		sessionServer = session;
 	}
 
 	@OnMessage
