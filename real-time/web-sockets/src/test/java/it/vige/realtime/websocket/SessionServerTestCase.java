@@ -81,7 +81,7 @@ public class SessionServerTestCase {
 		assertTrue("negotiatedSubprotocol: ", sessionServer.getNegotiatedSubprotocol().isEmpty());
 		Set<Session> sessions = sessionServer.getOpenSessions();
 		assertEquals("openSessions: ", 1, sessions.size());
-		logger.info("client sessions are: " + sessions.iterator().next());
+		assertEquals("client sessions are: ", sessionServer, sessions.iterator().next());
 		Map<String, String> pathParameters = sessionServer.getPathParameters();
 		assertTrue("pathParameters: ", pathParameters.isEmpty());
 		for (String key : pathParameters.keySet()) {
