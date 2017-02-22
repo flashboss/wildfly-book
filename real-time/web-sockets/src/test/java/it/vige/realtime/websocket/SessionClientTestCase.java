@@ -1,6 +1,7 @@
 package it.vige.realtime.websocket;
 
 import static io.undertow.websockets.core.WebSocketVersion.V13;
+import static it.vige.realtime.websocket.session.SessionMessageHandler.sentPong;
 import static it.vige.realtime.websocket.session.SessionSocketClient.awake;
 import static it.vige.realtime.websocket.session.SessionSocketClient.sessionClient;
 import static java.nio.ByteBuffer.allocate;
@@ -142,6 +143,12 @@ public class SessionClientTestCase {
 		sessionClient.addMessageHandler(messageHandler);
 		messageHandlers = sessionClient.getMessageHandlers();
 		assertEquals("messageHandler: ", 2, messageHandlers.size());
+		try {
+			sessionClient.getBasicRemote().sendPong(allocate(33));
+			assertTrue("the pong is received by the session message handler", sentPong);
+		} catch (IllegalArgumentException | IOException e) {
+			fail();
+		}
 		sessionClient.removeMessageHandler(messageHandler);
 	}
 

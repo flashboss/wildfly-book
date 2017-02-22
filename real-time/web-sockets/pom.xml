@@ -58,6 +58,14 @@
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
+
+			<dependencies>
+				<dependency>
+					<groupId>io.undertow</groupId>
+					<artifactId>undertow-websockets-jsr</artifactId>
+					<scope>provided</scope>
+				</dependency>
+			</dependencies>
 			<!-- Server configuration executions. -->
 			<build>
 				<testResources>
