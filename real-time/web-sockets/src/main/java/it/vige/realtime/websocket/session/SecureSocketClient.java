@@ -27,6 +27,6 @@ public class SecureSocketClient extends Endpoint {
 	@Override
 	public void onOpen(Session session, EndpointConfig config) {
 		sessionClient = session;
-
+		session.getAsyncRemote().sendText("hi");
 	}
 }
