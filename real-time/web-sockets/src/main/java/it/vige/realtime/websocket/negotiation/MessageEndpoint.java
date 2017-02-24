@@ -30,9 +30,6 @@ import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
-/**
- * @author Stuart Douglas
- */
 @ServerEndpoint(value = "/chat/{user}", subprotocols = { "foo", "bar", "configured-proto" })
 public class MessageEndpoint {
 

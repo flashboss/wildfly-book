@@ -67,13 +67,16 @@ public class SessionNegotiationTestCase {
 			assertEquals("the path parameter value: ", "Bob", pathParameters.get(key));
 		}
 		assertEquals("protocolVersion: ", V13.toHttpHeaderValue(), sessionServer.getProtocolVersion());
-		assertNull("queryString: ", sessionServer.getQueryString());
+		assertEquals("queryString: ", "my_request_id=35", sessionServer.getQueryString());
 		Map<String, List<String>> requestParameters = sessionServer.getRequestParameterMap();
-		assertTrue("requestParameters: ", requestParameters.isEmpty());
+		assertEquals("requestParameters: ", 1, requestParameters.size());
 		for (String key : requestParameters.keySet()) {
-			logger.info("requestParameters: " + key + " - " + requestParameters.get(key));
+			assertEquals("requestParameters key: ", "my_request_id", key);
+			List<String> values = requestParameters.get(key);
+			assertEquals("requestParameters value: ", 1, values.size());
+			assertEquals("requestParameters value: ", "35", values.get(0));
 		}
-		assertEquals("requestURI: ", "/negotiation-test/chat/Bob", sessionServer.getRequestURI() + "");
+		assertEquals("requestURI: ", "/negotiation-test/chat/Bob?my_request_id=35", sessionServer.getRequestURI() + "");
 		assertNull("userPrincipal: ", sessionServer.getUserPrincipal());
 		Map<String, Object> userProperties = sessionServer.getUserProperties();
 		assertTrue("userProperties: ", userProperties.isEmpty());
@@ -105,7 +108,7 @@ public class SessionNegotiationTestCase {
 		}
 
 		final WebSocketContainer serverContainer = getWebSocketContainer();
-		URI uri = new URI("ws://localhost:8080/negotiation-test/chat/Bob");
+		URI uri = new URI("ws://localhost:8080/negotiation-test/chat/Bob?my_request_id=35");
 		serverContainer.connectToServer(AnnotatedClientEndpointWithConfigurator.class, uri);
 		awake();
 	}
