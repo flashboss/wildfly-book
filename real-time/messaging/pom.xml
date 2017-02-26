@@ -196,6 +196,13 @@
 													"java:/jms/queue/GPS"]</entries>
 											</properties>
 										</resource>
+										<resource>
+											<address>subsystem=messaging-activemq,server=default,jms-topic=bus_stops</address>
+											<properties>
+												<entries>!!["bus_stops",
+													"java:/jms/topic/BUS"]</entries>
+											</properties>
+										</resource>
 									</resources>
 								</configuration>
 							</execution>
@@ -216,6 +223,8 @@
 									<afterDeployment>
 										<commands>
 											<command>/subsystem=messaging-activemq/server=default/jms-queue=gps_coordinates:remove
+											</command>
+											<command>/subsystem=messaging-activemq/server=default/jms-topic=bus_stops:remove
 											</command>
 										</commands>
 									</afterDeployment>
