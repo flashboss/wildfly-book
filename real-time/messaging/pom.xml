@@ -78,10 +78,9 @@
 			<dependencies>
 				<dependency>
 					<groupId>org.wildfly</groupId>
-					<artifactId>wildfly-ejb-client-bom</artifactId>
+					<artifactId>wildfly-testsuite-shared</artifactId>
 					<version>10.1.0.Final</version>
-					<type>pom</type>
-					<scope>import</scope>
+					<scope>test</scope>
 				</dependency>
 			</dependencies>
 			<!-- Server configuration executions. -->
@@ -165,6 +164,61 @@
 										combine.children="append">
 										<jboss.server.config.file.name>standalone-full.xml</jboss.server.config.file.name>
 									</systemPropertyVariables>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>deploy.jms.components</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.wildfly.plugins</groupId>
+						<artifactId>wildfly-maven-plugin</artifactId>
+						<version>1.0.2.Final</version>
+						<executions>
+							<execution>
+								<id>add-resources</id>
+								<phase>install</phase>
+								<goals>
+									<goal>add-resource</goal>
+								</goals>
+								<configuration>
+									<resources>
+										<resource>
+											<address>subsystem=messaging-activemq,server=default,jms-queue=gps_coordinates</address>
+											<properties>
+												<durable>true</durable>
+												<entries>!!["gps_coordinates",
+													"java:/jms/queue/GPS"]</entries>
+											</properties>
+										</resource>
+									</resources>
+								</configuration>
+							</execution>
+							<execution>
+								<id>deploy-application</id>
+								<phase>install</phase>
+								<goals>
+									<goal>deploy</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>del-resources</id>
+								<phase>clean</phase>
+								<goals>
+									<goal>undeploy</goal>
+								</goals>
+								<configuration>
+									<afterDeployment>
+										<commands>
+											<command>/subsystem=messaging-activemq/server=default/jms-queue=gps_coordinates:remove
+											</command>
+										</commands>
+									</afterDeployment>
 								</configuration>
 							</execution>
 						</executions>
