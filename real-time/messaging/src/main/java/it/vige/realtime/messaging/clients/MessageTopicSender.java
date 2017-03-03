@@ -6,6 +6,7 @@ import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.jms.JMSContext;
+import javax.jms.JMSProducer;
 import javax.jms.Topic;
 
 @Stateless
@@ -19,5 +20,9 @@ public class MessageTopicSender {
 
 	public void sendMessage(String message) {
 		context.createProducer().send(topic, message);
+	}
+
+	public JMSProducer getProducer() {
+		return context.createProducer();
 	}
 }

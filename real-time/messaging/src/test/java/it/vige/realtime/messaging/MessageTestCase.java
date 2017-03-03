@@ -7,10 +7,14 @@ import static it.vige.realtime.messaging.clients.Constants.TOPIC_NAME;
 import static java.util.logging.Logger.getLogger;
 import static org.jboss.as.test.integration.common.jms.JMSOperationsProvider.getInstance;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.util.logging.Logger;
 
 import javax.ejb.EJB;
+import javax.jms.JMSException;
+import javax.jms.Message;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -23,7 +27,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import it.vige.realtime.messaging.MessageTestCase.MessagingResourcesSetupTask;
+import it.vige.realtime.messaging.clients.MessageQueueReceiver;
 import it.vige.realtime.messaging.clients.MessageQueueSender;
+import it.vige.realtime.messaging.clients.MessageTopicReceiver;
 import it.vige.realtime.messaging.clients.MessageTopicSender;
 
 @RunWith(Arquillian.class)
@@ -37,6 +43,12 @@ public class MessageTestCase {
 
 	@EJB
 	private MessageTopicSender messageTopicSender;
+
+	@EJB
+	private MessageQueueReceiver messageQueueReceiver;
+
+	@EJB
+	private MessageTopicReceiver messageTopicReceiver;
 
 	static class MessagingResourcesSetupTask implements ServerSetupTask {
 
@@ -63,14 +75,19 @@ public class MessageTestCase {
 	}
 
 	@Test
-	public void testSendQueueMessage() {
+	public void testSendQueueMessage() throws JMSException {
 		logger.info("Start send message queue test");
 		messageQueueSender.sendMessage("hello!");
+		Message message = messageQueueReceiver.receiveMessage();
+		String body = message.getBody(String.class);
+		assertEquals("the message is received: ", "hello!", body);
 	}
 
 	@Test
-	public void testSendTopicMessage() {
+	public void testSendTopicMessage() throws JMSException {
 		logger.info("Start send message topic test");
 		messageTopicSender.sendMessage("hello!");
+		Message message = messageTopicReceiver.receiveMessage();
+		assertNull("the message is not received: ", message);
 	}
 }
