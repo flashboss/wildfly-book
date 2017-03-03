@@ -9,6 +9,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
 import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
@@ -27,6 +28,7 @@ public class SendMailTestCase {
 	}
 
 	@Test
+	@RunAsClient
 	public void send() throws AddressException, MessagingException {
 		SendMail sendMail = new SendMail();
 		sendMail.completeClientSend();
