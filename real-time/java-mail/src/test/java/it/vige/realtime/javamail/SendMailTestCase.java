@@ -9,9 +9,12 @@ import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
 import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+@RunWith(Arquillian.class)
 public class SendMailTestCase {
 
 	private static final Logger logger = getLogger(SendMailTestCase.class.getName());

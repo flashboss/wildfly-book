@@ -36,11 +36,11 @@ public class SendMail {
 		logger.info("\n\n 2nd ===> get Mail .");
 		getMailSession = getDefaultInstance(mailServerProperties, null);
 		generateMailMessage = new MimeMessage(getMailSession);
-		generateMailMessage.addRecipient(TO, new InternetAddress("test1@crunchify.com"));
-		generateMailMessage.addRecipient(CC, new InternetAddress("test2@crunchify.com"));
-		generateMailMessage.setSubject("Greetings from Crunchify..");
-		String emailBody = "Test email by Crunchify.com JavaMail API example. "
-				+ "<br><br> Regards, <br>Crunchify Admin";
+		generateMailMessage.addRecipient(TO, new InternetAddress("test1@vige.it"));
+		generateMailMessage.addRecipient(CC, new InternetAddress("test2@vige.it"));
+		generateMailMessage.setSubject("Greetings from Vige..");
+		String emailBody = "Test email by Vige.it JavaMail API example. "
+				+ "<br><br> Regards, <br>Vige Admin";
 		generateMailMessage.setContent(emailBody, "text/html");
 		logger.info("Mail Session has been created successfully..");
 		// Step3
