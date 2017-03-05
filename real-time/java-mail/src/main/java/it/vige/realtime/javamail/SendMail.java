@@ -26,7 +26,7 @@ public class SendMail {
 
 	public void completeClientSend(String... credentials) throws AddressException, MessagingException {
 		// Step1
-		if (credentials != null) {
+		if (credentials != null && credentials.length > 0) {
 			logger.info("\n 1st ===> setup Mail Server Properties..");
 			mailServerProperties = getProperties();
 			mailServerProperties.put("mail.smtp.port", "587");
