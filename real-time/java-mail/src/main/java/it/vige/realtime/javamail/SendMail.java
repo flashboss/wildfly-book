@@ -24,14 +24,26 @@ public class SendMail {
 	private Session getMailSession;
 	private MimeMessage generateMailMessage;
 
-	public void completeClientSend(String... credentials) throws AddressException, MessagingException {
-		// Step1
-		if (credentials != null && credentials.length > 0) {
-			logger.info("\n 1st ===> setup Mail Server Properties..");
+	public void completeGoogleClientSend(String... credentials) throws AddressException, MessagingException {
+		mailServerProperties = getProperties();
+		mailServerProperties.put("mail.smtp.port", "587");
+		mailServerProperties.put("mail.smtp.auth", "true");
+		mailServerProperties.put("mail.smtp.starttls.enable", "true");
+		completeClientSend("smtp.gmail.com", credentials);
+	}
+
+	public void completeLocalClientSend(String... credentials) throws AddressException, MessagingException {
 			mailServerProperties = getProperties();
-			mailServerProperties.put("mail.smtp.port", "587");
-			mailServerProperties.put("mail.smtp.auth", "true");
-			mailServerProperties.put("mail.smtp.starttls.enable", "true");
+			mailServerProperties.put("mail.smtp.port", "25000");
+			mailServerProperties.put("mail.smtp.auth", "false");
+			mailServerProperties.put("mail.smtp.starttls.enable", "false");
+			completeClientSend("localhost", credentials);
+	}
+
+	public void completeClientSend(String mailServer, String... credentials) throws AddressException, MessagingException {
+		if (credentials != null && credentials.length > 1) {
+			// Step1
+			logger.info("\n 1st ===> setup Mail Server Properties..");
 			logger.info("Mail Server Properties have been setup successfully..");
 			// Step2
 			logger.info("\n\n 2nd ===> get Mail .");
@@ -48,7 +60,7 @@ public class SendMail {
 			Transport transport = getMailSession.getTransport("smtp");
 			// Enter your correct gmail UserID and Password
 			// if you have 2FA enabled then provide App Specific Password
-			transport.connect("smtp.gmail.com", credentials[0], credentials[1]);
+			transport.connect(mailServer, credentials[0], credentials[1]);
 			transport.sendMessage(generateMailMessage, generateMailMessage.getAllRecipients());
 			transport.close();
 		}

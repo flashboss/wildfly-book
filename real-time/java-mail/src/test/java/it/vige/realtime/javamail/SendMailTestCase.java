@@ -60,7 +60,9 @@ public class SendMailTestCase {
 	@RunAsClient
 	public void send() throws AddressException, MessagingException {
 		SendMail sendMail = new SendMail();
-		sendMail.completeClientSend();
+		sendMail.completeGoogleClientSend();
+		logger.info("\n\n ===> Your Java Program has just sent an Email successfully. Check your email..");
+		sendMail.completeLocalClientSend("", "");
 		logger.info("\n\n ===> Your Java Program has just sent an Email successfully. Check your email..");
 	}
 

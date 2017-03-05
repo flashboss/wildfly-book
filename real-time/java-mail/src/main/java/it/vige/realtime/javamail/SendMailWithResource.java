@@ -26,7 +26,7 @@ public class SendMailWithResource {
 	public void send(String addresses, String topic, String textMessage) {
 
 		try {
-
+			session.getProperties().put("mail.smtp.port", 25000);
 			Message message = new MimeMessage(session);
 			message.setRecipients(TO, InternetAddress.parse(addresses));
 			message.setSubject(topic);
