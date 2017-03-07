@@ -3,6 +3,7 @@ package it.vige.realtime.javamail;
 import static java.util.logging.Logger.getLogger;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
 import static org.jboss.shrinkwrap.resolver.api.maven.Maven.resolver;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.util.logging.Logger;
@@ -64,11 +65,13 @@ public class SendMailTestCase {
 		logger.info("\n\n ===> Your Java Program has just sent an Email successfully. Check your email..");
 		sendMail.completeLocalClientSend("", "");
 		logger.info("\n\n ===> Your Java Program has just sent an Email successfully. Check your email..");
+		assertTrue("message received", myFactory.getBody().contains("Test email by Vige.it JavaMail API example"));
 	}
 
 	@Test
 	public void sendFromResource() throws AddressException, MessagingException {
 		sendMailWithResource.send("luca.stancapiano@vige.it", "subject", "text");
 		logger.info("\n\n ===> Your Java Program has just sent an Email successfully. Check your email..");
+		assertTrue("message received", myFactory.getBody().contains("text"));
 	}
 }

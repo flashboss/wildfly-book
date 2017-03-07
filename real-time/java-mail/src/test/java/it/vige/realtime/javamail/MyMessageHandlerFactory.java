@@ -18,6 +18,8 @@ public class MyMessageHandlerFactory implements MessageHandlerFactory {
 
 	private static final Logger logger = getLogger(MyMessageHandlerFactory.class.getName());
 
+	private String body;
+	
 	public MessageHandler create(MessageContext ctx) {
 		return new Handler(ctx);
 	}
@@ -40,7 +42,8 @@ public class MyMessageHandlerFactory implements MessageHandlerFactory {
 		public void data(InputStream data) throws IOException {
 			logger.info("MAIL DATA");
 			logger.info("= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =");
-			logger.info(this.convertStreamToString(data));
+			body = this.convertStreamToString(data);
+			logger.info(body);
 			logger.info("= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =");
 		}
 
@@ -63,5 +66,9 @@ public class MyMessageHandlerFactory implements MessageHandlerFactory {
 			return sb.toString();
 		}
 
+	}
+	
+	public String getBody() {
+		return body;
 	}
 }
