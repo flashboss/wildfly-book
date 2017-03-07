@@ -1,5 +1,7 @@
 package it.vige.realtime.asynchronousrest;
 
+import static java.lang.Thread.sleep;
+import static java.util.logging.Level.SEVERE;
 import static java.util.logging.Logger.getLogger;
 import static javax.ws.rs.client.ClientBuilder.newClient;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
@@ -10,9 +12,10 @@ import java.io.File;
 import java.net.URL;
 import java.util.logging.Logger;
 
+import javax.ws.rs.client.AsyncInvoker;
 import javax.ws.rs.client.Client;
+import javax.ws.rs.client.InvocationCallback;
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Response;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -42,13 +45,55 @@ public class ReceiveMessagesTestCase {
 	@Test
 	public void testMagicNumber() throws Exception {
 		logger.info("start rest receive messages test");
+		MyResult myResponse = invoke(url + "async/resource/simple");
+		assertEquals("magic number is: ", "MagicNumber [value=3]", myResponse.getResponse());
+		assertEquals("response is: ", true, myResponse.isOk());
+		logger.info("end rest receive messages test");
+	}
+
+	@Test
+	public void testMagicNumberWithTimeout() throws Exception {
+		logger.info("start rest receive timeout messages test");
+		MyResult myResponse = invoke(url + "async/resource/withTimeout");
+		assertEquals("magic number is: ", "HTTP 503 Service Unavailable", myResponse.getResponse());
+		assertEquals("response is: ", false, myResponse.isOk());
+		logger.info("end rest receive timeout messages test");
+	}
+
+	@Test
+	public void testMagicNumberWithCallback() throws Exception {
+		logger.info("start rest receive callback messages test");
+		MyResult myResponse = invoke(url + "async/resource/withCallback");
+		assertEquals("magic number is: ", "MagicNumber [value=22]", myResponse.getResponse());
+		assertEquals("response is: ", true, myResponse.isOk());
+		logger.info("end rest receive callback messages test");
+	}
+
+	private MyResult invoke(String url) {
 		Client client = newClient();
-		WebTarget target = client.target(url + "async/resource");
-		Response response = target.request().get();
-		String magicNumber = response.readEntity(String.class);
-		assertEquals("status of response: ", 200, response.getStatus());
-		assertEquals("magic number is: ", "MagicNumber [value=3]", magicNumber);
-		response.close();
+		WebTarget target = client.target(url);
+		final AsyncInvoker asyncInvoker = target.request().async();
+		final MyResult myResponse = new MyResult();
+
+		asyncInvoker.get(new InvocationCallback<String>() {
+			@Override
+			public void completed(String response) {
+				myResponse.setResponse(response);
+				myResponse.setOk(true);
+			}
+
+			@Override
+			public void failed(Throwable arg0) {
+				myResponse.setResponse(arg0.getMessage());
+				myResponse.setOk(false);
+			}
+		});
+		try {
+			sleep(2000);
+		} catch (InterruptedException e) {
+			logger.log(SEVERE, "error", e);
+		}
+		return myResponse;
 	}
 
 }
