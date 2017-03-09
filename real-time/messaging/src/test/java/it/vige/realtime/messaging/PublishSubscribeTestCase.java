@@ -1,6 +1,5 @@
 package it.vige.realtime.messaging;
 
-import static org.junit.Assert.assertEquals;
 import static it.vige.realtime.messaging.clients.Constants.QUEUE_LOOKUP;
 import static it.vige.realtime.messaging.clients.Constants.QUEUE_NAME;
 import static it.vige.realtime.messaging.clients.Constants.TOPIC_LOOKUP;
@@ -8,12 +7,12 @@ import static it.vige.realtime.messaging.clients.Constants.TOPIC_NAME;
 import static java.util.logging.Logger.getLogger;
 import static org.jboss.as.test.integration.common.jms.JMSOperationsProvider.getInstance;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
+import static org.junit.Assert.assertEquals;
 
 import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.jms.JMSException;
-import javax.jms.Message;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
