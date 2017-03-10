@@ -1,9 +1,9 @@
 package it.vige.realtime.asynchronousejb;
 
 import static java.lang.Thread.sleep;
-import static java.util.logging.Level.SEVERE;
 import static java.util.logging.Logger.getLogger;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -46,39 +46,33 @@ public class TimerTestCase {
 	private User user;
 
 	@Test
-	public void testTimeout() {
+	public void testTimeout() throws InterruptedException {
 		logger.info("start test timeout");
 		timerBean.programmaticTimeout();
+		sleep(66);
+		assertTrue("executed timeout", timerBean.isTimeoutDone());
 		timerBean.timerConfig();
+		sleep(66);
+		assertTrue("executed timeout", timerBean.isTimeoutDone());
 		logger.info("Timeout end.");
 	}
 
 	@Test
-	public void testProgrammaticTimeout() {
-		logger.info("start test programmatic timeout");
-		timerBean.programmaticTimeout();
-		timerBean.timerConfig();
-		logger.info("Timeout end.");
-	}
-
-	@Test
-	public void testOldSpecsTimeout() {
+	public void testOldSpecsTimeout() throws InterruptedException {
 		logger.info("start test old specs timeout");
 		oldSpecsBean.fireInThirtySeconds();
+		sleep(310);
+		assertEquals("the ejb timout was invoked", "30SecondTimeout", oldSpecsBean.getWhyWasICalled());
 		logger.info("Timeout end.");
 	}
 
 	@Test
-	public void testStatefulTimeout() {
+	public void testStatefulTimeout() throws InterruptedException {
 		logger.info("start test stateful timeout");
 		assertFalse("The stateful session is not registered", user.isRegistered());
 		user.register();
 		assertTrue("The stateful session is registered", user.isRegistered());
-		try {
-			sleep(16);
-		} catch (InterruptedException e) {
-			logger.log(SEVERE, "error timeout", e);
-		}
+		sleep(160);
 		try {
 			user.isRegistered();
 			fail();

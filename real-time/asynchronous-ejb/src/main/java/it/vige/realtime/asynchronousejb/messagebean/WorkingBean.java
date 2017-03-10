@@ -25,6 +25,8 @@ public class WorkingBean implements MessageListener {
 	@Resource
 	private MessageDrivenContext mdc;
 
+	public static boolean taken;
+
 	@Override
 	public void onMessage(Message message) {
 		TextMessage msg = null;
@@ -32,6 +34,7 @@ public class WorkingBean implements MessageListener {
 			if (message instanceof TextMessage) {
 				msg = (TextMessage) message;
 				logger.info("MESSAGE BEAN: Message received: " + msg.getText());
+				taken = true;
 			} else {
 				logger.warning("Message of wrong type: " + message.getClass().getName());
 			}

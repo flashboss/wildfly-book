@@ -52,12 +52,8 @@ public class SchedulerBean {
 		logger.info("multi scheduler example");
 	}
 
-	public String getLastProgrammaticTimeout() {
-		if (lastProgrammaticTimeout != null) {
-			return lastProgrammaticTimeout.toString();
-		} else {
-			return "never";
-		}
+	public Date getLastProgrammaticTimeout() {
+		return lastProgrammaticTimeout;
 
 	}
 
@@ -65,12 +61,8 @@ public class SchedulerBean {
 		this.lastProgrammaticTimeout = lastTimeout;
 	}
 
-	public String getLastAutomaticTimeout() {
-		if (lastAutomaticTimeout != null) {
-			return lastAutomaticTimeout.toString();
-		} else {
-			return "never";
-		}
+	public Date getLastAutomaticTimeout() {
+		return lastAutomaticTimeout;
 	}
 
 	public void setLastAutomaticTimeout(Date lastAutomaticTimeout) {

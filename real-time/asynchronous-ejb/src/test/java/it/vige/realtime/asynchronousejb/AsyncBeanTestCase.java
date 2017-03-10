@@ -1,5 +1,6 @@
 package it.vige.realtime.asynchronousejb;
 
+import static org.junit.Assert.assertEquals;
 import static java.util.logging.Logger.getLogger;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
 
@@ -46,5 +47,6 @@ public class AsyncBeanTestCase {
 		logger.info("Proceed to other tasks and check async method result later.");
 		Integer intResult = futureResult.get();
 		logger.info("The prior async method returned " + intResult);
+		assertEquals("result is: ", 72, intResult.intValue());
 	}
 }

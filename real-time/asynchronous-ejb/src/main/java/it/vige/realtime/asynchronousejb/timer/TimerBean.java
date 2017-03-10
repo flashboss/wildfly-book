@@ -22,18 +22,21 @@ public class TimerBean {
 
 	@Resource
 	private TimerService timerService;
+	
+	private boolean timeoutDone;
 
 	private static final Logger logger = getLogger(TimerBean.class.getName());
 
 	@Timeout
 	public void timeout(Timer timer) {
 		logger.info("TimerEJB: timeout occurred");
-		timer.getTimeRemaining();
+		timeoutDone = true;
 	}
 
 	public void programmaticTimeout() {
 		logger.info("TimerEJB: programmatic timeout occurred");
-		long duration = 6000;
+		timeoutDone = false;
+		long duration = 60;
 		Timer timer = timerService.createSingleActionTimer(duration, new TimerConfig());
 		timer.getInfo();
 		try {
@@ -50,6 +53,7 @@ public class TimerBean {
 
 	public void timerConfig() {
 		logger.info("TimerEJB: timer configuration");
+		timeoutDone = false;
 		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy 'at' HH:mm");
 		Date date = null;
 		try {
@@ -62,5 +66,9 @@ public class TimerBean {
 		} catch (ParseException e) {
 			logger.log(SEVERE, "formatting error", e);
 		}
+	}
+
+	public boolean isTimeoutDone() {
+		return timeoutDone;
 	}
 }

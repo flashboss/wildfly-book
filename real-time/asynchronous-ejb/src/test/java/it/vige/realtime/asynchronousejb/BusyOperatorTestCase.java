@@ -1,8 +1,8 @@
 package it.vige.realtime.asynchronousejb;
 
+import static it.vige.realtime.asynchronousejb.timer.BusyOperator.count;
 import static java.lang.System.nanoTime;
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
-import static java.util.logging.Level.SEVERE;
 import static java.util.logging.Logger.getLogger;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
 import static org.junit.Assert.assertEquals;
@@ -32,7 +32,7 @@ public class BusyOperatorTestCase {
 		jar.addPackage(BusyOperator.class.getPackage());
 		return jar;
 	}
-	
+
 	@EJB
 	private BusyOperator busyOperator;
 
@@ -43,7 +43,7 @@ public class BusyOperatorTestCase {
 		// This asynchronous method will never exit
 		busyOperator.stayBusy(ready);
 
-		// Are you working yet little operator?
+		// working?
 		ready.await();
 
 		// OK, The operator is busy
@@ -56,7 +56,7 @@ public class BusyOperatorTestCase {
 
 				fail("The operator should be busy");
 			} catch (Exception e) {
-				logger.log(SEVERE, "", e);
+				logger.info("error do it");
 			}
 
 			assertEquals(0, seconds(start));
@@ -70,14 +70,13 @@ public class BusyOperatorTestCase {
 
 				fail("The operator should be busy");
 			} catch (Exception e) {
-				// the operator is still too busy as expected
+				logger.info("error do it soon");
 			}
 
 			assertEquals(5, seconds(start));
 		}
-
-		// This will wait forever, give it a try if you have that long
-		// busyOperator.justDoIt();
+		// stop the thread
+		count.countDown();
 	}
 
 	private long seconds(long start) {

@@ -16,12 +16,15 @@ import javax.ejb.Singleton;
 @Lock(WRITE)
 public class BusyOperator {
 
+	public static CountDownLatch count;
+
 	@Asynchronous
 	public Future<Object> stayBusy(CountDownLatch ready) {
 		ready.countDown();
 
 		try {
-			new CountDownLatch(1).await();
+			count = new CountDownLatch(1);
+			count.await();
 		} catch (InterruptedException e) {
 			interrupted();
 		}
@@ -36,11 +39,6 @@ public class BusyOperator {
 
 	@AccessTimeout(value = 5, unit = SECONDS)
 	public void doItSoon() {
-		// do something
-	}
-
-	@AccessTimeout(-1)
-	public void justDoIt() {
 		// do something
 	}
 

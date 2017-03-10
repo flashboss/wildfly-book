@@ -1,8 +1,11 @@
 package it.vige.realtime.asynchronousejb;
 
+import static it.vige.realtime.asynchronousejb.messagebean.WorkingBean.taken;
 import static java.util.logging.Logger.getLogger;
 import static javax.jms.Session.AUTO_ACKNOWLEDGE;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.logging.Logger;
 
@@ -10,6 +13,7 @@ import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSContext;
+import javax.jms.Message;
 import javax.jms.Queue;
 
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -31,14 +35,14 @@ public class MDBTestCase {
 		jar.addPackage(WorkingBean.class.getPackage());
 		return jar;
 	}
-	
+
 	private final static String QUEUE_LOOKUP = "java:/jms/queue/ExpiryQueue";
 
 	@EJB
 	private WorkingBean workingBean;
 
-    @Resource(mappedName = "/ConnectionFactory")
-    private ConnectionFactory cf;
+	@Resource(mappedName = "/ConnectionFactory")
+	private ConnectionFactory cf;
 
 	@Resource(mappedName = QUEUE_LOOKUP)
 	private Queue queue;
@@ -48,5 +52,9 @@ public class MDBTestCase {
 		logger.info("starting message driven bean test");
 		JMSContext context = cf.createContext(AUTO_ACKNOWLEDGE);
 		context.createProducer().send(queue, "need a pause");
+		Message message = context.createConsumer(queue).receive(5000);
+		assertNull("the message is received by the mdb: ", message);
+		assertTrue("the mdb was executed", taken);
+		context.close();
 	}
 }
