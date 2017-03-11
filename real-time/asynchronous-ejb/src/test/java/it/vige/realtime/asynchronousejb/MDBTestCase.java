@@ -1,5 +1,6 @@
 package it.vige.realtime.asynchronousejb;
 
+import static it.vige.realtime.asynchronousejb.messagebean.OldSpecsWorkingBean.received;
 import static it.vige.realtime.asynchronousejb.messagebean.WorkingBean.taken;
 import static java.util.logging.Logger.getLogger;
 import static javax.jms.Session.AUTO_ACKNOWLEDGE;
@@ -36,7 +37,8 @@ public class MDBTestCase {
 		return jar;
 	}
 
-	private final static String QUEUE_LOOKUP = "java:/jms/queue/ExpiryQueue";
+	private final static String QUEUE_WORKING_LOOKUP = "java:/jms/queue/ExpiryQueue";
+	private final static String QUEUE_OLDSPECS_LOOKUP = "java:/jms/queue/DLQ";
 
 	@EJB
 	private WorkingBean workingBean;
@@ -44,17 +46,31 @@ public class MDBTestCase {
 	@Resource(mappedName = "/ConnectionFactory")
 	private ConnectionFactory cf;
 
-	@Resource(mappedName = QUEUE_LOOKUP)
-	private Queue queue;
+	@Resource(mappedName = QUEUE_WORKING_LOOKUP)
+	private Queue queueWorking;
+
+	@Resource(mappedName = QUEUE_OLDSPECS_LOOKUP)
+	private Queue queueOldSpecs;
 
 	@Test
-	public void test() throws Exception {
+	public void testWorkingBean() throws Exception {
 		logger.info("starting message driven bean test");
 		JMSContext context = cf.createContext(AUTO_ACKNOWLEDGE);
-		context.createProducer().send(queue, "need a pause");
-		Message message = context.createConsumer(queue).receive(5000);
+		context.createProducer().send(queueWorking, "need a pause");
+		Message message = context.createConsumer(queueWorking).receive(5000);
 		assertNull("the message is received by the mdb: ", message);
 		assertTrue("the mdb was executed", taken);
+		context.close();
+	}
+
+	@Test
+	public void testOldSpecs() throws Exception {
+		logger.info("starting old specs test");
+		JMSContext context = cf.createContext(AUTO_ACKNOWLEDGE);
+		context.createProducer().send(queueOldSpecs, "need a pause");
+		Message message = context.createConsumer(queueOldSpecs).receive(5000);
+		assertNull("the message is received by the mdb: ", message);
+		assertTrue("created oldSpecsWorkingBean", received);
 		context.close();
 	}
 }
