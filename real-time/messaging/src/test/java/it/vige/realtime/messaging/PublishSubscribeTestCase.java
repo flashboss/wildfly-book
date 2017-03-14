@@ -1,13 +1,11 @@
 package it.vige.realtime.messaging;
 
-import static it.vige.realtime.messaging.clients.Constants.QUEUE_LOOKUP;
-import static it.vige.realtime.messaging.clients.Constants.QUEUE_NAME;
 import static it.vige.realtime.messaging.clients.Constants.TOPIC_LOOKUP;
 import static it.vige.realtime.messaging.clients.Constants.TOPIC_NAME;
 import static java.util.logging.Logger.getLogger;
 import static org.jboss.as.test.integration.common.jms.JMSOperationsProvider.getInstance;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.util.logging.Logger;
 
@@ -24,7 +22,7 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import it.vige.realtime.messaging.MessageTestCase.MessagingResourcesSetupTask;
+import it.vige.realtime.messaging.PublishSubscribeTestCase.MessagingResourcesSetupTask;
 import it.vige.realtime.messaging.publishsubscribe.Publisher;
 import it.vige.realtime.messaging.publishsubscribe.Subscriber;
 
@@ -45,14 +43,12 @@ public class PublishSubscribeTestCase {
 		@Override
 		public void setup(ManagementClient managementClient, String containerId) throws Exception {
 			JMSOperations jmsOperations = getInstance(managementClient.getControllerClient());
-			jmsOperations.createJmsQueue(QUEUE_NAME, QUEUE_LOOKUP);
 			jmsOperations.createJmsTopic(TOPIC_NAME, TOPIC_LOOKUP);
 		}
 
 		@Override
 		public void tearDown(ManagementClient managementClient, String containerId) throws Exception {
 			JMSOperations jmsOperations = getInstance(managementClient.getControllerClient());
-			jmsOperations.removeJmsQueue(QUEUE_NAME);
 			jmsOperations.removeJmsTopic(TOPIC_NAME);
 		}
 	}
@@ -65,11 +61,11 @@ public class PublishSubscribeTestCase {
 	}
 
 	@Test
-	public void testSendQueueMessage() throws JMSException {
+	public void testSendTopicMessage() throws JMSException {
 		logger.info("Start publish subscribe topic test");
 		subscriber.createConnectionAndReceiveMessage("bus_stop_client_1", "localhost");
 		publisher.createConnectionAndSendMessage("localhost");
-		assertEquals("the message is: ", "", subscriber.getLastReceived());
+		assertNull("the message is: ", subscriber.getLastReceived());
 		logger.info("End publish subscribe topic test");
 	}
 

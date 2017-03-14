@@ -203,6 +203,14 @@
 													"java:/jms/topic/BUS"]</entries>
 											</properties>
 										</resource>
+										<resource>
+											<address>subsystem=messaging-activemq,server=default,jms-queue=questionary</address>
+											<properties>
+												<entries>!!["questionary",
+													"java:jms/queue/Questionary",
+													"java:/jboss/exported/jms/queue/Questionary"]</entries>
+											</properties>
+										</resource>
 									</resources>
 								</configuration>
 							</execution>
@@ -225,6 +233,8 @@
 											<command>/subsystem=messaging-activemq/server=default/jms-queue=gps_coordinates:remove
 											</command>
 											<command>/subsystem=messaging-activemq/server=default/jms-topic=bus_stops:remove
+											</command>
+											<command>/subsystem=messaging-activemq/server=default/jms-queue=questionary:remove
 											</command>
 										</commands>
 									</afterDeployment>
