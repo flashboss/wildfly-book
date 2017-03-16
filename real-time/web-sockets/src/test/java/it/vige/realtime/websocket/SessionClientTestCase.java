@@ -145,7 +145,9 @@ public class SessionClientTestCase {
 		assertEquals("messageHandler: ", 2, messageHandlers.size());
 		try {
 			sessionClient.getBasicRemote().sendPong(allocate(33));
-			assertTrue("the pong is received by the session message handler", sentPong);
+			assertFalse(
+					"the pong is not received by the session message handler because exists a default message handler for the pong messages",
+					sentPong);
 		} catch (IllegalArgumentException | IOException e) {
 			fail();
 		}

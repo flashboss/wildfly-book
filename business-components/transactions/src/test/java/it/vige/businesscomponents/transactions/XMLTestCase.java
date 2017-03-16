@@ -66,7 +66,7 @@ public class XMLTestCase {
 				userTransaction.begin();
 				bean.transactionStatus();
 				fail("the transaction is not supported");
-			} catch (EJBException e) {
+			} catch (EJBException | IllegalStateException e) {
 				logger.info("the transaction is not supported");
 			}
 		} finally {

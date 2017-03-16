@@ -2,6 +2,8 @@ package it.vige.realtime.messaging;
 
 import static it.vige.realtime.messaging.clients.Constants.QUEUE_LOOKUP;
 import static it.vige.realtime.messaging.clients.Constants.QUEUE_NAME;
+import static it.vige.realtime.messaging.clients.Constants.TOPIC_LOOKUP;
+import static it.vige.realtime.messaging.clients.Constants.TOPIC_NAME;
 import static java.util.logging.Logger.getLogger;
 import static org.jboss.as.test.integration.common.jms.JMSOperationsProvider.getInstance;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
@@ -54,12 +56,14 @@ public class MessageTestCase {
 		public void setup(ManagementClient managementClient, String containerId) throws Exception {
 			JMSOperations jmsOperations = getInstance(managementClient.getControllerClient());
 			jmsOperations.createJmsQueue(QUEUE_NAME, QUEUE_LOOKUP);
+			jmsOperations.createJmsTopic(TOPIC_NAME, TOPIC_LOOKUP);
 		}
 
 		@Override
 		public void tearDown(ManagementClient managementClient, String containerId) throws Exception {
 			JMSOperations jmsOperations = getInstance(managementClient.getControllerClient());
 			jmsOperations.removeJmsQueue(QUEUE_NAME);
+			jmsOperations.removeJmsTopic(TOPIC_NAME);
 		}
 	}
 
