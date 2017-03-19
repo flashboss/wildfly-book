@@ -59,8 +59,8 @@ public class TimerBean {
 		try {
 			date = formatter.parse("05/01/2010 at 12:05");
 			TimerConfig timerConfig = new TimerConfig();
-			timerConfig.getInfo();
-			timerConfig.isPersistent();
+			timerConfig.setInfo("my configuration");
+			timerConfig.setPersistent(false);
 			Timer timer = timerService.createSingleActionTimer(date, timerConfig);
 			timer.getTimeRemaining();
 		} catch (ParseException e) {

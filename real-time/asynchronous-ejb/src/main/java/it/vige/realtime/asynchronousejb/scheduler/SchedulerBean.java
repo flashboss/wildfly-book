@@ -7,10 +7,12 @@ import java.util.logging.Logger;
 
 import javax.annotation.Resource;
 import javax.ejb.Schedule;
+import javax.ejb.ScheduleExpression;
 import javax.ejb.Schedules;
 import javax.ejb.Singleton;
 import javax.ejb.Timeout;
 import javax.ejb.Timer;
+import javax.ejb.TimerConfig;
 import javax.ejb.TimerService;
 
 @Singleton
@@ -24,10 +26,24 @@ public class SchedulerBean {
 	private Date lastProgrammaticTimeout;
 	private Date lastAutomaticTimeout;
 
-	public void setTimer(long intervalDuration) {
+	public Timer setTimer(long intervalDuration) {
 		logger.info("Setting a programmatic timeout for " + intervalDuration + " milliseconds from now.");
 		Timer timer = timerService.createTimer(intervalDuration, "Created new programmatic timer");
 		logger.info("created timer: " + timer);
+		return timer;
+	}
+
+	public Timer setTimer(String hour, Date startingDate) {
+		logger.info("Setting a programmatic timeout starting at " + hour + " from " + startingDate);
+		ScheduleExpression scheduleExpression = new ScheduleExpression();
+		scheduleExpression.hour(hour);
+		scheduleExpression.start(startingDate);
+		Timer timer = timerService.createCalendarTimer(scheduleExpression, new TimerConfig());
+		scheduleExpression = new ScheduleExpression();
+		scheduleExpression.dayOfWeek("Wed");
+		timer = timerService.createCalendarTimer(scheduleExpression, new TimerConfig());
+		logger.info("created timer: " + timer);
+		return timer;
 	}
 
 	@Timeout
