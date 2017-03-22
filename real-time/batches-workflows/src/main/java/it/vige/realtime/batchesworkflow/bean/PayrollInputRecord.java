@@ -1,8 +1,14 @@
 package it.vige.realtime.batchesworkflow.bean;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class PayrollInputRecord {
-	
+
+	@Id
 	private int id;
+
 	private int baseSalary;
 
 	public int getId() {

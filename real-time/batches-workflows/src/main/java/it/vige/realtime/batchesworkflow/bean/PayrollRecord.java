@@ -1,8 +1,14 @@
 package it.vige.realtime.batchesworkflow.bean;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class PayrollRecord {
 
+	@Id
 	private int empID;
+	
 	private int base;
 	private float tax;
 	private float bonus;
