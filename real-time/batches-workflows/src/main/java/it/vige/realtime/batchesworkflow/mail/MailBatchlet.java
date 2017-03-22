@@ -1,5 +1,10 @@
 package it.vige.realtime.batchesworkflow.mail;
 
+import static java.util.logging.Level.SEVERE;
+import static java.util.logging.Logger.getLogger;
+
+import java.util.logging.Logger;
+
 import javax.annotation.Resource;
 import javax.batch.api.AbstractBatchlet;
 import javax.batch.runtime.context.JobContext;
@@ -14,19 +19,21 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 @Named
-
 public class MailBatchlet extends AbstractBatchlet {
+
+	private static final Logger logger = getLogger(MailBatchlet.class.getName());
+
 	@Resource(mappedName = "java:jboss/mail/Default")
 	private Session mailSession;
 
 	@Inject
-	StepContext stepContext;
+	private StepContext stepContext;
 	@Inject
-	JobContext jobContext;
+	private JobContext jobContext;
 
 	@Override
 	public String process() {
-		System.out.println("Running inside MailBatchlet batchlet ");
+		logger.info("Running inside MailBatchlet batchlet ");
 		String fromAddress = stepContext.getProperties().getProperty("mail.from");
 		String toAddress = stepContext.getProperties().getProperty("mail.to");
 
@@ -44,7 +51,7 @@ public class MailBatchlet extends AbstractBatchlet {
 			Transport.send(m);
 
 		} catch (javax.mail.MessagingException e) {
-			e.printStackTrace();
+			logger.log(SEVERE, "error send mail", e);
 
 		}
 		return "COMPLETED";
