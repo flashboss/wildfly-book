@@ -1,9 +1,12 @@
 package it.vige.realtime.batchesworkflow.mail;
 
 import static java.nio.file.Files.copy;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static java.util.logging.Level.SEVERE;
 import static java.util.logging.Logger.getLogger;
 import static javax.batch.runtime.BatchRuntime.getJobOperator;
+import static javax.batch.runtime.BatchStatus.COMPLETED;
+import static javax.batch.runtime.BatchStatus.FAILED;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,13 +38,13 @@ public class CopyFilesBatchlet extends AbstractBatchlet {
 
 		// JDK 1.7 API
 		try {
-			copy(new File(source).toPath(), new File(destination).toPath());
-			return "COMPLETED";
+			copy(new File(source).toPath(), new File(destination).toPath(), REPLACE_EXISTING);
+			return COMPLETED.name();
 		} catch (IOException e) {
 			logger.log(SEVERE, "error copy file", e);
 		}
 
-		return "FAILED";
+		return FAILED.name();
 
 	}
 

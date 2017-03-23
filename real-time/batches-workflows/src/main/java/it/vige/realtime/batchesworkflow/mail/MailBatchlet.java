@@ -2,6 +2,7 @@ package it.vige.realtime.batchesworkflow.mail;
 
 import static java.util.logging.Level.SEVERE;
 import static java.util.logging.Logger.getLogger;
+import static javax.batch.runtime.BatchStatus.COMPLETED;
 import static javax.mail.Message.RecipientType.TO;
 import static javax.mail.Transport.send;
 
@@ -54,7 +55,7 @@ public class MailBatchlet extends AbstractBatchlet {
 			logger.log(SEVERE, "error send mail", e);
 
 		}
-		return "COMPLETED";
+		return COMPLETED.name();
 	}
 
 }

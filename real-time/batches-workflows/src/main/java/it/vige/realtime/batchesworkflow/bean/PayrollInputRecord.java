@@ -1,12 +1,11 @@
 package it.vige.realtime.batchesworkflow.bean;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import java.io.Serializable;
 
-@Entity
-public class PayrollInputRecord {
+public class PayrollInputRecord implements Serializable {
 
-	@Id
+	private static final long serialVersionUID = -2747746518993366052L;
+
 	private int id;
 
 	private int baseSalary;
