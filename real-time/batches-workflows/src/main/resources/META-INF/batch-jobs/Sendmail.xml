@@ -1,7 +1,4 @@
-<job id="Sendmail" xmlns="<a href=" http: / xmlns.jcp.org / xml / ns /
-	javaee ">
-	http://xmlns.jcp.org/xml/ns/javaee"
-</a>
+<job id="Sendmail" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
 	version="1.0">
 
 	<flow id="mainprocess" next="sendemail">

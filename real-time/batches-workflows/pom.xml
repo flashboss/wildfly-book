@@ -75,6 +75,20 @@
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>org.subethamail</groupId>
+					<artifactId>subethasmtp</artifactId>
+					<version>3.1.7</version>
+					<scope>test</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.apache.maven</groupId>
+					<artifactId>maven-aether-provider</artifactId>
+					<version>3.2.5</version>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
 			<!-- Server configuration executions. -->
 			<build>
 				<testResources>
