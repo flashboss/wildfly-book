@@ -2,6 +2,8 @@ package it.vige.realtime.batchesworkflow.mail;
 
 import static java.util.logging.Level.SEVERE;
 import static java.util.logging.Logger.getLogger;
+import static javax.mail.Message.RecipientType.TO;
+import static javax.mail.Transport.send;
 
 import java.util.logging.Logger;
 
@@ -12,9 +14,7 @@ import javax.batch.runtime.context.StepContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.mail.Address;
-import javax.mail.Message;
 import javax.mail.Session;
-import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
@@ -43,12 +43,12 @@ public class MailBatchlet extends AbstractBatchlet {
 			Address[] to = new InternetAddress[] { new InternetAddress(toAddress) };
 
 			m.setFrom(from);
-			m.setRecipients(Message.RecipientType.TO, to);
+			m.setRecipients(TO, to);
 			m.setSubject("WildFly Mail");
 			m.setSentDate(new java.util.Date());
 			m.setContent("Job Execution id " + jobContext.getExecutionId() + " warned disk space getting low!",
 					"text/plain");
-			Transport.send(m);
+			send(m);
 
 		} catch (javax.mail.MessagingException e) {
 			logger.log(SEVERE, "error send mail", e);
