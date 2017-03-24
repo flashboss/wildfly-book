@@ -45,7 +45,7 @@ public class MailBatchlet extends AbstractBatchlet {
 
 			m.setFrom(from);
 			m.setRecipients(TO, to);
-			m.setSubject("WildFly Mail");
+			m.setSubject("Batch on wildfly executed");
 			m.setSentDate(new java.util.Date());
 			m.setContent("Job Execution id " + jobContext.getExecutionId() + " warned disk space getting low!",
 					"text/plain");

@@ -10,7 +10,9 @@ import it.vige.realtime.batchesworkflow.bean.PayrollInputRecord;
 import it.vige.realtime.batchesworkflow.bean.PayrollRecord;
 
 @Named
-public class SimpleItemProcessor implements ItemProcessor {
+public class PayrollItemProcessor implements ItemProcessor {
+	
+	public final static String EXIT_STATUS = "my_new_exit_status";
 
 	@Inject
 	private JobContext jobContext;
@@ -35,7 +37,7 @@ public class SimpleItemProcessor implements ItemProcessor {
 	private void contextOperations() {
 		jobContext.setTransientUserData(new Payroll());
 		jobContext.getBatchStatus();
-		jobContext.setExitStatus("my_new_exit_status");
+		jobContext.setExitStatus(EXIT_STATUS);
 		jobContext.getBatchStatus();
 		jobContext.getExecutionId();
 		jobContext.getInstanceId();

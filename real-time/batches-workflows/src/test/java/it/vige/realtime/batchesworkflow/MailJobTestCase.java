@@ -26,11 +26,13 @@ import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.logging.Logger;
 
+import javax.annotation.Resource;
 import javax.batch.operations.JobOperator;
 import javax.batch.runtime.JobExecution;
 import javax.batch.runtime.JobInstance;
 import javax.batch.runtime.Metric;
 import javax.batch.runtime.StepExecution;
+import javax.mail.Session;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -73,14 +75,19 @@ public class MailJobTestCase {
 		return war;
 	}
 
+	@Resource(name = "java:jboss/mail/Default")
+	private Session session;
+
 	@Before
 	public void init() {
+		session.getProperties().put("mail.smtp.port", "25000");
 		smtpServer.setPort(25000);
 		smtpServer.start();
 	}
 
 	@After
 	public void end() {
+		session.getProperties().put("mail.smtp.port", "25");
 		smtpServer.stop();
 	}
 
@@ -100,8 +107,11 @@ public class MailJobTestCase {
 		List<Long> runningExecutions = jobOperator.getRunningExecutions(JOB_NAME);
 		assertEquals("running executions. The process is end", 0, runningExecutions.size());
 		Set<String> jobNames = jobOperator.getJobNames();
-		assertEquals("one only job", 1, jobNames.size());
-		assertEquals("one only job called", JOB_NAME, jobNames.iterator().next());
+		assertTrue("one or two job", jobNames.size() == 1 || jobNames.size() == 2);
+		String strJobNames = "";
+		for (String jobName : jobNames)
+			strJobNames += jobName;
+		assertTrue("one only job called", strJobNames.contains(JOB_NAME));
 		List<StepExecution> stepExecutions = jobOperator.getStepExecutions(executionId);
 		assertEquals("no step executions", 2, stepExecutions.size());
 		stepExecutions(stepExecutions.get(0), false);
@@ -112,13 +122,14 @@ public class MailJobTestCase {
 		JobInstance jobInstance = jobInstance(jobOperator.getJobInstance(executionId));
 		jobExecutions(jobOperator.getJobExecutions(jobInstance));
 		assertNotNull("executionId not empty", executionId);
+		assertTrue("the destination file is created", new File(properties.get("destination") + "").exists());
 		assertTrue("message received",
-				myFactory.getBody().equals("Job Execution id " + executionId + " warned disk space getting low!"));
+				myFactory.getBody().contains("Job Execution id " + executionId + " warned disk space getting low!"));
 	}
 
 	private void stepExecutions(StepExecution stepExecution, boolean last) {
-		assertEquals("the batch has failed", COMPLETED, stepExecution.getBatchStatus());
-		assertEquals("the batch has failed", COMPLETED.name(), stepExecution.getExitStatus());
+		assertEquals("the batch has completed", COMPLETED, stepExecution.getBatchStatus());
+		assertEquals("the batch has completed", COMPLETED.name(), stepExecution.getExitStatus());
 		Date startTime = stepExecution.getStartTime();
 		Date endTime = stepExecution.getEndTime();
 		assertNotNull("The step is started", startTime);

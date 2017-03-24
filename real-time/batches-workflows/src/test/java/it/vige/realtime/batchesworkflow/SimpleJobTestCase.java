@@ -1,5 +1,8 @@
 package it.vige.realtime.batchesworkflow;
 
+import static it.vige.realtime.batchesworkflow.process.PayrollItemProcessor.EXIT_STATUS;
+import static it.vige.realtime.batchesworkflow.process.PayrollItemReader.INPUT_DATA_FILE_NAME;
+import static it.vige.realtime.batchesworkflow.process.PayrollItemWriter.PAYROLL_TEMP_FILE;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static java.util.logging.Logger.getLogger;
 import static javax.batch.runtime.BatchRuntime.getJobOperator;
@@ -34,14 +37,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import it.vige.realtime.batchesworkflow.bean.Payroll;
-import it.vige.realtime.batchesworkflow.process.SimpleItemProcessor;
+import it.vige.realtime.batchesworkflow.process.PayrollItemProcessor;
 
 @RunWith(Arquillian.class)
 public class SimpleJobTestCase {
 
 	private static final Logger logger = getLogger(SimpleJobTestCase.class.getName());
 
-	private final static String JOB_NAME = "SimplePayrollJob";
+	private final static String JOB_NAME = "PayrollJob";
 
 	private final static String INPUT_PROPERTIES = "src/main/resources/input.properties";
 
@@ -49,7 +52,7 @@ public class SimpleJobTestCase {
 	public static WebArchive createWebDeployment() {
 		final WebArchive war = create(WebArchive.class, "simplejob-test.war");
 		war.addPackage(Payroll.class.getPackage());
-		war.addPackage(SimpleItemProcessor.class.getPackage());
+		war.addPackage(PayrollItemProcessor.class.getPackage());
 		war.addAsWebInfResource(INSTANCE, "beans.xml");
 		war.addAsWebInfResource(new FileAsset(new File("src/main/resources/META-INF/batch-jobs/" + JOB_NAME + ".xml")),
 				"classes/META-INF/batch-jobs/" + JOB_NAME + ".xml");
@@ -62,28 +65,34 @@ public class SimpleJobTestCase {
 		CountDownLatch latch = new CountDownLatch(1);
 		JobOperator jobOperator = getJobOperator();
 		Properties props = new Properties();
-		props.setProperty("payrollInputDataFileName", INPUT_PROPERTIES);
+		props.setProperty(INPUT_DATA_FILE_NAME, INPUT_PROPERTIES);
 		long executionId = jobOperator.start(JOB_NAME, props);
-		latch.await(2, SECONDS);
+		latch.await(10, SECONDS);
 		List<Long> runningExecutions = jobOperator.getRunningExecutions(JOB_NAME);
 		assertEquals("running executions. The process is end", 0, runningExecutions.size());
 		Set<String> jobNames = jobOperator.getJobNames();
-		assertEquals("one only job", 1, jobNames.size());
-		assertEquals("one only job called", JOB_NAME, jobNames.iterator().next());
+		assertTrue("one or two job", jobNames.size() == 1 || jobNames.size() == 2);
+		String strJobNames = "";
+		for (String jobName : jobNames)
+			strJobNames += jobName;
+		assertTrue("one only job called", strJobNames.contains(JOB_NAME));
 		List<StepExecution> stepExecutions = jobOperator.getStepExecutions(executionId);
 		assertEquals("no step executions", 1, stepExecutions.size());
 		stepExecutions(stepExecutions.get(0));
 		Properties properties = jobOperator.getParameters(executionId);
 		assertEquals("one property found", 1, properties.size());
-		assertEquals("MY_NEW_PROPERTY found", INPUT_PROPERTIES, properties.get("payrollInputDataFileName"));
+		assertEquals("MY_NEW_PROPERTY found", INPUT_PROPERTIES, properties.get(INPUT_DATA_FILE_NAME));
 		JobInstance jobInstance = jobInstance(jobOperator.getJobInstance(executionId));
 		jobExecutions(jobOperator.getJobExecutions(jobInstance));
 		assertNotNull("executionId not empty", executionId);
+		assertTrue("Created file from writer 1", new File(PAYROLL_TEMP_FILE + "1.tmp").exists());
+		assertTrue("Created file from writer 2", new File(PAYROLL_TEMP_FILE + "2.tmp").exists());
+		assertTrue("Created file from writer 3", new File(PAYROLL_TEMP_FILE + "3.tmp").exists());
 	}
 
 	private void stepExecutions(StepExecution stepExecution) {
-		assertEquals("the batch has failed", COMPLETED, stepExecution.getBatchStatus());
-		assertEquals("the batch has failed", COMPLETED.name(), stepExecution.getExitStatus());
+		assertEquals("the batch has completed", COMPLETED, stepExecution.getBatchStatus());
+		assertEquals("the batch has completed", COMPLETED.name(), stepExecution.getExitStatus());
 		Date startTime = stepExecution.getStartTime();
 		Date endTime = stepExecution.getEndTime();
 		assertNotNull("The step is started", startTime);
@@ -101,7 +110,7 @@ public class SimpleJobTestCase {
 		for (Metric metric : metrics)
 			switch (metric.getType()) {
 			case COMMIT_COUNT:
-				assertEquals("Metric commit count value", 1, metric.getValue());
+				assertEquals("Metric commit count value", 2, metric.getValue());
 				break;
 			case READ_SKIP_COUNT:
 				assertEquals("Metric read skip count value", 0, metric.getValue());
@@ -110,13 +119,13 @@ public class SimpleJobTestCase {
 				assertEquals("Metric write skip count value", 0, metric.getValue());
 				break;
 			case WRITE_COUNT:
-				assertEquals("Metric write count value", 0, metric.getValue());
+				assertEquals("Metric write count value", 3, metric.getValue());
 				break;
 			case ROLLBACK_COUNT:
 				assertEquals("Metric rollback count value", 0, metric.getValue());
 				break;
 			case READ_COUNT:
-				assertEquals("Metric read count value", 0, metric.getValue());
+				assertEquals("Metric read count value", 3, metric.getValue());
 				break;
 			case FILTER_COUNT:
 				assertEquals("Metric filter count value", 0, metric.getValue());
@@ -136,8 +145,8 @@ public class SimpleJobTestCase {
 
 	private void jobExecutions(List<JobExecution> jobExecutions) {
 		for (JobExecution jobExecution : jobExecutions) {
-			assertEquals("the batch has failed", COMPLETED, jobExecution.getBatchStatus());
-			assertEquals("the batch has failed", COMPLETED.name(), jobExecution.getExitStatus());
+			assertEquals("the batch has completed", COMPLETED, jobExecution.getBatchStatus());
+			assertEquals("the batch has completed", EXIT_STATUS, jobExecution.getExitStatus());
 			Date startTime = jobExecution.getStartTime();
 			Date createdTime = jobExecution.getCreateTime();
 			Date lastUpdatedTime = jobExecution.getLastUpdatedTime();
@@ -153,7 +162,7 @@ public class SimpleJobTestCase {
 			assertNotNull("execution created", jobExecution.getExecutionId());
 			Properties properties = jobExecution.getJobParameters();
 			assertEquals("one property found", 1, properties.size());
-			assertEquals("MY_NEW_PROPERTY found", INPUT_PROPERTIES, properties.get("payrollInputDataFileName"));
+			assertEquals("MY_NEW_PROPERTY found", INPUT_PROPERTIES, properties.get(INPUT_DATA_FILE_NAME));
 		}
 	}
 
