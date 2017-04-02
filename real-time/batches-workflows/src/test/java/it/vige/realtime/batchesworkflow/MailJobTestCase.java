@@ -107,7 +107,7 @@ public class MailJobTestCase {
 		List<Long> runningExecutions = jobOperator.getRunningExecutions(JOB_NAME);
 		assertEquals("running executions. The process is end", 0, runningExecutions.size());
 		Set<String> jobNames = jobOperator.getJobNames();
-		assertTrue("one or two job", jobNames.size() == 1 || jobNames.size() == 2);
+		assertTrue("one or two job", jobNames.size() >= 1 && jobNames.size() <= 3);
 		String strJobNames = "";
 		for (String jobName : jobNames)
 			strJobNames += jobName;

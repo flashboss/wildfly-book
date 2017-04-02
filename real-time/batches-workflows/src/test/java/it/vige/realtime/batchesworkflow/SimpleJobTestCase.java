@@ -54,7 +54,8 @@ public class SimpleJobTestCase {
 		war.addPackage(Payroll.class.getPackage());
 		war.addPackage(PayrollItemProcessor.class.getPackage());
 		war.addAsWebInfResource(INSTANCE, "beans.xml");
-		war.addAsWebInfResource(new FileAsset(new File("src/main/resources/META-INF/batch-jobs/" + JOB_NAME + ".xml")),
+		war.addAsWebInfResource(
+				new FileAsset(new File("src/main/resources/META-INF/batch-jobs/" + JOB_NAME + ".xml")),
 				"classes/META-INF/batch-jobs/" + JOB_NAME + ".xml");
 		return war;
 	}
@@ -71,7 +72,7 @@ public class SimpleJobTestCase {
 		List<Long> runningExecutions = jobOperator.getRunningExecutions(JOB_NAME);
 		assertEquals("running executions. The process is end", 0, runningExecutions.size());
 		Set<String> jobNames = jobOperator.getJobNames();
-		assertTrue("one or two job", jobNames.size() == 1 || jobNames.size() == 2);
+		assertTrue("one or three jobs", jobNames.size() >= 1 && jobNames.size() <= 3);
 		String strJobNames = "";
 		for (String jobName : jobNames)
 			strJobNames += jobName;
@@ -82,7 +83,7 @@ public class SimpleJobTestCase {
 		Properties properties = jobOperator.getParameters(executionId);
 		assertEquals("one property found", 1, properties.size());
 		assertEquals("MY_NEW_PROPERTY found", INPUT_PROPERTIES, properties.get(INPUT_DATA_FILE_NAME));
-		JobInstance jobInstance = jobInstance(jobOperator.getJobInstance(executionId));
+		JobInstance jobInstance = jobInstance(jobOperator.getJobInstance(executionId), JOB_NAME);
 		jobExecutions(jobOperator.getJobExecutions(jobInstance));
 		assertNotNull("executionId not empty", executionId);
 		assertTrue("Created file from writer 1", new File(PAYROLL_TEMP_FILE + "1.tmp").exists());
@@ -98,19 +99,19 @@ public class SimpleJobTestCase {
 		assertNotNull("The step is started", startTime);
 		assertNotNull("Tha batch has failed", endTime);
 		assertTrue("Dates are ok", startTime.before(endTime));
-		stepMetrics(stepExecution.getMetrics());
+		stepMetrics(stepExecution.getMetrics(), 2, 3, 3);
 		assertNull("No user available", stepExecution.getPersistentUserData());
 		assertNotNull("New step execution id", stepExecution.getStepExecutionId());
 		assertEquals("The name of the step", "process", stepExecution.getStepName());
 
 	}
 
-	private void stepMetrics(Metric[] metrics) {
+	private void stepMetrics(Metric[] metrics, int... values) {
 		assertEquals("Metrics are", 8, metrics.length);
 		for (Metric metric : metrics)
 			switch (metric.getType()) {
 			case COMMIT_COUNT:
-				assertEquals("Metric commit count value", 2, metric.getValue());
+				assertEquals("Metric commit count value", values[0], metric.getValue());
 				break;
 			case READ_SKIP_COUNT:
 				assertEquals("Metric read skip count value", 0, metric.getValue());
@@ -119,13 +120,13 @@ public class SimpleJobTestCase {
 				assertEquals("Metric write skip count value", 0, metric.getValue());
 				break;
 			case WRITE_COUNT:
-				assertEquals("Metric write count value", 3, metric.getValue());
+				assertEquals("Metric write count value", values[1], metric.getValue());
 				break;
 			case ROLLBACK_COUNT:
 				assertEquals("Metric rollback count value", 0, metric.getValue());
 				break;
 			case READ_COUNT:
-				assertEquals("Metric read count value", 3, metric.getValue());
+				assertEquals("Metric read count value", values[2], metric.getValue());
 				break;
 			case FILTER_COUNT:
 				assertEquals("Metric filter count value", 0, metric.getValue());
@@ -137,9 +138,9 @@ public class SimpleJobTestCase {
 
 	}
 
-	private JobInstance jobInstance(JobInstance jobInstance) {
+	private JobInstance jobInstance(JobInstance jobInstance, String jobName) {
 		assertNotNull("Job instance created", jobInstance.getInstanceId());
-		assertEquals("Job instance created with name", JOB_NAME, jobInstance.getJobName());
+		assertEquals("Job instance created with name", jobName, jobInstance.getJobName());
 		return jobInstance;
 	}
 
