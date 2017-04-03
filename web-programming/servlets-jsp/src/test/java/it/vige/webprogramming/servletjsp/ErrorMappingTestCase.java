@@ -21,13 +21,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 
-import it.vige.webprogramming.servletjsp.nonblocking.ReadingServlet;
+import it.vige.webprogramming.servletjsp.errormapping.ErrorMappingServlet;
 
 @RunWith(Arquillian.class)
 @RunAsClient
-public class NonBlockingTestCase {
+public class ErrorMappingTestCase {
 
-	private static final Logger logger = getLogger(NonBlockingTestCase.class.getName());
+	private static final Logger logger = getLogger(ErrorMappingTestCase.class.getName());
 
 	@ArquillianResource
 	private URL url;
@@ -37,18 +37,18 @@ public class NonBlockingTestCase {
 
 	@Deployment
 	public static WebArchive createWebDeployment() {
-		final WebArchive war = create(WebArchive.class, "simple-servlet-test.war");
-		war.addPackage(ReadingServlet.class.getPackage());
+		final WebArchive war = create(WebArchive.class, "errormappings-test.war");
+		war.addPackage(ErrorMappingServlet.class.getPackage());
 		war.addAsWebInfResource(INSTANCE, "beans.xml");
 		war.addAsWebResource(new FileAsset(new File("src/main/webapp/index.jsp")), "index.jsp");
-		war.addAsWebResource(new FileAsset(new File("src/main/webapp/view/nonblocking.jsp")), "view/nonblocking.jsp");
+		war.addAsWebResource(new FileAsset(new File("src/main/webapp/view/errormapping.jsp")), "view/errormapping.jsp");
 		war.addAsWebInfResource(new FileAsset(new File("src/main/webapp/WEB-INF/web.xml")), "web.xml");
 		return war;
 	}
 
 	@Test
-	public void testNonBlocking() throws Exception {
-		logger.info("start non blocking test");
+	public void testErrorMapping() throws Exception {
+		logger.info("start error mappings test");
 		driver.get(url + "");
 		driver.findElement(xpath("html/body/a")).click();
 		assertTrue("the page result is: ",

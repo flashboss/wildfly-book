@@ -5,11 +5,11 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Servlet : Non-blocking I/O</title>
+        <title>Servlet and JSP : Non-blocking I/O</title>
     </head>
     <body>
-        <h1>Non-blocking I/O using Servlet 3.1</h1>
-        Invoke <a href="${pageContext.request.contextPath}/TestClient">non-blocking input client</a><br/>
-        Invoke <a href="${pageContext.request.contextPath}/TestClient">non-blocking output client</a>
+        <h1>Non-blocking I/O with Servlet 3.1</h1>
+        Invoke <a href="${pageContext.request.contextPath}/SimpleClient">non-blocking input client</a><br/>
+        Invoke <a href="${pageContext.request.contextPath}/SimpleClient">non-blocking output client</a>
     </body>
 </html>

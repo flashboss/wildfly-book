@@ -21,13 +21,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 
-import it.vige.webprogramming.servletjsp.nonblocking.ReadingServlet;
+import it.vige.webprogramming.servletjsp.async.AsynchronousServlet;
 
 @RunWith(Arquillian.class)
 @RunAsClient
-public class NonBlockingTestCase {
+public class AsynchronousTestCase {
 
-	private static final Logger logger = getLogger(NonBlockingTestCase.class.getName());
+	private static final Logger logger = getLogger(AsynchronousTestCase.class.getName());
 
 	@ArquillianResource
 	private URL url;
@@ -37,18 +37,18 @@ public class NonBlockingTestCase {
 
 	@Deployment
 	public static WebArchive createWebDeployment() {
-		final WebArchive war = create(WebArchive.class, "simple-servlet-test.war");
-		war.addPackage(ReadingServlet.class.getPackage());
+		final WebArchive war = create(WebArchive.class, "asynchronous-test.war");
+		war.addPackage(AsynchronousServlet.class.getPackage());
 		war.addAsWebInfResource(INSTANCE, "beans.xml");
 		war.addAsWebResource(new FileAsset(new File("src/main/webapp/index.jsp")), "index.jsp");
-		war.addAsWebResource(new FileAsset(new File("src/main/webapp/view/nonblocking.jsp")), "view/nonblocking.jsp");
+		war.addAsWebResource(new FileAsset(new File("src/main/webapp/view/asynchronous.jsp")), "view/asynchronous.jsp");
 		war.addAsWebInfResource(new FileAsset(new File("src/main/webapp/WEB-INF/web.xml")), "web.xml");
 		return war;
 	}
 
 	@Test
-	public void testNonBlocking() throws Exception {
-		logger.info("start non blocking test");
+	public void testAsynchronous() throws Exception {
+		logger.info("start asynchronous test");
 		driver.get(url + "");
 		driver.findElement(xpath("html/body/a")).click();
 		assertTrue("the page result is: ",

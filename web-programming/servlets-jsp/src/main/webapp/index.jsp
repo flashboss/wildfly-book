@@ -12,6 +12,14 @@
 	Invoke
 	<a href="${pageContext.request.contextPath}/view/nonblocking.jsp">non-blocking
 		sample</a>
+	<a href="${pageContext.request.contextPath}/view/asynchronous.jsp">asynchronous
+		sample</a>
+	<a href="${pageContext.request.contextPath}/view/cookies.jsp">cookies
+		sample</a>
+	<a href="${pageContext.request.contextPath}/view/errormapping.jsp">error-mapping
+		sample</a>
+	<a href="${pageContext.request.contextPath}/view/eventlistener.jsp">event
+		listener sample</a>
 	<br />
 </body>
 </html>
