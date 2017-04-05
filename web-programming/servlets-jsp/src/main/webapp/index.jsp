@@ -20,6 +20,22 @@
 		sample</a>
 	<a href="${pageContext.request.contextPath}/view/eventlistener.jsp">event
 		listener sample</a>
+	<a href="${pageContext.request.contextPath}/FileUploadServlet">file
+		upload sample</a>
+	<a href="${pageContext.request.contextPath}/RandomName">metadata
+		complete sample</a>
+	<a href="${pageContext.request.contextPath}/dynamic">dynamic
+		registration sample</a>
+	<a href="${pageContext.request.contextPath}/view/protocolhandler.jsp">protocol
+		handler sample</a>
+	<a href="${pageContext.request.contextPath}/CharacterServlet">filters
+		sample</a>
+	<a href="${pageContext.request.contextPath}/styles.css">resource
+		packaging sample</a>
+	<a href="${pageContext.request.contextPath}/view/simpleservlet.jsp">simple
+		servlet sample</a>
+	<a href="${pageContext.request.contextPath}/view/webfragment.jsp">web
+		fragment sample</a>
 	<br />
 </body>
 </html>
