@@ -37,12 +37,12 @@ public class NonBlockingTestCase {
 
 	@Deployment
 	public static WebArchive createWebDeployment() {
-		final WebArchive war = create(WebArchive.class, "simple-servlet-test.war");
+		final WebArchive war = create(WebArchive.class, "nonblocking-test.war");
 		war.addPackage(ReadingServlet.class.getPackage());
 		war.addAsWebInfResource(INSTANCE, "beans.xml");
 		war.addAsWebResource(new FileAsset(new File("src/main/webapp/index.jsp")), "index.jsp");
 		war.addAsWebResource(new FileAsset(new File("src/main/webapp/view/nonblocking.jsp")), "view/nonblocking.jsp");
-		war.addAsWebInfResource(new FileAsset(new File("src/main/webapp/WEB-INF/web.xml")), "web.xml");
+		war.addAsWebInfResource(new FileAsset(new File("src/test/resources/web.xml")), "web.xml");
 		return war;
 	}
 

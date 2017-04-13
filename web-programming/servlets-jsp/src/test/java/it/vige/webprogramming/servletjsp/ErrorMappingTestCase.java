@@ -42,7 +42,7 @@ public class ErrorMappingTestCase {
 		war.addAsWebInfResource(INSTANCE, "beans.xml");
 		war.addAsWebResource(new FileAsset(new File("src/main/webapp/index.jsp")), "index.jsp");
 		war.addAsWebResource(new FileAsset(new File("src/main/webapp/view/errormapping.jsp")), "view/errormapping.jsp");
-		war.addAsWebInfResource(new FileAsset(new File("src/main/webapp/WEB-INF/web.xml")), "web.xml");
+		war.addAsWebInfResource(new FileAsset(new File("src/test/resources/web-errormapping.xml")), "web.xml");
 		return war;
 	}
 

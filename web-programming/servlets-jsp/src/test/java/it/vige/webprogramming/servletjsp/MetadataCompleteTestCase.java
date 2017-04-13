@@ -26,7 +26,7 @@ import it.vige.webprogramming.servletjsp.metadatacomplete.MetadataCompleteServle
 @RunWith(Arquillian.class)
 public class MetadataCompleteTestCase {
 
-	private static final String WEBAPP_SRC = "src/main/webapp";
+	private static final String WEBAPP_SRC = "src/test/resources";
 
 	@ArquillianResource
 	private URL base;
@@ -36,7 +36,7 @@ public class MetadataCompleteTestCase {
 	@Deployment(testable = false)
 	public static WebArchive createDeployment() {
 		WebArchive war = create(WebArchive.class).addClass(MetadataCompleteServlet.class)
-				.addAsWebInfResource((new File(WEBAPP_SRC + "/WEB-INF", "web.xml")));
+				.addAsWebInfResource((new File(WEBAPP_SRC, "web-metadatacomplete.xml")), "web.xml");
 		return war;
 	}
 

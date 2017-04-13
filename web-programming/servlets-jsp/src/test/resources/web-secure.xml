@@ -4,39 +4,15 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
     xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">   
     <servlet>
-        <servlet-name>MetadataCompleteServlet</servlet-name>
-        <servlet-class>it.vige.webprogramming.servletjsp.metadatacomplete.MetadataCompleteServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ErrorMappingServlet</servlet-name>
-        <servlet-class>it.vige.webprogramming.servletjsp.errormapping.ErrorMappingServlet</servlet-class>
-    </servlet>
-    <servlet>
         <display-name>index</display-name>
         <servlet-name>index</servlet-name>
         <jsp-file>/view/secure-programmatic.jsp</jsp-file>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>MetadataCompleteServlet</servlet-name>
-        <url-pattern>/MetadataCompleteServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ErrorMappingServlet</servlet-name>
-        <url-pattern>/ErrorMappingServlet</url-pattern>
-    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
-    <error-page> 
-        <error-code>404</error-code> 
-        <location>/error-404.jsp</location>
-    </error-page>
-    <error-page> 
-        <exception-type>java.lang.RuntimeException</exception-type> 
-        <location>/error-exception.jsp</location>
-    </error-page>
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>SecureServlet</web-resource-name>
