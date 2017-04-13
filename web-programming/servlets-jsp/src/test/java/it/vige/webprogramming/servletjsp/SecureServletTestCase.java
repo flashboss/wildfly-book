@@ -59,7 +59,7 @@ public class SecureServletTestCase {
 				.addAsWebResource(new File(WEBAPP_SRC + "/view", "secure-form.jsp"))
 				.addAsWebResource(new File(WEBAPP_SRC + "/view", "loginerror.jsp"))
 				.addAsWebResource(new File(WEBAPP_SRC + "/view", "loginform.jsp"))
-				.addAsWebInfResource((new File("src/test/resources", "web.xml")));
+				.addAsWebInfResource((new File("src/test/resources/web-secure.xml", "web.xml")));
 		return war;
 	}
 
