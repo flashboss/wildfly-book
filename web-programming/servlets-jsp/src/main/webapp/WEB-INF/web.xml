@@ -7,6 +7,11 @@
         <servlet-name>ErrorMappingServlet</servlet-name>
         <servlet-class>it.vige.webprogramming.servletjsp.errormapping.ErrorMappingServlet</servlet-class>
     </servlet>
+    <servlet>
+        <display-name>index</display-name>
+        <servlet-name>index</servlet-name>
+        <jsp-file>/view/secure-programmatic.jsp</jsp-file>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ErrorMappingServlet</servlet-name>
         <url-pattern>/ErrorMappingServlet</url-pattern>
@@ -28,7 +33,18 @@
         <web-resource-collection>
             <web-resource-name>SecureServlet</web-resource-name>
             <url-pattern>/SecureServlet</url-pattern>
+            <http-method>GET</http-method>
+            <http-method>POST</http-method>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>SecureServlet</web-resource-name>
+            <url-pattern>/SecureOmissionServlet</url-pattern>
             <http-method-omission>POST</http-method-omission>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>SecureServlet</web-resource-name>
+            <url-pattern>/SecureDenyUncoveredServlet</url-pattern>
+            <http-method>GET</http-method>
         </web-resource-collection>
         <auth-constraint>
             <role-name>g1</role-name>
