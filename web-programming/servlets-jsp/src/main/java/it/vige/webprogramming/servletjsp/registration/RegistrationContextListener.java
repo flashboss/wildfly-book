@@ -9,9 +9,6 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.ServletRegistration;
 import javax.servlet.annotation.WebListener;
 
-/**
- * @author OrelGenya
- */
 @WebListener
 public class RegistrationContextListener implements ServletContextListener {
 
