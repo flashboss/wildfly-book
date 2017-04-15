@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(urlPatterns = "/WebFragmentServlet")
+@WebServlet(urlPatterns = "/logging/WebFragmentServlet")
 public class WebFragmentServlet extends HttpServlet {
 
 	private static final long serialVersionUID = -2337175335640884075L;

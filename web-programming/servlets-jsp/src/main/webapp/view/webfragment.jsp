@@ -11,6 +11,6 @@
         <h1>Servlet : Web Fragment</h1>
         
         Do you see output from Servlet Filter (packaged in web fragment)? <br><br>
-        Access the <a href="${pageContext.request.contextPath}/WebFragmentServlet">Servlet</a> and check output in server log.
+        Access the <a href="${pageContext.request.contextPath}/logging/WebFragmentServlet">Servlet</a> and check output in server log.
     </body>
 </html>

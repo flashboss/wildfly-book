@@ -9,7 +9,7 @@
     </filter>
     <filter-mapping>
         <filter-name>LoggingFilter</filter-name>
-        <url-pattern>/*</url-pattern> 
+        <url-pattern>/logging/*</url-pattern> 
     </filter-mapping>
 </web-fragment>
 
