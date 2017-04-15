@@ -18,6 +18,37 @@
 		<finalName>servlets-jsp</finalName>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>it.vige.wildfly</groupId>
+									<artifactId>web-fragment</artifactId>
+									<version>${project.version}</version>
+									<type>jar</type>
+									<outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/lib</outputDirectory>
+									<destFileName>web-fragment.jar</destFileName>
+								</artifactItem>
+								<artifactItem>
+									<groupId>it.vige.wildfly</groupId>
+									<artifactId>packresources</artifactId>
+									<version>${project.version}</version>
+									<type>jar</type>
+									<outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/lib</outputDirectory>
+									<destFileName>packResources.jar</destFileName>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<artifactId>maven-eclipse-plugin</artifactId>
 				<configuration>
 					<additionalBuildcommands>
