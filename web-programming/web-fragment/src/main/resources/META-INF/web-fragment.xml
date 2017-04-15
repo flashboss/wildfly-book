@@ -5,7 +5,7 @@
     xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <filter>
         <filter-name>LoggingFilter</filter-name> 
-        <filter-class>org.javaee7.servlet.filters.LoggingFilter</filter-class> 
+        <filter-class>it.vige.webprogramming.servletjsp.filters.LoggingFilter</filter-class> 
     </filter>
     <filter-mapping>
         <filter-name>LoggingFilter</filter-name>
