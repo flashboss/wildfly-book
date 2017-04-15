@@ -3,14 +3,17 @@
    "http://www.w3.org/TR/html4/loose.dtd">
 
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Protocol Handler using Servlet 3.1</title>
-    </head>
-    <body>
-        <h1>Protocol Handler using Servlet 3.1</h1>
-        Invoke <a href="${pageContext.request.contextPath}/UpgradeServlet">protocol upgrade</a><br/>
-        
-        <!-- What is the correct way to initiate the request -->
-    </body>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Protocol Handler using Servlet 3.1</title>
+</head>
+<body>
+	<h1>Protocol Handler using Servlet 3.1</h1>
+	Invoke
+	<a href="${pageContext.request.contextPath}/UpgradeServlet">protocol
+		upgrade</a>
+	<br />
+
+	<!-- What is the correct way to initiate the request -->
+</body>
 </html>

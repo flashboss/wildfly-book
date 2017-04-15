@@ -32,7 +32,7 @@ public class SimpleClient extends HttpServlet {
 			out.println("<h1>Invoke the servlet clients</h1>");
 
 			String path = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()
-					+ "/ReadTestServlet";
+					+ "/ReadingServlet";
 			out.println("Invoking the endpoint: " + path + "<br>");
 			out.flush();
 			URL url = new URL(path);

@@ -11,6 +11,6 @@
 	<h1>Error Mapping Sample - 404 page not found</h1>
 
 	Go
-	<a href="${pageContext.request.contextPath}/errormapping.jsp">home</a>.
+	<a href="${pageContext.request.contextPath}/view/errormapping.jsp">home</a>.
 </body>
 </html>

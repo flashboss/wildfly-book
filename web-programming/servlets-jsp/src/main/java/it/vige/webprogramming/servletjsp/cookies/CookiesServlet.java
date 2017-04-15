@@ -44,7 +44,7 @@ public class CookiesServlet extends HttpServlet {
 			out.println("<br>Set a new HTTPOnly Cookie<br><br>");
 			out.println("Check what cookies are visible by");
 			out.println("<a href=\"http://" + request.getServerName() + ":" + request.getServerPort()
-					+ request.getContextPath() + "/index-cookies.jsp\">clicking here</a>");
+					+ request.getContextPath() + "/view/index-cookies.jsp\">clicking here</a>");
 
 			out.println("</body>");
 			out.println("</html>");

@@ -10,6 +10,6 @@
     <body>
         <h1>Non-blocking I/O with Servlet 3.1</h1>
         Invoke <a href="${pageContext.request.contextPath}/SimpleClient">non-blocking input client</a><br/>
-        Invoke <a href="${pageContext.request.contextPath}/SimpleClient">non-blocking output client</a>
+        Invoke <a href="${pageContext.request.contextPath}/WriteServlet">non-blocking output client</a>
     </body>
 </html>

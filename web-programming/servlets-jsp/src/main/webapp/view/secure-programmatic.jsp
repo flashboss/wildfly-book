@@ -3,13 +3,15 @@
     "http://www.w3.org/TR/html4/loose.dtd">
 
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Servlet Form-Based Security - Success</title>
-    </head>
-    <body>
-        <h1>Servlet Programmatic Security</h1>
-        
-        Call <a href="LoginServlet?user=u1&password=p1">Servlet</a>
-    </body>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Servlet Form-Based Security - Success</title>
+</head>
+<body>
+	<h1>Servlet Programmatic Security</h1>
+
+	Call
+	<a
+		href="${pageContext.request.contextPath}/LoginServlet?user=u1&password=p1">Servlet</a>
+</body>
 </html>

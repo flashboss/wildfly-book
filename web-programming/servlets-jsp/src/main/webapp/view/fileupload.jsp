@@ -9,12 +9,14 @@
 
 </head>
 <body>
-	<h1>Servlet : Cookies</h1>
+	<h1>Servlet : File Upload</h1>
 
-	Call
-	<a href="${pageContext.request.contextPath}/CookiesServlet">Servlet</a> to
-	see the pre-defined cookie, and set two cookies - one normal, another
-	HttpOnly.
+	Select a file to upload:
+	<br />
+	<form action="${pageContext.request.contextPath}/FileUploadServlet"
+		method="post" enctype="multipart/form-data">
+		<input type="file" name="file" size="50" /> <br /> <input
+			type="submit" value="Upload File" />
 	</form>
 </body>
 </html>

@@ -20,7 +20,7 @@
 		sample</a>
 	<a href="${pageContext.request.contextPath}/view/eventlistener.jsp">event
 		listener sample</a>
-	<a href="${pageContext.request.contextPath}/FileUploadServlet">file
+	<a href="${pageContext.request.contextPath}/view/fileupload.jsp">file
 		upload sample</a>
 	<a href="${pageContext.request.contextPath}/RandomName">metadata
 		complete sample</a>
@@ -28,7 +28,7 @@
 		registration sample</a>
 	<a href="${pageContext.request.contextPath}/view/protocolhandler.jsp">protocol
 		handler sample</a>
-	<a href="${pageContext.request.contextPath}/CharacterServlet">filters
+	<a href="${pageContext.request.contextPath}/filtered/CharacterServlet">filters
 		sample</a>
 	<a href="${pageContext.request.contextPath}/styles.css">resource
 		packaging sample</a>
@@ -44,7 +44,7 @@
 		href="${pageContext.request.contextPath}/view/secure-deny-uncovered.jsp">web
 		secure deny uncovered form</a>
 	<a href="${pageContext.request.contextPath}/view/secure-form.jsp">web
-		secure form</a>
+		secure form by form</a>
 	<a
 		href="${pageContext.request.contextPath}/view/secure-programmatic.jsp">
 		secure programmatic</a>

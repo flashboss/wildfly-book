@@ -12,6 +12,6 @@
         
         This page is shown when a java.lang.RuntimeException is thrown.<br><br>
         
-        Go <a href="${pageContext.request.contextPath}/errormapping.jsp">home</a>.
+        Go <a href="${pageContext.request.contextPath}/view/errormapping.jsp">home</a>.
     </body>
 </html>

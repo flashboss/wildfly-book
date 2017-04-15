@@ -31,11 +31,11 @@
     </session-config>
     <error-page> 
         <error-code>404</error-code> 
-        <location>/error-404.jsp</location>
+        <location>/view/error-404.jsp</location>
     </error-page>
     <error-page> 
         <exception-type>java.lang.RuntimeException</exception-type> 
-        <location>/error-exception.jsp</location>
+        <location>/view/error-exception.jsp</location>
     </error-page>
     <security-constraint>
         <web-resource-collection>
