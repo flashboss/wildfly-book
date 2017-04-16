@@ -45,12 +45,12 @@
             <http-method>POST</http-method>
         </web-resource-collection>
         <web-resource-collection>
-            <web-resource-name>SecureServlet</web-resource-name>
+            <web-resource-name>SecureOmissionServlet</web-resource-name>
             <url-pattern>/SecureOmissionServlet</url-pattern>
             <http-method-omission>POST</http-method-omission>
         </web-resource-collection>
         <web-resource-collection>
-            <web-resource-name>SecureServlet</web-resource-name>
+            <web-resource-name>SecureDenyUncoveredServlet</web-resource-name>
             <url-pattern>/SecureDenyUncoveredServlet</url-pattern>
             <http-method>GET</http-method>
         </web-resource-collection>

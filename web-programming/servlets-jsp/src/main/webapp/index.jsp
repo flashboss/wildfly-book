@@ -9,42 +9,41 @@
 </head>
 <body>
 	<h1>All samples</h1>
-	Invoke
 	<a href="${pageContext.request.contextPath}/view/nonblocking.jsp">non-blocking
-		sample</a>
+		sample</a><br/>
 	<a href="${pageContext.request.contextPath}/view/asynchronous.jsp">asynchronous
-		sample</a>
+		sample</a><br/>
 	<a href="${pageContext.request.contextPath}/view/cookies.jsp">cookies
-		sample</a>
+		sample</a><br/>
 	<a href="${pageContext.request.contextPath}/view/errormapping.jsp">error-mapping
-		sample</a>
+		sample</a><br/>
 	<a href="${pageContext.request.contextPath}/view/eventlistener.jsp">event
-		listener sample</a>
+		listener sample</a><br/>
 	<a href="${pageContext.request.contextPath}/view/fileupload.jsp">file
-		upload sample</a>
+		upload sample</a><br/>
 	<a href="${pageContext.request.contextPath}/RandomName">metadata
-		complete sample</a>
+		complete sample</a><br/>
 	<a href="${pageContext.request.contextPath}/dynamic">dynamic
-		registration sample</a>
+		registration sample</a><br/>
 	<a href="${pageContext.request.contextPath}/view/protocolhandler.jsp">protocol
-		handler sample</a>
+		handler sample</a><br/>
 	<a href="${pageContext.request.contextPath}/filtered/CharacterServlet">filters
-		sample</a>
+		sample</a><br/>
 	<a href="${pageContext.request.contextPath}/styles.css">resource
-		packaging sample</a>
+		packaging sample</a><br/>
 	<a href="${pageContext.request.contextPath}/view/simpleservlet.jsp">simple
-		servlet sample</a>
+		servlet sample</a><br/>
 	<a href="${pageContext.request.contextPath}/view/webfragment.jsp">web
-		fragment sample</a>
+		fragment sample</a><br/>
 	<a href="${pageContext.request.contextPath}/view/secure.jsp">web
-		secure form</a>
+		secure form</a><br/>
 	<a href="${pageContext.request.contextPath}/view/secure-omission.jsp">web
-		secure omission form</a>
+		secure omission form</a><br/>
 	<a
 		href="${pageContext.request.contextPath}/view/secure-deny-uncovered.jsp">web
-		secure deny uncovered form</a>
+		secure deny uncovered form</a><br>
 	<a href="${pageContext.request.contextPath}/view/secure-form.jsp">web
-		secure form by form</a>
+		secure form by form</a><br/>
 	<a
 		href="${pageContext.request.contextPath}/view/secure-programmatic.jsp">
 		secure programmatic</a>

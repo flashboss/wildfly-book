@@ -9,8 +9,11 @@
 </head>
 <body>
 	<h1>Servlet Programmatic Security</h1>
-
-	Call
+        
+        Make sure to create a user:<br><br>
+        
+        Invoke "./bin/add-user.sh -a -u u1 -p p1 -g g1"<br>
+        Then call
 	<a
 		href="${pageContext.request.contextPath}/LoginServlet?user=u1&password=p1">Servlet</a>
 </body>
