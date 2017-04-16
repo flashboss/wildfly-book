@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(urlPatterns = { "/WriteServlet" }, asyncSupported = true)
+@WebServlet(urlPatterns = { "/WritingServlet" }, asyncSupported = true)
 public class WritingServlet extends HttpServlet {
 
 	private static final long serialVersionUID = -8480171691174007693L;
@@ -38,6 +38,6 @@ public class WritingServlet extends HttpServlet {
 
 	@Override
 	public String getServletInfo() {
-		return "Reading Servlet";
+		return "Writing Servlet";
 	}
 }

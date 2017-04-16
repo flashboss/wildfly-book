@@ -1,12 +1,15 @@
 package it.vige.webprogramming.servletjsp.nonblocking;
 
+import static java.lang.Thread.sleep;
+import static java.util.logging.Level.SEVERE;
+import static java.util.logging.Logger.getLogger;
+
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
@@ -15,8 +18,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(urlPatterns = { "/SimpleClient" })
-public class SimpleClient extends HttpServlet {
+@WebServlet(urlPatterns = { "/WriteClient" })
+public class WriteClient extends HttpServlet {
+
+	private static final Logger logger = getLogger(WriteClient.class.getName());
 
 	private static final long serialVersionUID = -790666727441790093L;
 
@@ -47,7 +52,7 @@ public class SimpleClient extends HttpServlet {
 				output.flush();
 				out.println("Sleeping ..." + "<br>");
 				out.flush();
-				Thread.sleep(5000);
+				sleep(5000);
 				out.println("Sending more data ..." + "<br>");
 				out.flush();
 				output.write("World");
@@ -58,7 +63,7 @@ public class SimpleClient extends HttpServlet {
 			out.println("</body>");
 			out.println("</html>");
 		} catch (InterruptedException | IOException ex) {
-			Logger.getLogger(ReadingServlet.class.getName()).log(Level.SEVERE, null, ex);
+			logger.log(SEVERE, null, ex);
 		}
 	}
 

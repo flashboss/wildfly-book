@@ -5,12 +5,15 @@ import static java.util.logging.Level.SEVERE;
 import static java.util.logging.Logger.getLogger;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import javax.servlet.AsyncContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.WriteListener;
 
 public class WritingListener implements WriteListener {
+
+	private static final Logger logger = getLogger(WritingListener.class.getName());
 
 	private ServletOutputStream output = null;
 	private AsyncContext context = null;
@@ -28,7 +31,7 @@ public class WritingListener implements WriteListener {
 				fill(b, 0, 100, (byte) 'a');
 				output.write(b);
 			} catch (IOException ex) {
-				getLogger(WritingListener.class.getName()).log(SEVERE, null, ex);
+				logger.log(SEVERE, null, ex);
 			}
 		}
 	}

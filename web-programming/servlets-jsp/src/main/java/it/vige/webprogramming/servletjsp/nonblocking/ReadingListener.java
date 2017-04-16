@@ -5,12 +5,15 @@ import static java.util.logging.Level.SEVERE;
 import static java.util.logging.Logger.getLogger;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import javax.servlet.AsyncContext;
 import javax.servlet.ReadListener;
 import javax.servlet.ServletInputStream;
 
 public class ReadingListener implements ReadListener {
+
+	private static final Logger logger = getLogger(ReadingListener.class.getName());
 
 	private ServletInputStream input = null;
 	private AsyncContext context = null;
@@ -30,7 +33,7 @@ public class ReadingListener implements ReadListener {
 				out.println("--> " + data);
 			}
 		} catch (IOException ex) {
-			getLogger(ReadingListener.class.getName()).log(SEVERE, null, ex);
+			logger.log(SEVERE, null, ex);
 		}
 	}
 
