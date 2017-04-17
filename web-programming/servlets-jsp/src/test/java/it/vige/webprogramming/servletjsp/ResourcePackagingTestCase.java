@@ -29,7 +29,7 @@ public class ResourcePackagingTestCase {
 
 	@Deployment(testable = false)
 	public static WebArchive deploy() throws URISyntaxException {
-		return create(WebArchive.class).addAsLibrary(new File("src/main/webapp/WEB-INF/lib/packResources.jar"),
+		return create(WebArchive.class).addAsLibrary(new File("target/servlets-jsp/WEB-INF/lib/packResources.jar"),
 				"packResources.jar");
 	}
 

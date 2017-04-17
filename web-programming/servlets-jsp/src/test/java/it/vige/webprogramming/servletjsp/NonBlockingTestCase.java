@@ -40,19 +40,28 @@ public class NonBlockingTestCase {
 		final WebArchive war = create(WebArchive.class, "nonblocking-test.war");
 		war.addPackage(ReadingServlet.class.getPackage());
 		war.addAsWebInfResource(INSTANCE, "beans.xml");
-		war.addAsWebResource(new FileAsset(new File("src/main/webapp/index.jsp")), "index.jsp");
 		war.addAsWebResource(new FileAsset(new File("src/main/webapp/view/nonblocking.jsp")), "view/nonblocking.jsp");
 		war.addAsWebInfResource(new FileAsset(new File("src/test/resources/web.xml")), "web.xml");
 		return war;
 	}
 
 	@Test
-	public void testNonBlocking() throws Exception {
-		logger.info("start non blocking test");
-		driver.get(url + "");
+	public void testInputNonBlocking() throws Exception {
+		logger.info("start input non blocking test");
+		driver.get(url + "view/nonblocking.jsp");
 		driver.findElement(xpath("html/body/a")).click();
-		assertTrue("the page result is: ",
-				driver.findElement(xpath("html/body")).getText().startsWith("Non-blocking I/O with Servlet 3.1"));
+		String text = driver.findElement(xpath("html/body")).getText();
+		assertTrue("the page result is: ", text.contains("Sending more data ..."));
+	}
+
+	@Test
+	public void testOutputNonBlocking() throws Exception {
+		logger.info("start output non blocking test");
+		driver.get(url + "view/nonblocking.jsp");
+		driver.findElement(xpath("html/body/a[2]")).click();
+		String text = driver.findElement(xpath("html/body")).getText();
+		assertTrue("the page result is: ", text.contains(
+				"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
 	}
 
 }

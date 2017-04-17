@@ -47,13 +47,13 @@ public class MetadataCompleteTestCase {
 
 	@Test
 	public void testGet() throws IOException, SAXException {
-		TextPage page = webClient.getPage(base + "TestServlet");
+		TextPage page = webClient.getPage(base + "MetadataCompleteServlet");
 		assertEquals("my GET", page.getContent());
 	}
 
 	@Test
 	public void testPost() throws IOException, SAXException {
-		WebRequest request = new WebRequest(new URL(base + "TestServlet"), POST);
+		WebRequest request = new WebRequest(new URL(base + "MetadataCompleteServlet"), POST);
 		TextPage page = webClient.getPage(request);
 		assertEquals("my POST", page.getContent());
 	}

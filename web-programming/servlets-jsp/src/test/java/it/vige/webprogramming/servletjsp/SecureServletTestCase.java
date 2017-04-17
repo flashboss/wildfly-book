@@ -47,11 +47,11 @@ public class SecureServletTestCase {
 	@ArquillianResource
 	private URL base;
 
-	HtmlForm loginForm;
+	private HtmlForm loginForm;
 
-	WebClient webClient;
-	DefaultCredentialsProvider correctCreds = new DefaultCredentialsProvider();
-	DefaultCredentialsProvider incorrectCreds = new DefaultCredentialsProvider();
+	private WebClient webClient;
+	private DefaultCredentialsProvider correctCreds = new DefaultCredentialsProvider();
+	private DefaultCredentialsProvider incorrectCreds = new DefaultCredentialsProvider();
 
 	@Deployment(testable = false)
 	public static WebArchive createDeployment() {

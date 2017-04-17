@@ -39,7 +39,7 @@ public class WritingListener implements WriteListener {
 
 	@Override
 	public void onError(Throwable t) {
-		t.printStackTrace();
+		logger.log(SEVERE, "onError executed", t);
 		context.complete();
 	}
 }

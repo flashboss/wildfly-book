@@ -1,5 +1,6 @@
 package it.vige.webprogramming.servletjsp;
 
+import static it.vige.webprogramming.servletjsp.protocolhandler.SampleProtocolHandler.CRLF;
 import static java.lang.Integer.valueOf;
 import static java.util.logging.Logger.getLogger;
 import static java.util.regex.Pattern.compile;
@@ -19,14 +20,12 @@ import java.util.regex.Matcher;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
-import org.jboss.arquillian.drone.api.annotation.Drone;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.asset.FileAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openqa.selenium.WebDriver;
 
 import it.vige.webprogramming.servletjsp.protocolhandler.UpgradeServlet;
 
@@ -36,13 +35,8 @@ public class ProtocolHandlerTestCase {
 
 	private static final Logger logger = getLogger(ProtocolHandlerTestCase.class.getName());
 
-	private static final String CRLF = "\r\n";
-
 	@ArquillianResource
 	private URL url;
-
-	@Drone
-	private WebDriver driver;
 
 	@Deployment
 	public static WebArchive createWebDeployment() {
@@ -129,9 +123,7 @@ public class ProtocolHandlerTestCase {
 				}
 			}
 		}
-		assertTrue(response.contains("isPostConstructCallbackInvoked: true"));
-		assertTrue(response.contains("isInterceptorInvoked: true"));
-		assertTrue(response.contains("isInjectionOk: true"));
+		assertTrue(response.equals("upgradereceived"));
 	}
 
 }

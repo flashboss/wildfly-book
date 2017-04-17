@@ -1,6 +1,5 @@
 package it.vige.webprogramming.servletjsp.nonblocking;
 
-import static java.lang.System.out;
 import static java.util.logging.Level.SEVERE;
 import static java.util.logging.Logger.getLogger;
 
@@ -30,7 +29,7 @@ public class ReadingListener implements ReadListener {
 			byte b[] = new byte[1024];
 			while (input.isReady() && (len = input.read(b)) != -1) {
 				String data = new String(b, 0, len);
-				out.println("--> " + data);
+				logger.info("--> " + data);
 			}
 		} catch (IOException ex) {
 			logger.log(SEVERE, null, ex);
@@ -39,13 +38,13 @@ public class ReadingListener implements ReadListener {
 
 	@Override
 	public void onAllDataRead() {
-		out.println("onAllDataRead");
+		logger.info("onAllDataRead");
 		context.complete();
 	}
 
 	@Override
 	public void onError(Throwable t) {
-		t.printStackTrace();
+		logger.log(SEVERE, "onError executed", t);
 		context.complete();
 	}
 }

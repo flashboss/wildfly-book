@@ -51,7 +51,7 @@ public class FileUploadTestCase {
 	public void uploadFile() throws IOException, URISyntaxException {
 		logger.info("start file upload test");
 		driver.get(base + "view/fileupload.jsp");
-		driver.findElement(xpath("html/body/form/input")).sendKeys("/tmp/1-maiale.jpg");
+		driver.findElement(xpath("html/body/form/input")).sendKeys("/tmp/fake-image.jpg");
 		driver.findElement(xpath("html/body/form/input[2]")).click();
 		String textPage = driver.findElement(xpath("html/body")).getText();
 		assertTrue("File upload executed: ", textPage.contains("Received 1 parts"));

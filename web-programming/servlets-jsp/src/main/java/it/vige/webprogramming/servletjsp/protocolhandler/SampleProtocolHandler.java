@@ -9,9 +9,14 @@ import javax.servlet.http.WebConnection;
 
 public class SampleProtocolHandler implements HttpUpgradeHandler {
 
+	public static final String CRLF = "\r\n";
+
 	@Override
 	public void init(WebConnection wc) {
 		try (ServletInputStream input = wc.getInputStream(); ServletOutputStream output = wc.getOutputStream();) {
+			output.write(("upgrade" + CRLF).getBytes());
+			output.write(("received" + CRLF).getBytes());
+			output.write("END".getBytes());
 		} catch (IOException ex) {
 		}
 	}
