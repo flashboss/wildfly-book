@@ -30,6 +30,7 @@ public class WritingListener implements WriteListener {
 				byte[] b = new byte[100];
 				fill(b, 0, 100, (byte) 'a');
 				output.write(b);
+				output.close();
 			} catch (IOException ex) {
 				logger.log(SEVERE, null, ex);
 			}

@@ -42,9 +42,6 @@ public class ReadClient extends HttpServlet {
 			out.flush();
 			URL url = new URL(path);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			conn.setChunkedStreamingMode(2);
-			conn.setDoOutput(true);
-			conn.connect();
 			try (BufferedReader input = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
 				out.println("Sending data ..." + "<br>");
 				out.flush();
