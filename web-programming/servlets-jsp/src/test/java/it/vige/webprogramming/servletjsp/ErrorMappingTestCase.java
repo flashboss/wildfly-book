@@ -40,8 +40,10 @@ public class ErrorMappingTestCase {
 		final WebArchive war = create(WebArchive.class, "errormappings-test.war");
 		war.addPackage(ErrorMappingServlet.class.getPackage());
 		war.addAsWebInfResource(INSTANCE, "beans.xml");
-		war.addAsWebResource(new FileAsset(new File("src/main/webapp/index.jsp")), "index.jsp");
 		war.addAsWebResource(new FileAsset(new File("src/main/webapp/view/errormapping.jsp")), "view/errormapping.jsp");
+		war.addAsWebResource(new FileAsset(new File("src/main/webapp/view/error-404.jsp")), "view/error-404.jsp");
+		war.addAsWebResource(new FileAsset(new File("src/main/webapp/view/error-exception.jsp")),
+				"view/error-exception.jsp");
 		war.addAsWebInfResource(new FileAsset(new File("src/test/resources/web-errormapping.xml")), "web.xml");
 		return war;
 	}
@@ -49,10 +51,14 @@ public class ErrorMappingTestCase {
 	@Test
 	public void testErrorMapping() throws Exception {
 		logger.info("start error mappings test");
-		driver.get(url + "");
+		driver.get(url + "view/errormapping.jsp");
 		driver.findElement(xpath("html/body/a")).click();
-		assertTrue("the page result is: ",
-				driver.findElement(xpath("html/body")).getText().startsWith("Non-blocking I/O with Servlet 3.1"));
+		String textPage1 = driver.findElement(xpath("html/body")).getText();
+		assertTrue("contains 404 error: ", textPage1.contains("Error Mapping Sample - 404 page not found"));
+		driver.findElement(xpath("html/body/a")).click();
+		driver.findElement(xpath("html/body/a[2]")).click();
+		String textPage2 = driver.findElement(xpath("html/body")).getText();
+		assertTrue("contains exception: ", textPage2.contains("Error Mapping Sample - Exception Mapping"));
 	}
 
 }

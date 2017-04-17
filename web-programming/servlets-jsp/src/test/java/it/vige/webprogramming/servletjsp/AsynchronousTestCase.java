@@ -1,13 +1,14 @@
 package it.vige.webprogramming.servletjsp;
 
-import static it.vige.webprogramming.servletjsp.async.AsynchronousServlet.states;
 import static java.util.logging.Logger.getLogger;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
 import static org.jboss.shrinkwrap.api.asset.EmptyAsset.INSTANCE;
-import static org.junit.Assert.assertTrue;
-import static org.openqa.selenium.By.xpath;
+import static org.junit.Assert.assertEquals;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.logging.Logger;
 
@@ -41,7 +42,6 @@ public class AsynchronousTestCase {
 		final WebArchive war = create(WebArchive.class, "asynchronous-test.war");
 		war.addPackage(AsynchronousServlet.class.getPackage());
 		war.addAsWebInfResource(INSTANCE, "beans.xml");
-		war.addAsWebResource(new FileAsset(new File("src/main/webapp/view/asynchronous.jsp")), "view/asynchronous.jsp");
 		war.addAsWebInfResource(new FileAsset(new File("src/test/resources/web.xml")), "web.xml");
 		return war;
 	}
@@ -49,9 +49,13 @@ public class AsynchronousTestCase {
 	@Test
 	public void testAsynchronous() throws Exception {
 		logger.info("start asynchronous test");
-		assertTrue("asynchrnous call not executed", states.isEmpty());
-		driver.get(url + "/view/asynchronous.jsp");
-		driver.findElement(xpath("html/body/a")).click();
+		URL urlServlet = new URL(url + "AsynchronousServlet");
+		HttpURLConnection conn = (HttpURLConnection) urlServlet.openConnection();
+		try (BufferedReader input = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
+			assertEquals("first received row", "running", input.readLine());
+			assertEquals("second received row", "onComplete", input.readLine());
+			input.close();
+		}
 	}
 
 }

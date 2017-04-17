@@ -40,8 +40,9 @@ public class CookiesTestCase {
 		final WebArchive war = create(WebArchive.class, "cookies-test.war");
 		war.addPackage(CookiesServlet.class.getPackage());
 		war.addAsWebInfResource(INSTANCE, "beans.xml");
-		war.addAsWebResource(new FileAsset(new File("src/main/webapp/index.jsp")), "index.jsp");
 		war.addAsWebResource(new FileAsset(new File("src/main/webapp/view/cookies.jsp")), "view/cookies.jsp");
+		war.addAsWebResource(new FileAsset(new File("src/main/webapp/view/index-cookies.jsp")),
+				"view/index-cookies.jsp");
 		war.addAsWebInfResource(new FileAsset(new File("src/test/resources/web.xml")), "web.xml");
 		return war;
 	}
@@ -49,10 +50,14 @@ public class CookiesTestCase {
 	@Test
 	public void testCookies() throws Exception {
 		logger.info("start cookies test");
-		driver.get(url + "");
+		driver.get(url + "view/cookies.jsp");
 		driver.findElement(xpath("html/body/a")).click();
-		assertTrue("the page result is: ",
-				driver.findElement(xpath("html/body")).getText().startsWith("Non-blocking I/O with Servlet 3.1"));
+		String textPage1 = driver.findElement(xpath("html/body")).getText();
+		assertTrue("the page result is: ", textPage1.contains("Found cookie: JSESSIONID"));
+		driver.findElement(xpath("html/body/a")).click();
+		String textPage2 = driver.findElement(xpath("html/body")).getText();
+		assertTrue("the page result is: ", textPage2.contains("myCookieKey=myCookieValue"));
+		assertTrue("the page result is: ", textPage2.contains("JSESSIONID="));
 	}
 
 }

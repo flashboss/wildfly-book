@@ -10,7 +10,7 @@
 <body>
 	<h1>Servlet : Event Listeners</h1>
 	Call the
-	<a href="${pageContext.request.contextPath}/EventListenerServlet" />servlet
-	</a> to set/update/remove attributes.
+	<a href="${pageContext.request.contextPath}/EventListenerServlet">servlet
+		to set/update/remove attributes.</a>
 </body>
 </html>

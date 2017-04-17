@@ -7,8 +7,6 @@ import static it.vige.webprogramming.servletjsp.async.State.onTimeout;
 import static it.vige.webprogramming.servletjsp.async.State.running;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.annotation.Resource;
 import javax.enterprise.concurrent.ManagedExecutorService;
@@ -27,8 +25,6 @@ public class AsynchronousServlet extends HttpServlet {
 	private static final long serialVersionUID = 1260919965694843835L;
 	@Resource
 	private ManagedExecutorService executor;
-	
-	public static Set<State> states = new HashSet<State>();
 
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -38,26 +34,22 @@ public class AsynchronousServlet extends HttpServlet {
 			@Override
 			public void onComplete(AsyncEvent event) throws IOException {
 				event.getSuppliedResponse().getWriter().println(onComplete);
-				states.add(onComplete);
 			}
 
 			@Override
 			public void onTimeout(AsyncEvent event) throws IOException {
 				event.getSuppliedResponse().getWriter().println(onTimeout);
 				event.getAsyncContext().complete();
-				states.add(onTimeout);
 			}
 
 			@Override
 			public void onError(AsyncEvent event) throws IOException {
 				event.getSuppliedResponse().getWriter().println(onError);
-				states.add(onError);
 			}
 
 			@Override
 			public void onStartAsync(AsyncEvent event) throws IOException {
 				event.getSuppliedResponse().getWriter().println(onStartAsync);
-				states.add(onStartAsync);
 			}
 		});
 		executor.submit(new MyAsyncService(ac));
@@ -75,7 +67,6 @@ public class AsynchronousServlet extends HttpServlet {
 		public void run() {
 			try {
 				ac.getResponse().getWriter().println(running);
-				states.add(running);
 			} catch (IOException e) {
 				throw new IllegalStateException(e);
 			}
