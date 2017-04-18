@@ -35,9 +35,7 @@ import com.gargoylesoftware.htmlunit.TextPage;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.WebRequest;
 import com.gargoylesoftware.htmlunit.WebResponse;
-import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
 
 import it.vige.webprogramming.servletjsp.SecureServletTestCase.SecureResourcesSetupTask;
 import it.vige.webprogramming.servletjsp.secure.LoginServlet;
@@ -46,8 +44,6 @@ import it.vige.webprogramming.servletjsp.secure.SecureServlet;
 @RunWith(Arquillian.class)
 @ServerSetup(SecureResourcesSetupTask.class)
 public class SecureServletTestCase {
-
-	private static final String WEBAPP_SRC = "src/main/webapp";
 
 	private static final Logger logger = getLogger(SecureServletTestCase.class.getName());
 
@@ -73,8 +69,6 @@ public class SecureServletTestCase {
 	@ArquillianResource
 	private URL base;
 
-	private HtmlForm loginForm;
-
 	private WebClient webClient;
 	private DefaultCredentialsProvider correctCreds = new DefaultCredentialsProvider();
 	private DefaultCredentialsProvider incorrectCreds = new DefaultCredentialsProvider();
@@ -82,9 +76,6 @@ public class SecureServletTestCase {
 	@Deployment(testable = false)
 	public static WebArchive createDeployment() {
 		WebArchive war = create(WebArchive.class).addClass(SecureServlet.class).addClass(LoginServlet.class)
-				.addAsWebResource(new File(WEBAPP_SRC + "/view", "secure-form.jsp"))
-				.addAsWebResource(new File(WEBAPP_SRC + "/view", "loginerror.jsp"))
-				.addAsWebResource(new File(WEBAPP_SRC + "/view", "loginform.jsp"))
 				.addAsWebInfResource((new File("src/test/resources/web-secure.xml")), "web.xml");
 		return war;
 	}
@@ -94,31 +85,24 @@ public class SecureServletTestCase {
 		webClient = new WebClient();
 		correctCreds.addCredentials("u1", "p1");
 		incorrectCreds.addCredentials("random", "random");
-		HtmlPage page = webClient.getPage(base + "/secure-form.jsp");
-		loginForm = page.getForms().get(0);
 	}
 
 	@Test
 	public void testGetWithCorrectCredentials() throws Exception {
 		webClient.setCredentialsProvider(correctCreds);
-		TextPage page = webClient.getPage(base + "/SecureServlet");
+		TextPage page = webClient.getPage(base + "SecureServlet");
 		assertEquals("my GET", page.getContent());
-		page = webClient.getPage(base + "/SecureOmissionServlet");
+		page = webClient.getPage(base + "SecureOmissionServlet");
 		assertEquals("my GET", page.getContent());
-		page = webClient.getPage(base + "/SecureDenyUncoveredServlet");
+		page = webClient.getPage(base + "SecureDenyUncoveredServlet");
 		assertEquals("my GET", page.getContent());
-		loginForm.getInputByName("j_username").setValueAttribute("u1");
-		loginForm.getInputByName("j_password").setValueAttribute("p1");
-		HtmlSubmitInput submitButton = loginForm.getInputByName("submitButton");
-		HtmlPage page2 = submitButton.click();
-		assertEquals("Form-based Security - Success", page2.getTitleText());
 	}
 
 	@Test
 	public void testGetWithIncorrectCredentials() throws Exception {
 		webClient.setCredentialsProvider(incorrectCreds);
 		try {
-			webClient.getPage(base + "/SecureServlet");
+			webClient.getPage(base + "SecureServlet");
 		} catch (FailingHttpStatusCodeException e) {
 			assertNotNull(e);
 			assertEquals(401, e.getStatusCode());
@@ -126,28 +110,23 @@ public class SecureServletTestCase {
 		}
 		fail("/SecureServlet could be accessed without proper security credentials");
 		try {
-			webClient.getPage(base + "/SecureOmissionServlet");
+			webClient.getPage(base + "SecureOmissionServlet");
 		} catch (FailingHttpStatusCodeException e) {
 			assertNotNull(e);
 			assertEquals(401, e.getStatusCode());
 			return;
 		}
 		fail("/SecureOmissionServlet could be accessed without proper security credentials");
-		loginForm.getInputByName("j_username").setValueAttribute("random");
-		loginForm.getInputByName("j_password").setValueAttribute("random");
-		HtmlSubmitInput submitButton = loginForm.getInputByName("submitButton");
-		HtmlPage page2 = submitButton.click();
-
-		assertEquals("Form-Based Login Error Page", page2.getTitleText());
 	}
 
 	@Test
 	public void testPostWithCorrectCredentials() throws Exception {
+		logger.info("start post with correct credentials");
 		webClient.setCredentialsProvider(correctCreds);
-		WebRequest request = new WebRequest(new URL(base + "/SecureServlet"), POST);
+		WebRequest request = new WebRequest(new URL(base + "SecureServlet"), POST);
 		TextPage page = webClient.getPage(request);
 		assertEquals("my POST", page.getContent());
-		request = new WebRequest(new URL(base + "/SecureOmissionServlet"), POST);
+		request = new WebRequest(new URL(base + "SecureOmissionServlet"), POST);
 		page = webClient.getPage(request);
 		assertEquals("my POST", page.getContent());
 		request = new WebRequest(new URL(base + "SecureDenyUncoveredServlet"), POST);
@@ -164,8 +143,9 @@ public class SecureServletTestCase {
 
 	@Test
 	public void testPostWithIncorrectCredentials() throws Exception {
+		logger.info("start post with incorrect credentials");
 		webClient.setCredentialsProvider(incorrectCreds);
-		WebRequest request = new WebRequest(new URL(base + "/SecureServlet"), POST);
+		WebRequest request = new WebRequest(new URL(base + "SecureServlet"), POST);
 		try {
 			webClient.getPage(request);
 		} catch (FailingHttpStatusCodeException e) {
@@ -181,6 +161,7 @@ public class SecureServletTestCase {
 
 	@Test
 	public void testPutWithCorrectCredentials() throws Exception {
+		logger.info("start put with correct credentials");
 		webClient.setCredentialsProvider(correctCreds);
 		WebRequest request = new WebRequest(new URL(base + "SecureDenyUncoveredServlet"), PUT);
 		try {
@@ -191,12 +172,13 @@ public class SecureServletTestCase {
 			assertEquals(403, e.getStatusCode());
 			return;
 		}
-		fail("PUT method could be called even with deny-unocvered-http-methods");
+		fail("PUT method could be called even with deny-unocovered-http-methods");
 	}
 
 	@Test
 	public void testUnauthenticatedRequest() throws IOException, SAXException {
-		HtmlPage page = webClient.getPage(base + "/LoginServlet");
+		logger.info("start unauthenticated request");
+		HtmlPage page = webClient.getPage(base + "LoginServlet");
 		String responseText = page.asText();
 		assertTrue("Is User in Role", responseText.contains("isUserInRole?false"));
 		assertTrue("Get Remote User", responseText.contains("getRemoteUser?null"));
@@ -206,12 +188,13 @@ public class SecureServletTestCase {
 
 	@Test
 	public void testAuthenticatedRequest() throws IOException, SAXException {
-		WebRequest request = new WebRequest(new URL(base + "/LoginServlet?user=u1&password=p1"), HttpMethod.GET);
+		logger.info("start authenticated request");
+		WebRequest request = new WebRequest(new URL(base + "LoginServlet?user=u1&password=p1"), HttpMethod.GET);
 		WebResponse response = webClient.getWebConnection().getResponse(request);
 		String responseText = response.getContentAsString();
 		logger.info(responseText);
 
-		assertTrue("Is user in role", responseText.contains("isUserInRole?true"));
+		assertTrue("Is user in Role", responseText.contains("isUserInRole?true"));
 		assertTrue("Get Remote User", responseText.contains("getRemoteUser?u1"));
 		assertTrue("Get User Principal", responseText.contains("getUserPrincipal?u1"));
 		assertTrue("Get Auth Type", responseText.contains("getAuthType?BASIC"));
