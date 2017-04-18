@@ -17,18 +17,10 @@ public class WebFragmentServlet extends HttpServlet {
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
-		try (PrintWriter out = response.getWriter()) {
-			out.println("<!DOCTYPE html>");
-			out.println("<html>");
-			out.println("<head>");
-			out.println("<title>Web Fragment with output from Servlet Filter</title>");
-			out.println("</head>");
-			out.println("<body>");
-			out.println("<h1>Web Fragment with output from Servlet Filter</h1>");
-			out.println("<br><br>Check server log for output from LoggingFilter");
-			out.println("</body>");
-			out.println("</html>");
-		}
+		PrintWriter out = response.getWriter();
+		out.println("<h1>Web Fragment with output from Servlet Filter</h1>");
+		out.println("<br><br>Check server log for output from LoggingFilter");
+
 	}
 
 	@Override

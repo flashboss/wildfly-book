@@ -14,11 +14,12 @@ import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.drone.api.annotation.Drone;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
-import org.jboss.shrinkwrap.api.asset.FileAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
+
+import it.vige.webprogramming.servletjsp.webfragment.WebFragmentServlet;
 
 @RunWith(Arquillian.class)
 public class WebFragmentTestCase {
@@ -27,10 +28,8 @@ public class WebFragmentTestCase {
 
 	@Deployment(testable = false)
 	public static WebArchive deploy() throws URISyntaxException {
-		WebArchive war = create(WebArchive.class).addAsLibrary(new File("src/main/webapp/WEB-INF/lib/web-fragment.jar"),
-				"web-fragment.jar");
-		war.addAsWebResource(new FileAsset(new File("src/main/webapp/index.jsp")), "index.jsp");
-		war.addAsWebResource(new FileAsset(new File("src/main/webapp/view/webfragment.jsp")), "view/webfragment.jsp");
+		WebArchive war = create(WebArchive.class).addPackage(WebFragmentServlet.class.getPackage())
+				.addAsLibrary(new File("target/servlets-jsp/WEB-INF/lib/web-fragment.jar"), "web-fragment.jar");
 		return war;
 	}
 
@@ -43,10 +42,10 @@ public class WebFragmentTestCase {
 	@Test
 	public void testWebFragment() throws Exception {
 		logger.info("start web fragment test");
-		driver.get(url + "");
-		driver.findElement(xpath("html/body/a")).click();
-		assertTrue("the page result is: ",
-				driver.findElement(xpath("html/body")).getText().startsWith("Non-blocking I/O with Servlet 3.1"));
+		driver.get(url + "logging/WebFragmentServlet");
+		String text = driver.findElement(xpath("html/body")).getText();
+		assertTrue("servlet executed: ", text.startsWith("Web Fragment with output from Servlet Filter"));
+		assertTrue("filter executed: ", text.contains("This has been appended by an intrusive filter"));
 	}
 
 }

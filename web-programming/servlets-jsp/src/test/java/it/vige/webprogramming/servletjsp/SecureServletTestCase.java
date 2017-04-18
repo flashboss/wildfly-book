@@ -2,6 +2,8 @@ package it.vige.webprogramming.servletjsp;
 
 import static com.gargoylesoftware.htmlunit.HttpMethod.POST;
 import static com.gargoylesoftware.htmlunit.HttpMethod.PUT;
+import static java.nio.file.Files.copy;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static java.util.logging.Logger.getLogger;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
 import static org.junit.Assert.assertEquals;
@@ -17,6 +19,9 @@ import java.util.logging.Logger;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
+import org.jboss.as.arquillian.api.ServerSetup;
+import org.jboss.as.arquillian.api.ServerSetupTask;
+import org.jboss.as.arquillian.container.ManagementClient;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,15 +39,36 @@ import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
 
+import it.vige.webprogramming.servletjsp.SecureServletTestCase.SecureResourcesSetupTask;
 import it.vige.webprogramming.servletjsp.secure.LoginServlet;
 import it.vige.webprogramming.servletjsp.secure.SecureServlet;
 
 @RunWith(Arquillian.class)
+@ServerSetup(SecureResourcesSetupTask.class)
 public class SecureServletTestCase {
 
 	private static final String WEBAPP_SRC = "src/main/webapp";
 
 	private static final Logger logger = getLogger(SecureServletTestCase.class.getName());
+
+	static class SecureResourcesSetupTask implements ServerSetupTask {
+
+		@Override
+		public void setup(ManagementClient managementClient, String containerId) throws Exception {
+			copy(new File("src/test/resources/application-users.properties").toPath(),
+					new File("target/wildfly-10.1.0.Final/standalone/configuration/application-users.properties")
+							.toPath(),
+					REPLACE_EXISTING);
+			copy(new File("src/test/resources/application-roles.properties").toPath(),
+					new File("target/wildfly-10.1.0.Final/standalone/configuration/application-roles.properties")
+							.toPath(),
+					REPLACE_EXISTING);
+		}
+
+		@Override
+		public void tearDown(ManagementClient managementClient, String containerId) throws Exception {
+		}
+	}
 
 	@ArquillianResource
 	private URL base;
@@ -59,7 +85,7 @@ public class SecureServletTestCase {
 				.addAsWebResource(new File(WEBAPP_SRC + "/view", "secure-form.jsp"))
 				.addAsWebResource(new File(WEBAPP_SRC + "/view", "loginerror.jsp"))
 				.addAsWebResource(new File(WEBAPP_SRC + "/view", "loginform.jsp"))
-				.addAsWebInfResource((new File("src/test/resources/web-secure.xml", "web.xml")));
+				.addAsWebInfResource((new File("src/test/resources/web-secure.xml")), "web.xml");
 		return war;
 	}
 

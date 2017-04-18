@@ -29,6 +29,13 @@ public class LoggingFilter implements Filter {
 		if (debug) {
 			log("LoggingFilter:DoBeforeProcessing");
 		}
+		PrintWriter respOut = new PrintWriter(response.getWriter());
+		respOut.println("<!DOCTYPE html>");
+		respOut.println("<html>");
+		respOut.println("<head>");
+		respOut.println("<title>Web Fragment with output from Servlet Filter</title>");
+		respOut.println("</head>");
+		respOut.println("<body>");
 
 		for (Enumeration<String> en = request.getParameterNames(); en.hasMoreElements();) {
 			String name = (String) en.nextElement();
@@ -59,8 +66,11 @@ public class LoggingFilter implements Filter {
 			log("attribute: " + name + "=" + value.toString());
 
 		}
-		PrintWriter respOut = new PrintWriter(response.getWriter());
-		respOut.println("<P><B>This has been appended by an intrusive filter.</B>");
+		try (PrintWriter out = response.getWriter()) {
+			out.println("<P><B>This has been appended by an intrusive filter.</B>");
+			out.println("</body>");
+			out.println("</html>");
+		}
 	}
 
 	@Override
