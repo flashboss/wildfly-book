@@ -92,10 +92,20 @@ public class SecureServletTestCase {
 		webClient.setCredentialsProvider(correctCreds);
 		TextPage page = webClient.getPage(base + "SecureServlet");
 		assertEquals("my GET", page.getContent());
-		page = webClient.getPage(base + "SecureOmissionServlet");
-		assertEquals("my GET", page.getContent());
-		page = webClient.getPage(base + "SecureDenyUncoveredServlet");
-		assertEquals("my GET", page.getContent());
+		try {
+			page = webClient.getPage(base + "SecureOmissionServlet");
+			fail("GET method could be called even with omission-http-methods");
+		} catch (FailingHttpStatusCodeException e) {
+			assertNotNull(e);
+			assertEquals(404, e.getStatusCode());
+		}
+		try {
+			page = webClient.getPage(base + "SecureDenyUncoveredServlet");
+			fail("GET method could be called even with deny-uncovered-http-methods");
+		} catch (FailingHttpStatusCodeException e) {
+			assertNotNull(e);
+			assertEquals(404, e.getStatusCode());
+		}
 	}
 
 	@Test
@@ -127,18 +137,25 @@ public class SecureServletTestCase {
 		TextPage page = webClient.getPage(request);
 		assertEquals("my POST", page.getContent());
 		request = new WebRequest(new URL(base + "SecureOmissionServlet"), POST);
-		page = webClient.getPage(request);
+		try {
+			TextPage p = webClient.getPage(request);
+			logger.info(p.getContent());
+			fail("POST method could be called even with omission-http-methods");
+		} catch (FailingHttpStatusCodeException e) {
+			assertNotNull(e);
+			assertEquals(405, e.getStatusCode());
+		}
 		assertEquals("my POST", page.getContent());
 		request = new WebRequest(new URL(base + "SecureDenyUncoveredServlet"), POST);
 		try {
 			TextPage p = webClient.getPage(request);
 			logger.info(p.getContent());
+			fail("POST method could be called even with deny-uncovered-http-methods");
 		} catch (FailingHttpStatusCodeException e) {
 			assertNotNull(e);
-			assertEquals(403, e.getStatusCode());
+			assertEquals(405, e.getStatusCode());
 			return;
 		}
-		fail("POST method could be called even with deny-unocvered-http-methods");
 	}
 
 	@Test
@@ -169,7 +186,7 @@ public class SecureServletTestCase {
 			logger.info(p.getContent());
 		} catch (FailingHttpStatusCodeException e) {
 			assertNotNull(e);
-			assertEquals(403, e.getStatusCode());
+			assertEquals(405, e.getStatusCode());
 			return;
 		}
 		fail("PUT method could be called even with deny-unocovered-http-methods");

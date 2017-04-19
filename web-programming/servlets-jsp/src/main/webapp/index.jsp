@@ -42,8 +42,6 @@
 	<a
 		href="${pageContext.request.contextPath}/view/secure-deny-uncovered.jsp">web
 		secure deny uncovered form</a><br>
-	<a href="${pageContext.request.contextPath}/view/secure-form.jsp">web
-		secure form by form</a><br/>
 	<a
 		href="${pageContext.request.contextPath}/view/secure-programmatic.jsp">
 		secure programmatic</a>
