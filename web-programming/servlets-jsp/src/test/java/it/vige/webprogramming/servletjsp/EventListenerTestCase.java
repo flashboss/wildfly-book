@@ -4,7 +4,7 @@ import static it.vige.webprogramming.servletjsp.eventlistener.SampleContextAttri
 import static it.vige.webprogramming.servletjsp.eventlistener.SampleContextListener.sampleContextSet;
 import static it.vige.webprogramming.servletjsp.eventlistener.SampleHttpSessionActivationListener.sampleHttpSessionActivationSet;
 import static it.vige.webprogramming.servletjsp.eventlistener.SampleHttpSessionAttributeListener.sampleHttpSessionAttributeSet;
-import static it.vige.webprogramming.servletjsp.eventlistener.SampleHttpSessionBindingListener.sampleHttpSessionBindingSet;
+import static it.vige.webprogramming.servletjsp.eventlistener.MyAttribute.sampleHttpSessionBindingSet;
 import static it.vige.webprogramming.servletjsp.eventlistener.SampleServletRequestAttributeListener.sampleServletRequestAttributeSet;
 import static it.vige.webprogramming.servletjsp.eventlistener.SampleServletRequestListener.sampleServletRequestSet;
 import static it.vige.webprogramming.servletjsp.eventlistener.SampleSessionIdListener.sampleSessionIdSet;
