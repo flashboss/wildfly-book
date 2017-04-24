@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import javax.servlet.ServletRegistration;
+import javax.servlet.ServletRegistration.Dynamic;
 import javax.servlet.annotation.WebListener;
 
 @WebListener
@@ -17,8 +17,7 @@ public class RegistrationContextListener implements ServletContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
 		logger.info("Servlet context initialized: " + sce.getServletContext().getContextPath());
-		ServletRegistration.Dynamic registration = sce.getServletContext().addServlet("dynamic",
-				RegistrationDynamicServlet.class);
+		Dynamic registration = sce.getServletContext().addServlet("dynamic", RegistrationDynamicServlet.class);
 		registration.addMapping("/dynamic");
 	}
 
