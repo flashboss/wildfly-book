@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>it.vige.wildfly</groupId>
 	<artifactId>book</artifactId>
-	<version>1.0.2</version>
+	<version>1.0.3-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Wildfly Book</name>
 	<description>Mastering Java EE Development with WildFly 10</description>
@@ -22,7 +22,7 @@
 	<scm>
 		<connection>svn:git:https://github.com/flashboss/wildfly-book.git</connection>
 		<developerConnection>svn:git:https://github.com/flashboss/wildfly-book.git</developerConnection>
-		<tag>1.0.2</tag>
+		<tag>1.0.3-SNAPSHOT</tag>
 		<url>svn:git:https://github.com/flashboss/wildfly-book.git</url>
 	</scm>
 	<developers>
@@ -50,7 +50,7 @@
 		<version.org.wildfly.arquillian>1.0.2.Final</version.org.wildfly.arquillian>
 		<hibernate.search.version>5.5.4.Final</hibernate.search.version>
 		<testLogToFile>true</testLogToFile>
-		<maven.deploy.skip>true</maven.deploy.skip>
+		<maven.deploy.skip>false</maven.deploy.skip>
 		<ts.skipTests>${skipTests}</ts.skipTests>
 		<enforcer.skip>true</enforcer.skip>
 	</properties>
