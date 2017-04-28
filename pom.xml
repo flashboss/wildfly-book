@@ -226,11 +226,23 @@
 						<version>1.0.2.Final</version>
 						<executions>
 							<execution>
+								<id>add-securitydomain</id>
+							</execution>
+							<execution>
+								<id>add-authentication</id>
+							</execution>
+							<execution>
+								<id>add-datasource</id>
+							</execution>
+							<execution>
 								<id>deploy-application</id>
 								<phase>install</phase>
 								<goals>
 									<goal>deploy</goal>
 								</goals>
+							</execution>
+							<execution>
+								<id>reload</id>
 							</execution>
 							<execution>
 								<id>del-resources</id>
