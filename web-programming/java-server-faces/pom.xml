@@ -59,6 +59,23 @@
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>it.vige</groupId>
+					<artifactId>rubia-forums-ejb</artifactId>
+					<version>2.2.1</version>
+				</dependency>
+				<dependency>
+					<groupId>org.picketlink</groupId>
+					<artifactId>picketlink-idm-api</artifactId>
+					<version>2.5.5.SP2</version>
+				</dependency>
+				<dependency>
+					<groupId>org.picketlink</groupId>
+					<artifactId>picketlink-idm-impl</artifactId>
+					<version>2.5.5.SP2</version>
+				</dependency>
+			</dependencies>
 			<!-- Server configuration executions. -->
 			<build>
 				<testResources>
