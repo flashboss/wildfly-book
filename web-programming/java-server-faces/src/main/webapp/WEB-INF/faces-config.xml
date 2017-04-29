@@ -4,19 +4,22 @@
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd"
 	version="2.2">
 
-	<name>java-server-faces</name>
+	<name>javaserverfaces</name>
 	<!-- general application configuration -->
 	<application>
 		<!-- internationalization -->
 		<locale-config>
 			<default-locale>en</default-locale>
-			<!-- add supported locales as new locales are supported -->
 			<supported-locale>it</supported-locale>
-			<supported-locale>fr</supported-locale>
-			<supported-locale>pl</supported-locale>
-			<supported-locale>de</supported-locale>
 		</locale-config>
 	</application>
+	<navigation-rule>
+		<from-view-id>/views/category/viewcategory_body.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>adminPanel</from-outcome>
+			<to-view-id>/views/admin/index.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
 	<lifecycle>
 		<phase-listener>it.vige.webprogramming.javaserverfaces.ui.back.BackButton</phase-listener>
 	</lifecycle>
