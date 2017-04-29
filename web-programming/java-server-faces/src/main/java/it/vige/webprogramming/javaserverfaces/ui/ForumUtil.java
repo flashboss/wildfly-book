@@ -1,6 +1,5 @@
 package it.vige.webprogramming.javaserverfaces.ui;
 
-import static it.vige.rubia.Constants.DEFAULT_DATE_PATTERN;
 import static it.vige.webprogramming.javaserverfaces.format.render.bbcodehtml.ToHTMLConfig.FILTER_MODE_ALWAYS_PRINT;
 import static it.vige.webprogramming.javaserverfaces.format.render.bbcodehtml.ToHTMLConfig.FILTER_MODE_NEVER_PRINT;
 import static it.vige.webprogramming.javaserverfaces.format.render.bbcodehtml.ToHTMLConfig.OUTPUT_MODE_REMOVE;
@@ -11,9 +10,6 @@ import static java.util.ResourceBundle.getBundle;
 import static javax.faces.context.FacesContext.getCurrentInstance;
 
 import java.io.StringWriter;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -35,40 +31,11 @@ public class ForumUtil {
 		return parameter;
 	}
 
-	public static String getPercentStr(double input) {
-		String percent = "";
-
-		DecimalFormat decimalFormat = new DecimalFormat("##.##%");
-		percent = decimalFormat.format(input);
-
-		return percent;
-	}
-
 	public static String nullIfEmptyString(String string) {
 		if (string == null || string.trim().length() == 0) {
 			return null;
 		}
 		return string.trim();
-	}
-
-	public static boolean isFeedsConfigured() {
-		return true;
-	}
-
-	public static String getDateStr(Date date) {
-		String dateStr = "";
-
-		if (date != null) {
-			dateStr = getSDF().format(date);
-		}
-
-		return dateStr;
-	}
-
-	public static SimpleDateFormat getSDF() {
-		SimpleDateFormat sdf = new SimpleDateFormat();
-		sdf.applyPattern(DEFAULT_DATE_PATTERN);
-		return sdf;
 	}
 
 	public static String formatMessage(String text, boolean allowHTML) {

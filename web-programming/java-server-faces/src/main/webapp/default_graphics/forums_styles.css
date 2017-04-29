@@ -9,22 +9,6 @@
 	overflow: auto;
 }
 
-.code {
-    border-left: 1px solid #e6e7e8;
-    border-right: 1px solid #e6e7e8;
-    font-family: Courier;
-    font-size: 10px;
-    background-color: #fffdf2;
-    white-space: nowrap;
-}
-
-.quote {
-    border-left: 1px solid #e6e7e8;
-    border-right: 1px solid #e6e7e8;
-    font-size: 10px;
-    background-color: #f5f7fa;
-}
-
 .forumscontainer {
 	margin:0px 25px 0px 15px;
 	font-family: 'Lucida Grande', Geneva, Verdana, Arial, sans-serif;
@@ -107,18 +91,6 @@
 	margin: 2px auto 12px auto;
 }
 
-.inlinefailure {
-	margin: 5px auto;
-	color:#CC0000;
-	font-size:12px;
-	font-weight: bold;	
-}	
-
-.note {
-	color:#233345;
-	font-size:9px;
-	line-height: 9px;
-}
 /* --------------------------- Buttons ---------------------------------- */
 
 .buttonMed {

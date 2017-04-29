@@ -72,7 +72,6 @@ public class ThemeHelper {
 			int lastIndexOfSlash = url.lastIndexOf("/");
 			String beginning = url.substring(0, lastIndexOfSlash);
 
-			// We don't want to I18N images contained in common directory.
 			if (!beginning.endsWith("common")) {
 				String language = getSelectedLocale().getLanguage();
 				if (language.compareTo("") == 0 || !isSupportedLanguage(language)) {

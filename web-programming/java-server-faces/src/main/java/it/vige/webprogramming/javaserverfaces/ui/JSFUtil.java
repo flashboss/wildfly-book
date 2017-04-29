@@ -1,7 +1,6 @@
 package it.vige.webprogramming.javaserverfaces.ui;
 
 import static it.vige.rubia.Constants.ERROR;
-import static it.vige.rubia.PortalUtil.getGuestPoster;
 import static it.vige.rubia.PortalUtil.getUser;
 import static it.vige.rubia.auth.User.INFO_USER_LAST_LOGIN_DATE;
 import static java.lang.Long.valueOf;
@@ -22,11 +21,9 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 
-import it.vige.rubia.ForumsModule;
 import it.vige.rubia.auth.User;
 import it.vige.rubia.auth.UserModule;
 import it.vige.rubia.auth.UserProfileModule;
-import it.vige.rubia.model.Poster;
 
 public class JSFUtil {
 
@@ -200,24 +197,5 @@ public class JSFUtil {
 			JSFUtil.handleException(e);
 		}
 		return null;
-	}
-
-	public static Poster getPoster(UserModule userModule, ForumsModule forumsModule) throws Exception {
-		Poster poster = null;
-
-		if (!isAnonymous()) {
-			User user = getUser(userModule);
-
-			Object userId = user.getId();
-			poster = forumsModule.findPosterByUserId(userId.toString());
-
-			if (poster == null) {
-				poster = new Poster(userId.toString());
-			}
-		} else {
-			poster = getGuestPoster(userModule, forumsModule);
-		}
-
-		return poster;
 	}
 }
