@@ -34,18 +34,12 @@ public class AuthorizationListener implements Serializable {
 		Object managedBean = ctx.getTarget();
 		boolean isAccessAllowed = false;
 
-		// enforce authorization security
 		try {
 
-			// start building the SecurityContext here for the Authorization
-			// System
 			ActionContext securityContext = new ActionContext(getUser(userModule));
 			securityContext.setBusinessAction(businessAction);
 			securityContext.setManagedBean(managedBean);
 
-			// feed this context to the Authorization system which will decide
-			// whether
-			// access should be granted or not
 			isAccessAllowed = forumsACLProvider.hasAccess(securityContext);
 			if (!isAccessAllowed)
 				return null;
