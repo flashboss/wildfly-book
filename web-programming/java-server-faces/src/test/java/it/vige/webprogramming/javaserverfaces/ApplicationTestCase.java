@@ -1,5 +1,7 @@
 package it.vige.webprogramming.javaserverfaces;
 
+import static java.nio.file.Files.copy;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static java.util.logging.Logger.getLogger;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
@@ -64,6 +66,11 @@ public class ApplicationTestCase {
 				.addAsWebResource(new File(WEBAPP_SRC + "/views/admin", "index.xhtml"), "views/admin/index.xhtml")
 				.addAsWebResource(new File(WEBAPP_SRC + "/views/admin", "deletecategory.xhtml"),
 						"views/admin/deletecategory.xhtml")
+				.addAsWebResource(new File(WEBAPP_SRC + "/views/category", "viewcategory_body.xhtml"),
+						"views/category/viewcategory_body.xhtml")
+				.addAsWebResource(new File(WEBAPP_SRC + "/views/common", "common.xhtml"), "views/common/common.xhtml")
+				.addAsWebResource(new File(WEBAPP_SRC + "/views/common", "common_decoration.xhtml"),
+						"views/common/common_decoration.xhtml")
 				.addAsWebInfResource((new File(WEBAPP_SRC + "/WEB-INF", "web.xml")), "web.xml")
 				.addAsWebInfResource((new File(WEBAPP_SRC + "/WEB-INF", "faces-config.xml")), "faces-config.xml")
 				.addAsWebInfResource((new File(WEBAPP_SRC + "/WEB-INF", "forums.taglib.xml")), "forums.taglib.xml")
@@ -75,6 +82,14 @@ public class ApplicationTestCase {
 
 		@Override
 		public void setup(final ManagementClient managementClient, final String containerId) throws Exception {
+			copy(new File("src/test/resources/application-users.properties").toPath(),
+					new File("target/wildfly-10.1.0.Final/standalone/configuration/application-users.properties")
+							.toPath(),
+					REPLACE_EXISTING);
+			copy(new File("src/test/resources/application-roles.properties").toPath(),
+					new File("target/wildfly-10.1.0.Final/standalone/configuration/application-roles.properties")
+							.toPath(),
+					REPLACE_EXISTING);
 			final ServerDeploymentManager manager = ServerDeploymentManager.Factory
 					.create(managementClient.getControllerClient());
 			final DeploymentPlan plan = manager.newDeploymentPlan().add(new File("src/test/resources/" + FORUMS_DS_XML))
@@ -94,8 +109,8 @@ public class ApplicationTestCase {
 		public void tearDown(final ManagementClient managementClient, final String containerId) throws Exception {
 			final ServerDeploymentManager manager = ServerDeploymentManager.Factory
 					.create(managementClient.getControllerClient());
-			final DeploymentPlan undeployPlan = manager.newDeploymentPlan().undeploy(FORUMS_DS_XML).andRemoveUndeployed()
-					.build();
+			final DeploymentPlan undeployPlan = manager.newDeploymentPlan().undeploy(FORUMS_DS_XML)
+					.andRemoveUndeployed().build();
 			manager.execute(undeployPlan).get();
 		}
 	}
@@ -105,7 +120,7 @@ public class ApplicationTestCase {
 		webClient = new WebClient();
 
 		DefaultCredentialsProvider creds = new DefaultCredentialsProvider();
-		creds.addCredentials("root", "gtn");
+		creds.addCredentials("root", "p1");
 		webClient.setCredentialsProvider(creds);
 		HtmlPage page = webClient.getPage(base + "views/admin/index.xhtml");
 		categoryForm = page.getForms().get(0);
