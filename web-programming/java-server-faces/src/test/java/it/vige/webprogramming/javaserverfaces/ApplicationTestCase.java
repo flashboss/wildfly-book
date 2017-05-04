@@ -2,6 +2,7 @@ package it.vige.webprogramming.javaserverfaces;
 
 import static java.nio.file.Files.copy;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+import static java.util.ResourceBundle.getBundle;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static java.util.logging.Logger.getLogger;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
@@ -11,6 +12,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ResourceBundle;
 import java.util.concurrent.Future;
 import java.util.logging.Logger;
 
@@ -31,7 +33,7 @@ import org.junit.runner.RunWith;
 
 import com.gargoylesoftware.htmlunit.DefaultCredentialsProvider;
 import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.html.HtmlButton;
+import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
@@ -50,9 +52,8 @@ public class ApplicationTestCase {
 	@ArquillianResource
 	private URL base;
 
-	private HtmlForm categoryForm;
-
 	private WebClient webClient;
+	private ResourceBundle resourceBundle;
 
 	@Deployment(testable = false)
 	public static WebArchive createDeployment() {
@@ -61,6 +62,12 @@ public class ApplicationTestCase {
 				.resolve("it.vige:rubia-forums-ejb:2.2.1").withTransitivity().asFile();
 		war.addAsLibraries(files);
 		war.addPackages(true, ApplicationTestCase.class.getPackage())
+				.addAsWebInfResource((new File("src/main/resources", "default_graphics/theme.properties")),
+						"classes/default_graphics/theme.properties")
+				.addAsWebInfResource((new File("src/main/resources", "ResourceJSF.properties")),
+						"classes/ResourceJSF.properties")
+				.addAsWebInfResource((new File("src/main/resources", "ResourceJSF_it.properties")),
+						"classes/ResourceJSF_it.properties")
 				.addAsWebResource(new File(WEBAPP_SRC + "/views/category", "viewcategory_body.xhtml"),
 						"views/category/viewcategory_body.xhtml")
 				.addAsWebResource(new File(WEBAPP_SRC + "/views/admin", "index.xhtml"), "views/admin/index.xhtml")
@@ -74,7 +81,8 @@ public class ApplicationTestCase {
 				.addAsWebInfResource((new File(WEBAPP_SRC + "/WEB-INF", "web.xml")), "web.xml")
 				.addAsWebInfResource((new File(WEBAPP_SRC + "/WEB-INF", "faces-config.xml")), "faces-config.xml")
 				.addAsWebInfResource((new File(WEBAPP_SRC + "/WEB-INF", "forums.taglib.xml")), "forums.taglib.xml")
-				.addAsWebInfResource((new File(WEBAPP_SRC + "/WEB-INF", "beans.xml")), "beans.xml");
+				.addAsWebInfResource((new File(WEBAPP_SRC + "/WEB-INF", "beans.xml")), "beans.xml")
+				.addAsManifestResource((new File("src/test/resources", "MANIFEST.MF")), "MANIFEST.MF");
 		return war;
 	}
 
@@ -122,20 +130,59 @@ public class ApplicationTestCase {
 		DefaultCredentialsProvider creds = new DefaultCredentialsProvider();
 		creds.addCredentials("root", "p1");
 		webClient.setCredentialsProvider(creds);
-		HtmlPage page = webClient.getPage(base + "views/admin/index.xhtml");
-		categoryForm = page.getForms().get(0);
+		resourceBundle = getBundle("ResourceJSF");
 	}
 
 	@Test
-	public void testInsertCategory() throws Exception {
+	public void testCategoryOperations() throws Exception {
 		logger.info("start insert category");
-		HtmlButton button = categoryForm.getButtonByName("newCategory");
+		HtmlPage adminPage = webClient.getPage(base + "views/admin/index.xhtml");
+		HtmlAnchor button = adminPage.getAnchors().get(2);
 		HtmlPage page = button.click();
 		HtmlForm addCategory = page.getFormByName("addCategoryForm");
 		String categoryToInsert = "ccccc";
 		addCategory.getInputByName("addCategoryForm:Category").setValueAttribute(categoryToInsert);
 		HtmlSubmitInput submitButton = addCategory.getInputByName("addCategoryForm:editinline");
-		HtmlPage page2 = submitButton.click();
-		assertTrue("The category is created", page2.getTextContent().contains(categoryToInsert));
+		page = submitButton.click();
+		assertTrue("The category is created", page.asText().contains(categoryToInsert));
+		HtmlAnchor adminPanel = adminPage.getAnchors().get(1);
+		page = adminPanel.click();
+		button = page.getAnchors().get(6);
+		page = button.click();
+		HtmlForm editCategory = page.getForms().get(4);
+		String categoryToUpdate = "aaaaaa";
+		String firstCategory = "Dummy demo category";
+		editCategory.getInputByValue(categoryToInsert).setValueAttribute(categoryToUpdate);
+		submitButton = editCategory.getInputByValue(resourceBundle.getString("Update"));
+		page = submitButton.click();
+		assertTrue("The category is updated", page.asText().contains(categoryToUpdate));
+		button = page.getAnchors().get(7);
+		page = button.click();
+		assertTrue("The category is arrowed up",
+				page.asText().indexOf(categoryToUpdate) < page.asText().indexOf(firstCategory));
+		button = page.getAnchors().get(4);
+		page = button.click();
+		assertTrue("The category is arrowed down",
+				page.asText().indexOf(categoryToUpdate) > page.asText().indexOf(firstCategory));
+		button = page.getAnchors().get(8);
+		page = button.click();
+		HtmlForm deleteCategory = page.getForms().get(1);
+		submitButton = deleteCategory.getInputByValue(resourceBundle.getString("Cancel"));
+		page = submitButton.click();
+		assertTrue("The delete is canceled",
+				page.asText().contains(firstCategory) && page.asText().contains(categoryToUpdate));
+		button = page.getAnchors().get(0);
+		page = button.click();
+		assertTrue("In the home page there are two categories",
+				page.asText().contains(firstCategory) && page.asText().contains(categoryToUpdate));
+		button = page.getAnchors().get(1);
+		page = button.click();
+		button = page.getAnchors().get(8);
+		page = button.click();
+		deleteCategory = page.getForms().get(1);
+		submitButton = deleteCategory.getInputByValue(resourceBundle.getString("Confirm"));
+		page = submitButton.click();
+		assertTrue("The delete is confirmed", page.asText()
+				.contains("\"" + categoryToUpdate + "\" " + resourceBundle.getString("Category_deleted_1")));
 	}
 }

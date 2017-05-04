@@ -5,44 +5,36 @@
 	version="2.2">
 	<namespace>http://www.jboss.com/products/jbossportal/forums</namespace>
 
-	<!-- function to check if the application is running in a portal envioronment -->
 	<function>
 		<function-name>isRunningInPortal</function-name>
 		<function-class>it.vige.rubia.PortalUtil</function-class>
 		<function-signature>boolean isRunningInPortal()</function-signature>
 	</function>
 
-	<!-- function generates the contextPath of the application -->
 	<function>
 		<function-name>contextPath</function-name>
 		<function-class>it.vige.webprogramming.javaserverfaces.ui.JSFUtil</function-class>
 		<function-signature>java.lang.String getContextPath()</function-signature>
 	</function>
 
-	<!-- function retrieves a generic error message if one is found. return 
-		null if nothing is found -->
 	<function>
 		<function-name>errorMsg</function-name>
 		<function-class>it.vige.webprogramming.javaserverfaces.ui.JSFUtil</function-class>
 		<function-signature>java.lang.String getErrorMsg()</function-signature>
 	</function>
 
-	<!-- function retrieves a message if one is found return null if nothing 
-		is found -->
 	<function>
 		<function-name>message</function-name>
 		<function-class>it.vige.webprogramming.javaserverfaces.ui.JSFUtil</function-class>
 		<function-signature>java.lang.String getMessage(java.lang.String)</function-signature>
 	</function>
 
-	<!-- access control tag -->
 	<tag>
 		<tag-name>isAllowed</tag-name>
 		<handler-class>it.vige.webprogramming.javaserverfaces.auth.ACLTagHandler
 		</handler-class>
 	</tag>
 
-	<!-- conditional access control tag -->
 	<tag>
 		<tag-name>isAllowedChoose</tag-name>
 		<handler-class>it.vige.webprogramming.javaserverfaces.auth.ACLChooseTagHandler
