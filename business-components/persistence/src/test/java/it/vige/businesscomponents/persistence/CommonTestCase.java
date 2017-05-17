@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -55,20 +56,19 @@ public class CommonTestCase {
 	}
 
 	@Test
-	@SuppressWarnings("unchecked")
 	public void testQuery() {
-		Query query = entityManager
-				.createQuery("select f from Forum f left outer join fetch f.topics where f.id = :forumId");
+		TypedQuery<Forum> query = entityManager
+				.createQuery("select f from Forum f left outer join fetch f.topics where f.id = :forumId", Forum.class);
 		query.setParameter("forumId", 1);
 		List<Forum> forumList = query.getResultList();
 		assertEquals("simple query ok", 1, forumList.size());
-		query = entityManager.createNamedQuery("findForumByIdFetchTopics");
+		query = entityManager.createNamedQuery("findForumByIdFetchTopics", Forum.class);
 		query.setParameter("forumId", 1);
 		forumList = query.getResultList();
 		assertEquals("named query ok", 1, forumList.size());
 		String namedQuery = "my_runtime_named_query";
 		entityManager.getEntityManagerFactory().addNamedQuery(namedQuery, query);
-		query = entityManager.createNamedQuery(namedQuery);
+		query = entityManager.createNamedQuery(namedQuery, Forum.class);
 		query.setParameter("forumId", 1);
 		forumList = query.getResultList();
 		assertEquals("named query ok", 1, forumList.size());

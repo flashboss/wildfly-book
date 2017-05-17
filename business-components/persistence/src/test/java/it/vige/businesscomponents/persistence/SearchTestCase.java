@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
@@ -93,7 +93,6 @@ public class SearchTestCase {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	private List<Topic> findTopics() {
 		try {
 			FullTextSession fullTextSession = getFullTextSession((Session) entityManager.getDelegate());
@@ -125,7 +124,8 @@ public class SearchTestCase {
 
 			List<Topic> topics = null;
 			if (topicToDispIds.size() > 0) {
-				Query q = entityManager.createQuery("from Topic as t join fetch t.poster where t.id IN ( :topicIds )");
+				TypedQuery<Topic> q = entityManager
+						.createQuery("from Topic as t join fetch t.poster where t.id IN ( :topicIds )", Topic.class);
 				q.setParameter("topicIds", topicToDispIds);
 
 				List<Topic> results = q.getResultList();
