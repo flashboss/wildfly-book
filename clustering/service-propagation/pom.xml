@@ -69,4 +69,95 @@
 			</plugin>
 		</plugins>
 	</build>
+	<profiles>
+		<profile>
+			<id>basic.integration.tests.profile</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			
+			<!-- Server configuration executions. -->
+			<build>
+				<testResources>
+					<testResource>
+						<directory>src/test/java</directory>
+						<excludes>
+							<exclude>**/*.java</exclude>
+						</excludes>
+					</testResource>
+				</testResources>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-dependency-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>unpack</id>
+								<phase>process-test-classes</phase>
+								<goals>
+									<goal>unpack</goal>
+								</goals>
+								<configuration>
+									<artifactItems>
+										<artifactItem>
+											<groupId>org.wildfly</groupId>
+											<artifactId>wildfly-dist</artifactId>
+											<version>10.1.0.Final</version>
+											<type>zip</type>
+											<overWrite>false</overWrite>
+											<outputDirectory>target</outputDirectory>
+										</artifactItem>
+									</artifactItems>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+
+					<!-- Sets general surefire system properties. These can be overridden 
+						by inheriting plugin configurations. -->
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<configuration>
+							<skipTests>${ts.skipTests}</skipTests>
+							<enableAssertions>true</enableAssertions>
+							<!-- System properties to forked surefire JVM which runs clients. -->
+							<failIfNoTests>false</failIfNoTests>
+							<redirectTestOutputToFile>${testLogToFile}</redirectTestOutputToFile>
+							<systemPropertyVariables>
+								<jboss.home>${basedir}/target/wildfly-10.1.0.Final</jboss.home>
+							</systemPropertyVariables>
+						</configuration>
+						<executions combine.children="append">
+
+							<!-- Disable default-test execution. -->
+							<execution>
+								<id>default-test</id>
+								<goals>
+									<goal>test</goal>
+								</goals>
+								<phase>none</phase>
+							</execution>
+							<execution>
+								<id>basic-integration-default-full.surefire</id>
+								<phase>test</phase>
+								<goals>
+									<goal>test</goal>
+								</goals>
+								<configuration>
+
+									<!-- Parameters to test cases. -->
+									<systemPropertyVariables
+										combine.children="append">
+										<jboss.server.config.file.name>standalone-full.xml</jboss.server.config.file.name>
+									</systemPropertyVariables>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>
