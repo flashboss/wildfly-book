@@ -14,7 +14,7 @@ import org.wildfly.clustering.singleton.SingletonPolicy;
 
 public class HAServicePolicyActivator implements ServiceActivator {
 
-	public static final ServiceName SERVICE_NAME = JBOSS.append("test", "myservice", "default-policy");
+	public static final ServiceName SERVICE_NAME = JBOSS.append("test", "haservice", "default-policy");
 
 	@Override
 	public void activate(ServiceActivatorContext context) throws ServiceRegistryException {

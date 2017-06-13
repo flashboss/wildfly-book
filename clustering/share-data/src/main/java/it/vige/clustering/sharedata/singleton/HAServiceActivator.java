@@ -19,8 +19,8 @@ import org.wildfly.clustering.singleton.election.SimpleSingletonElectionPolicy;
 
 public class HAServiceActivator implements ServiceActivator {
 
-	public static final ServiceName DEFAULT_SERVICE_NAME = JBOSS.append("test", "myservice", "default");
-	public static final ServiceName QUORUM_SERVICE_NAME = JBOSS.append("test", "myservice", "quorum");
+	public static final ServiceName DEFAULT_SERVICE_NAME = JBOSS.append("test", "haservice", "default");
+	public static final ServiceName QUORUM_SERVICE_NAME = JBOSS.append("test", "haservice", "quorum");
 	private static final String CONTAINER_NAME = "server";
 	public static final String PREFERRED_NODE = NODE_2;
 
