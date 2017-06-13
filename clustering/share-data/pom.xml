@@ -173,7 +173,10 @@
 									<!-- Parameters to test cases. -->
 									<systemPropertyVariables
 										combine.children="append">
+                                        <arquillian.launch>clustering-all</arquillian.launch>
 										<jboss.server.config.file.name>standalone-ha.xml</jboss.server.config.file.name>
+                                        <cacheMode>SYNC</cacheMode>
+                                        <stack>tcp</stack>
 									</systemPropertyVariables>
 								</configuration>
 							</execution>
