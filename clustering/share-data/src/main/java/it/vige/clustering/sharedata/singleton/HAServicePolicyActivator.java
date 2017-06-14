@@ -5,6 +5,7 @@ import static org.jboss.msc.service.ServiceName.parse;
 import static org.wildfly.clustering.singleton.SingletonDefaultRequirement.SINGLETON_POLICY;
 
 import org.jboss.as.server.ServerEnvironment;
+import org.jboss.as.server.ServerEnvironmentService;
 import org.jboss.msc.service.ServiceActivator;
 import org.jboss.msc.service.ServiceActivatorContext;
 import org.jboss.msc.service.ServiceName;
@@ -24,7 +25,7 @@ public class HAServicePolicyActivator implements ServiceActivator {
 			InjectedValue<ServerEnvironment> env = new InjectedValue<>();
 			HAService service = new HAService(env);
 			policy.createSingletonServiceBuilder(SERVICE_NAME, service).build(context.getServiceTarget())
-					.addDependency(SERVICE_NAME, ServerEnvironment.class, env).install();
+					.addDependency(ServerEnvironmentService.SERVICE_NAME, ServerEnvironment.class, env).install();
 		} catch (InterruptedException e) {
 			throw new ServiceRegistryException(e);
 		}
