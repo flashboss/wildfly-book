@@ -10,8 +10,8 @@
 
 	<artifactId>web-sockets</artifactId>
 	<packaging>war</packaging>
-	<name>Web sockets</name>
-	<description>Chapter 7: Implementing Web sockets</description>
+	<name>WebSockets</name>
+	<description>Chapter 7: Implementing WebSockets</description>
 
 	<build>
 		<defaultGoal>package</defaultGoal>
