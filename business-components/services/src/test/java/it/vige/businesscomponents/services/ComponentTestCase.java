@@ -133,7 +133,7 @@ public class ComponentTestCase {
 	@Test
 	@RunAsClient
 	public void testMD5() throws Exception {
-		logger.info("start JaxRS Post test");
+		logger.info("start JaxRS Get test");
 		Client client = newClient();
 		client.register(ContentMD5Writer.class);
 		Response response = client.target(url + "myjaxrs/simple/valuesget").request().get();
