@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>it.vige.wildfly</groupId>
 		<artifactId>clustering</artifactId>
-		<version>10.1.0</version>
+		<version>11.0.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>share-data</artifactId>
@@ -80,13 +80,13 @@
 				<dependency>
 					<groupId>org.wildfly</groupId>
 					<artifactId>wildfly-clustering-singleton-api</artifactId>
-					<version>10.1.0.Final</version>
+					<version>11.0.0.Final</version>
 					<scope>provided</scope>
 				</dependency>
 				<dependency>
 					<groupId>org.wildfly</groupId>
 					<artifactId>wildfly-testsuite-shared</artifactId>
-					<version>10.1.0.Final</version>
+					<version>11.0.0.Final</version>
 					<scope>provided</scope>
 				</dependency>
 			</dependencies>
@@ -116,7 +116,7 @@
 										<artifactItem>
 											<groupId>org.wildfly</groupId>
 											<artifactId>wildfly-dist</artifactId>
-											<version>10.1.0.Final</version>
+											<version>11.0.0.Final</version>
 											<type>zip</type>
 											<overWrite>false</overWrite>
 											<outputDirectory>target</outputDirectory>
@@ -140,7 +140,7 @@
 							<failIfNoTests>false</failIfNoTests>
 							<redirectTestOutputToFile>${testLogToFile}</redirectTestOutputToFile>
 							<systemPropertyVariables>
-								<jboss.home>${basedir}/target/wildfly-10.1.0.Final</jboss.home>
+								<jboss.home>${basedir}/target/wildfly-11.0.0.Final</jboss.home>
 							</systemPropertyVariables>
 							<additionalClasspathElements
 								combine.children="append">

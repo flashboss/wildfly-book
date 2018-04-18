@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>it.vige.wildfly</groupId>
 		<artifactId>real-time</artifactId>
-		<version>10.1.0</version>
+		<version>11.0.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>messaging</artifactId>
@@ -79,7 +79,7 @@
 				<dependency>
 					<groupId>org.wildfly</groupId>
 					<artifactId>wildfly-testsuite-shared</artifactId>
-					<version>10.1.0.Final</version>
+					<version>11.0.0.Final</version>
 					<scope>test</scope>
 				</dependency>
 			</dependencies>
@@ -109,7 +109,7 @@
 										<artifactItem>
 											<groupId>org.wildfly</groupId>
 											<artifactId>wildfly-dist</artifactId>
-											<version>10.1.0.Final</version>
+											<version>11.0.0.Final</version>
 											<type>zip</type>
 											<overWrite>false</overWrite>
 											<outputDirectory>target</outputDirectory>
@@ -133,7 +133,7 @@
 							<failIfNoTests>false</failIfNoTests>
 							<redirectTestOutputToFile>${testLogToFile}</redirectTestOutputToFile>
 							<systemPropertyVariables>
-								<jboss.home>${basedir}/target/wildfly-10.1.0.Final</jboss.home>
+								<jboss.home>${basedir}/target/wildfly-11.0.0.Final</jboss.home>
 							</systemPropertyVariables>
 						</configuration>
 						<executions combine.children="append">
