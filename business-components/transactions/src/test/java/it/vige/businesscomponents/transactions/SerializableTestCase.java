@@ -156,7 +156,7 @@ public class SerializableTestCase {
 		assertEquals("the transaction B add a new account", 456.77, queryWriteAccount.getResult(), 0.0);
 		assertEquals("the first query in the transaction A before the transaction ends", 8,
 				queryReadAccount.getFirstResult());
-		assertEquals("the second query in the transaction A after the transaction ends", 8,
+		assertEquals("the second query in the transaction A after the transaction ends", 9,
 				queryReadAccount.getSecondResult());
 	}
 }

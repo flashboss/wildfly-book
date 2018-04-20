@@ -101,7 +101,7 @@ public class RemotingNamingTestCase {
 	private void createInitialContext() throws NamingException {
 		Properties prop = new Properties();
 
-		prop.put(INITIAL_CONTEXT_FACTORY, "org.jboss.naming.remote.client.InitialContextFactory");
+		prop.put(INITIAL_CONTEXT_FACTORY, "org.wildfly.naming.client.WildFlyInitialContextFactory");
 		prop.put(PROVIDER_URL, "http-remoting://127.0.0.1:8080");
 		prop.put(SECURITY_PRINCIPAL, "admin");
 		prop.put(SECURITY_CREDENTIALS, "secret123!");

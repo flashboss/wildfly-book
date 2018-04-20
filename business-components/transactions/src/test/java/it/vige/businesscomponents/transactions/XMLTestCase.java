@@ -1,16 +1,16 @@
 package it.vige.businesscomponents.transactions;
 
-import static java.net.InetAddress.getLocalHost;
+import static java.net.URI.create;
 import static java.util.logging.Logger.getLogger;
 import static javax.naming.Context.INITIAL_CONTEXT_FACTORY;
 import static javax.naming.Context.PROVIDER_URL;
 import static javax.naming.Context.SECURITY_CREDENTIALS;
 import static javax.naming.Context.SECURITY_PRINCIPAL;
 import static javax.transaction.Status.STATUS_NO_TRANSACTION;
-import static org.jboss.ejb.client.EJBClient.getUserTransaction;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
+import static org.wildfly.transaction.client.RemoteTransactionContext.getInstance;
 
 import java.io.File;
 import java.util.Properties;
@@ -38,6 +38,7 @@ public class XMLTestCase {
 
 	private static final Logger logger = getLogger(XMLTestCase.class.getName());
 
+	private final static String REMOTING_HOST = "http-remoting://127.0.0.1:8080";
 	private Context context = null;
 
 	@Deployment
@@ -57,8 +58,7 @@ public class XMLTestCase {
 
 		try {
 			createInitialContext();
-			String hostname = getLocalHost().getHostName().toLowerCase();
-			final UserTransaction userTransaction = getUserTransaction(hostname);
+			final UserTransaction userTransaction = getInstance().getUserTransaction(create(REMOTING_HOST));
 			XMLRemote bean = lookup(XMLRemote.class, "bank");
 			assertEquals(STATUS_NO_TRANSACTION, bean.transactionStatus());
 
@@ -90,7 +90,7 @@ public class XMLTestCase {
 		Properties prop = new Properties();
 
 		prop.put(INITIAL_CONTEXT_FACTORY, "org.jboss.naming.remote.client.InitialContextFactory");
-		prop.put(PROVIDER_URL, "http-remoting://127.0.0.1:8080");
+		prop.put(PROVIDER_URL, REMOTING_HOST);
 		prop.put(SECURITY_PRINCIPAL, "admin");
 		prop.put(SECURITY_CREDENTIALS, "secret123!");
 		prop.put("jboss.naming.client.ejb.context", true);
