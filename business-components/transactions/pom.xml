@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
@@ -78,10 +79,8 @@
 			<dependencies>
 				<dependency>
 					<groupId>org.wildfly</groupId>
-					<artifactId>wildfly-ejb-client-bom</artifactId>
-					<version>10.1.0.Final</version>
-					<type>pom</type>
-					<scope>import</scope>
+					<artifactId>wildfly-client-all</artifactId>
+					<version>${version.org.wildfly.as}</version>
 				</dependency>
 			</dependencies>
 			<!-- Server configuration executions. -->
@@ -110,7 +109,7 @@
 										<artifactItem>
 											<groupId>org.wildfly</groupId>
 											<artifactId>wildfly-dist</artifactId>
-											<version>11.0.0.Final</version>
+											<version>${version.org.wildfly.as}</version>
 											<type>zip</type>
 											<overWrite>false</overWrite>
 											<outputDirectory>target</outputDirectory>
@@ -134,7 +133,7 @@
 							<failIfNoTests>false</failIfNoTests>
 							<redirectTestOutputToFile>${testLogToFile}</redirectTestOutputToFile>
 							<systemPropertyVariables>
-								<jboss.home>${basedir}/target/wildfly-11.0.0.Final</jboss.home>
+								<jboss.home>${basedir}/target/wildfly-${version.org.wildfly.as}</jboss.home>
 							</systemPropertyVariables>
 						</configuration>
 						<executions combine.children="append">
@@ -163,7 +162,7 @@
 									<!-- Parameters to test cases. -->
 									<systemPropertyVariables
 										combine.children="append">
-										<jboss.server.config.file.name>standalone-full.xml</jboss.server.config.file.name> 
+										<jboss.server.config.file.name>standalone-full.xml</jboss.server.config.file.name>
 									</systemPropertyVariables>
 								</configuration>
 							</execution>

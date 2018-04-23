@@ -46,6 +46,7 @@
 		<shrinkwrap.version>3.1.3</shrinkwrap.version>
 		<version.selenium>3.11.0</version.selenium>
 		<version.surefire.plugin>2.21.0</version.surefire.plugin>
+		<version.org.wildfly.as>11.0.0.Final</version.org.wildfly.as>
 		<version.org.wildfly.core>3.0.8.Final</version.org.wildfly.core>
 		<version.org.wildfly.arquillian>2.1.0.Final</version.org.wildfly.arquillian>
 		<hibernate.search.version>5.5.8.Final</hibernate.search.version>

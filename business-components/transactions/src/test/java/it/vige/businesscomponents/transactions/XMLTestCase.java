@@ -1,6 +1,5 @@
 package it.vige.businesscomponents.transactions;
 
-import static java.net.URI.create;
 import static java.util.logging.Logger.getLogger;
 import static javax.naming.Context.INITIAL_CONTEXT_FACTORY;
 import static javax.naming.Context.PROVIDER_URL;
@@ -38,7 +37,8 @@ public class XMLTestCase {
 
 	private static final Logger logger = getLogger(XMLTestCase.class.getName());
 
-	private final static String REMOTING_HOST = "http-remoting://127.0.0.1:8080";
+	private final static String REMOTING_PROTOCOL = "http-remoting";
+	private final static int REMOTING_PORT = 8080;
 	private Context context = null;
 
 	@Deployment
@@ -58,7 +58,7 @@ public class XMLTestCase {
 
 		try {
 			createInitialContext();
-			final UserTransaction userTransaction = getInstance().getUserTransaction(create(REMOTING_HOST));
+			final UserTransaction userTransaction = getInstance().getUserTransaction();
 			XMLRemote bean = lookup(XMLRemote.class, "bank");
 			assertEquals(STATUS_NO_TRANSACTION, bean.transactionStatus());
 
@@ -90,7 +90,7 @@ public class XMLTestCase {
 		Properties prop = new Properties();
 
 		prop.put(INITIAL_CONTEXT_FACTORY, "org.jboss.naming.remote.client.InitialContextFactory");
-		prop.put(PROVIDER_URL, REMOTING_HOST);
+		prop.put(PROVIDER_URL, REMOTING_PROTOCOL + "://127.0.0.1:" + REMOTING_PORT);
 		prop.put(SECURITY_PRINCIPAL, "admin");
 		prop.put(SECURITY_CREDENTIALS, "secret123!");
 		prop.put("jboss.naming.client.ejb.context", true);

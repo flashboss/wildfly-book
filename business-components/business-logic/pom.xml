@@ -78,10 +78,8 @@
 			<dependencies>
 				<dependency>
 					<groupId>org.wildfly</groupId>
-					<artifactId>wildfly-ejb-client-bom</artifactId>
-					<version>10.1.0.Final</version>
-					<type>pom</type>
-					<scope>import</scope>
+					<artifactId>wildfly-client-all</artifactId>
+					<version>${version.org.wildfly.as}</version>
 				</dependency>
 			</dependencies>
 			<!-- Server configuration executions. -->
@@ -110,7 +108,7 @@
 										<artifactItem>
 											<groupId>org.wildfly</groupId>
 											<artifactId>wildfly-dist</artifactId>
-											<version>11.0.0.Final</version>
+											<version>${version.org.wildfly.as}</version>
 											<type>zip</type>
 											<overWrite>false</overWrite>
 											<outputDirectory>target</outputDirectory>
@@ -134,7 +132,7 @@
 							<failIfNoTests>false</failIfNoTests>
 							<redirectTestOutputToFile>${testLogToFile}</redirectTestOutputToFile>
 							<systemPropertyVariables>
-								<jboss.home>${basedir}/target/wildfly-11.0.0.Final</jboss.home>
+								<jboss.home>${basedir}/target/wildfly-${version.org.wildfly.as}</jboss.home>
 							</systemPropertyVariables>
 						</configuration>
 						<executions combine.children="append">
