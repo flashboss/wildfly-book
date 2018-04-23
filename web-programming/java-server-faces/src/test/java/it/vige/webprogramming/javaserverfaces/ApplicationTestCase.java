@@ -59,7 +59,8 @@ public class ApplicationTestCase {
 	public static WebArchive createDeployment() {
 		WebArchive war = create(WebArchive.class);
 		File[] files = resolver().loadPomFromFile("pom.xml").importRuntimeDependencies()
-				.resolve("it.vige:rubia-forums-ejb:2.2.1").withTransitivity().asFile();
+				.resolve("org.picketlink:picketlink-idm-api:2.5.5-SP8", "it.vige:rubia-forums-ejb:2.2.3")
+				.withTransitivity().asFile();
 		war.addAsLibraries(files);
 		war.addPackages(true, ApplicationTestCase.class.getPackage())
 				.addAsWebInfResource((new File("src/main/resources", "default_graphics/theme.properties")),
