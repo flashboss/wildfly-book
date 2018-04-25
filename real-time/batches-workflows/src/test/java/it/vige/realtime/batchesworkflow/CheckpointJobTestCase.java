@@ -102,7 +102,9 @@ public class CheckpointJobTestCase {
 		JobInstance jobInstance = jobInstance(jobOperator.getJobInstance(executionId), JOB_NAME);
 		JobExecution jobExecution = jobOperator.getJobExecutions(jobInstance).get(0);
 		Properties jobProperties = jobExecution.getJobParameters();
-		assertEquals("properties are: ", 0, jobProperties.size());
+		assertEquals("properties are: ", 1, jobProperties.size());
+		assertEquals("one key: ", "jberet.jobXmlName", jobProperties.keys().nextElement());
+		assertEquals("one value: ", "CheckpointJob.xml", jobProperties.values().iterator().next());
 		assertEquals("batch failed because a NoRollbackException is throwed", FAILED, jobExecution.getBatchStatus());
 		StepExecution stepExecution = jobOperator.getStepExecutions(executionId).get(0);
 		PersistentCheckpointUserData persistentCheckpointUserData = (PersistentCheckpointUserData) stepExecution

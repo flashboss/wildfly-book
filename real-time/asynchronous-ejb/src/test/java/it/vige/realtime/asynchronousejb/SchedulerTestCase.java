@@ -44,7 +44,7 @@ public class SchedulerTestCase {
 		Date today = new Date();
 		schedulerBean.setTimer(10);
 		try {
-			sleep(12);
+			sleep(100);
 		} catch (InterruptedException e) {
 			logger.log(SEVERE, "Interruption", e);
 		}

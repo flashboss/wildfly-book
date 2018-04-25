@@ -92,8 +92,8 @@ public abstract class ClusterAbstractTestCase implements ClusteringConstants {
 	@Before
 	@RunAsClient // Does not work, see https://issues.jboss.org/browse/ARQ-351
 	public void beforeTestMethod() {
-		NodeUtil.start(this.controller, CONTAINERS);
-		NodeUtil.deploy(this.deployer, DEPLOYMENTS);
+		NodeUtil.start(controller, CONTAINERS);
+		NodeUtil.deploy(deployer, DEPLOYMENTS);
 	}
 
 	/**
@@ -103,26 +103,26 @@ public abstract class ClusterAbstractTestCase implements ClusteringConstants {
 	@After
 	@RunAsClient // Does not work, see https://issues.jboss.org/browse/ARQ-351
 	public void afterTestMethod() {
-		NodeUtil.start(this.controller, CONTAINERS);
-		NodeUtil.undeploy(this.deployer, DEPLOYMENTS);
+		NodeUtil.start(controller, CONTAINERS);
+		NodeUtil.undeploy(deployer, DEPLOYMENTS);
 	}
 
 	// Node and deployment lifecycle management convenience methods
 
 	protected void start(String... containers) {
-		NodeUtil.start(this.controller, containers);
+		NodeUtil.start(controller, containers);
 	}
 
 	protected void stop(String... containers) {
-		NodeUtil.stop(this.controller, containers);
+		NodeUtil.stop(controller, containers);
 	}
 
 	protected void deploy(String... deployments) {
-		NodeUtil.deploy(this.deployer, deployments);
+		NodeUtil.deploy(deployer, deployments);
 	}
 
 	protected void undeploy(String... deployments) {
-		NodeUtil.undeploy(this.deployer, deployments);
+		NodeUtil.undeploy(deployer, deployments);
 	}
 
 	protected String findDeployment(String node) {
@@ -152,12 +152,12 @@ public abstract class ClusterAbstractTestCase implements ClusteringConstants {
 	public class RestartLifecycle implements Lifecycle {
 		@Override
 		public void start(String... nodes) {
-			ClusterAbstractTestCase.this.start(this.getContainers(nodes));
+			ClusterAbstractTestCase.this.start(getContainers(nodes));
 		}
 
 		@Override
 		public void stop(String... nodes) {
-			ClusterAbstractTestCase.this.stop(this.getContainers(nodes));
+			ClusterAbstractTestCase.this.stop(getContainers(nodes));
 		}
 
 		private String[] getContainers(String... nodes) {
@@ -177,12 +177,12 @@ public abstract class ClusterAbstractTestCase implements ClusteringConstants {
 	public class RedeployLifecycle implements Lifecycle {
 		@Override
 		public void start(String... nodes) {
-			ClusterAbstractTestCase.this.deploy(this.getDeployments(nodes));
+			ClusterAbstractTestCase.this.deploy(getDeployments(nodes));
 		}
 
 		@Override
 		public void stop(String... nodes) {
-			ClusterAbstractTestCase.this.undeploy(this.getDeployments(nodes));
+			ClusterAbstractTestCase.this.undeploy(getDeployments(nodes));
 		}
 
 		private String[] getDeployments(String... nodes) {
