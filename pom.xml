@@ -52,7 +52,8 @@
 		<hibernate.search.version>5.5.8.Final</hibernate.search.version>
 		<resteasy.version>3.5.0.Final</resteasy.version>
 		<picketlink.version>2.5.5.SP9</picketlink.version>
-		<lucene.version>3.5.1</lucene.version>
+		<lucene.version>5.3.1</lucene.version>
+		<javaee.version>7.0</javaee.version>
 		<rubiaforums.version>2.2.3</rubiaforums.version>
 		<testLogToFile>true</testLogToFile>
 		<maven.deploy.skip>true</maven.deploy.skip>
@@ -207,7 +208,7 @@
 		<dependency>
 			<groupId>javax</groupId>
 			<artifactId>javaee-api</artifactId>
-			<version>7.0</version>
+			<version>${javaee.version}</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
