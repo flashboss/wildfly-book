@@ -54,7 +54,7 @@ public class SchedulerTestCase {
 				today.compareTo(programmaticDate) < 0);
 		Date automaticDate = schedulerBean.getLastAutomaticTimeout();
 		assertNotNull("the automatic date is created", automaticDate);
-		assertTrue("the today date is 1 milliseconds around insted of the automatic date",
+		assertTrue("the today date is 1 milliseconds around instead of the automatic date",
 				today.compareTo(automaticDate) > 0);
 		logger.info("End test scheduler.");
 	}

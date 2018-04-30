@@ -12,8 +12,8 @@ public interface Constants {
 	String TOPIC_LOOKUP = "java:/jms/topic/BUS";
 
 	String REMOTE_QUEUE_NAME = "questionary";
-	String REMOTE_EXPORTED_QUEUE_LOOKUP = "java:/jboss/exported/jms/queue/Questionary";
-	String REMOTE_QUEUE_LOOKUP = "java:/jms/queue/Questionary";
+	String REMOTE_EXPORTED_QUEUE_LOOKUP = "jboss/exported/jms/queue/Questionary";
+	String REMOTE_QUEUE_LOOKUP = "jms/queue/Questionary";
 	
 	String CONNECTION_FACTORY = "jms/RemoteConnectionFactory";
 }
