@@ -59,7 +59,7 @@ public class ApplicationTestCase {
 	public static WebArchive createDeployment() {
 		WebArchive war = create(WebArchive.class);
 		File[] files = resolver().loadPomFromFile("pom.xml").importRuntimeDependencies()
-				.resolve("org.picketlink:picketlink-idm-api:2.5.5.SP8", "org.picketlink:picketlink-idm-impl:2.5.5.SP8",
+				.resolve("org.picketlink:picketlink-idm-api:2.5.5.SP9", "org.picketlink:picketlink-idm-impl:2.5.5.SP9",
 						"it.vige:rubia-forums-ejb:2.2.3")
 				.withTransitivity().asFile();
 		war.addAsLibraries(files);

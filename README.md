@@ -1,1 +1,1 @@
-Wildfly Examples tested on Wildfly 10.1.0
+Wildfly Examples tested on Wildfly 12.0.0
