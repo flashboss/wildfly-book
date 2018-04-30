@@ -6,7 +6,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import javax.ejb.EJB;
@@ -86,6 +85,7 @@ public class SessionContextTestCase {
 	public static JavaArchive createEJBDeployment() {
 		final JavaArchive jar = create(JavaArchive.class, "session-context-test.jar");
 		jar.addPackages(true, MyData.class.getPackage());
+		jar.addClass(TestList.class);
 		return jar;
 	}
 
@@ -149,7 +149,7 @@ public class SessionContextTestCase {
 		assertNotEquals("interfaces are not the same", ejb21StateEngineRemote, ejb21StateEngineRemote2);
 		Ejb21StateRemote ejb21StateEngineRemote3 = ejb21StateEngineRemoteHome.create("input data");
 		assertNotEquals("interfaces are not the same", ejb21StateEngineRemote2, ejb21StateEngineRemote3);
-		Ejb21StateRemote ejb21StateEngineRemote4 = ejb21StateEngineRemoteHome.create(new ArrayList<String>());
+		Ejb21StateRemote ejb21StateEngineRemote4 = ejb21StateEngineRemoteHome.create(new TestList());
 		assertNotEquals("interfaces are not the same", ejb21StateEngineRemote3, ejb21StateEngineRemote4);
 	}
 
@@ -222,7 +222,7 @@ public class SessionContextTestCase {
 		assertNotEquals("interfaces are not the same", ejb21StateEngineLocal, ejb21StateEngineLocal2);
 		Ejb21StateLocal ejb21StateEngineLocal3 = ejb21StateEngineLocalHome.create("input data");
 		assertNotEquals("interfaces are not the same", ejb21StateEngineLocal2, ejb21StateEngineLocal3);
-		Ejb21StateLocal ejb21StateEngineLocal4 = ejb21StateEngineLocalHome.create(new ArrayList<String>());
+		Ejb21StateLocal ejb21StateEngineLocal4 = ejb21StateEngineLocalHome.create(new TestList());
 		assertNotEquals("interfaces are not the same", ejb21StateEngineLocal3, ejb21StateEngineLocal4);
 	}
 
