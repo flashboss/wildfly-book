@@ -61,11 +61,11 @@ public class RemoteTestCase {
 		@Override
 		public void setup(ManagementClient managementClient, String containerId) throws Exception {
 			copy(new File("src/test/resources/application-users.properties").toPath(),
-					new File("target/wildfly-11.0.0.Final/standalone/configuration/application-users.properties")
+					new File("target/wildfly-12.0.0.Final/standalone/configuration/application-users.properties")
 							.toPath(),
 					REPLACE_EXISTING);
 			copy(new File("src/test/resources/application-roles.properties").toPath(),
-					new File("target/wildfly-11.0.0.Final/standalone/configuration/application-roles.properties")
+					new File("target/wildfly-12.0.0.Final/standalone/configuration/application-roles.properties")
 							.toPath(),
 					REPLACE_EXISTING);
 			ModelControllerClient modelControllerClient = managementClient.getControllerClient();
