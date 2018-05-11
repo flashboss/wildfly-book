@@ -54,7 +54,7 @@
 		<picketlink.version>2.5.5.SP9</picketlink.version>
 		<lucene.version>5.3.1</lucene.version>
 		<javaee.version>7.0</javaee.version>
-		<rubiaforums.version>2.2.3</rubiaforums.version>
+		<rubiaforums.version>2.2.4</rubiaforums.version>
 		<testLogToFile>true</testLogToFile>
 		<maven.deploy.skip>true</maven.deploy.skip>
 		<ts.skipTests>${skipTests}</ts.skipTests>
