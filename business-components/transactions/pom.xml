@@ -80,7 +80,7 @@
 				<dependency>
 					<groupId>org.wildfly</groupId>
 					<artifactId>wildfly-client-all</artifactId>
-					<version>${version.org.wildfly.as}</version>
+					<version>${org.wildfly.as.version}</version>
 				</dependency>
 			</dependencies>
 			<!-- Server configuration executions. -->
@@ -109,7 +109,7 @@
 										<artifactItem>
 											<groupId>org.wildfly</groupId>
 											<artifactId>wildfly-dist</artifactId>
-											<version>${version.org.wildfly.as}</version>
+											<version>${org.wildfly.as.version}</version>
 											<type>zip</type>
 											<overWrite>false</overWrite>
 											<outputDirectory>target</outputDirectory>
@@ -133,7 +133,7 @@
 							<failIfNoTests>false</failIfNoTests>
 							<redirectTestOutputToFile>${testLogToFile}</redirectTestOutputToFile>
 							<systemPropertyVariables>
-								<jboss.home>${basedir}/target/wildfly-${version.org.wildfly.as}</jboss.home>
+								<jboss.home>${basedir}/target/wildfly-${org.wildfly.as.version}</jboss.home>
 							</systemPropertyVariables>
 						</configuration>
 						<executions combine.children="append">
