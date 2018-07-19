@@ -162,27 +162,27 @@ public class InjectSPITestCase {
 		assertEquals(
 				"the extension works at the start of the cdi engine, so it is not started by a bean. In this case it works before the injection",
 				1, observerExtension.getBeforeBeanDiscovery());
-		assertEquals("In this case we see the process annotated types", 29,
+		assertEquals("In this case we see the process annotated types", 28,
 				observerExtension.getProcessAnnotatedType());
-		assertEquals("In this case we see the process annotated types with annotations", 2,
+		assertEquals("In this case we see the process annotated types with annotations", 1,
 				observerExtension.getProcessAnnotatedTypeWithAnnotations());
 		assertEquals("In this case we see the after discovery", 1, observerExtension.getAfterBeanDiscovery());
-		assertEquals("In this case we see the process bean", 447, observerExtension.getProcessBean());
-		assertEquals("In this case we see the process bean attributes", 81,
+		assertEquals("In this case we see the process bean", 381, observerExtension.getProcessBean());
+		assertEquals("In this case we see the process bean attributes", 79,
 				observerExtension.getProcessBeanAttributes());
-		assertEquals("In this case we see the process injection point", 84,
+		assertEquals("In this case we see the process injection point", 86,
 				observerExtension.getProcessInjectionPoint());
-		assertEquals("In this case we see the process injection target", 29,
+		assertEquals("In this case we see the process injection target", 26,
 				observerExtension.getProcessInjectionTarget());
-		assertEquals("In this case we see the process managed bean", 22, observerExtension.getProcessManagedBean());
+		assertEquals("In this case we see the process managed bean", 21, observerExtension.getProcessManagedBean());
 		assertEquals("In this case we see the process observer method", 0,
 				observerExtension.getProcessObserverMethod());
-		assertEquals("In this case we see the process producer", 59, observerExtension.getProcessProducer());
+		assertEquals("In this case we see the process producer", 58, observerExtension.getProcessProducer());
 		assertEquals("In this case we see the process producer field", 0, observerExtension.getProcessProducerField());
-		assertEquals("In this case we see the process producer method", 59,
+		assertEquals("In this case we see the process producer method", 58,
 				observerExtension.getProcessProducerMethod());
 		assertEquals("In this case we see the process session bean", 0, observerExtension.getProcessSessionBean());
-		assertEquals("In this case we see the process synthetic annotated type", 14,
+		assertEquals("In this case we see the process synthetic annotated type", 13,
 				observerExtension.getProcessSyntheticAnnotatedType());
 		assertEquals("In this case we see the producer factory", 0, observerExtension.getProducerFactory());
 		assertEquals("In this case we see the after deployment validation", 1,

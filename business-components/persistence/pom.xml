@@ -164,6 +164,7 @@
 									<!-- Parameters to test cases. -->
 									<systemPropertyVariables
 										combine.children="append">
+										<ee8.preview.mode>true</ee8.preview.mode>
 										<jboss.server.config.file.name>standalone-full.xml</jboss.server.config.file.name>
 									</systemPropertyVariables>
 								</configuration>
