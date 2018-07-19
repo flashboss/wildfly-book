@@ -1,1 +1,1 @@
-Wildfly Examples tested on Java 8 and Wildfly 12.0.0
+Wildfly Examples javaee 7 based and tested on Java 8 and Wildfly 12.0.0
