@@ -37,6 +37,8 @@ import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
+import org.jboss.resteasy.spi.AsyncResponseProvider;
+import org.jboss.resteasy.spi.AsyncStreamProvider;
 import org.jboss.shrinkwrap.api.asset.FileAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
@@ -78,8 +80,9 @@ public class ComponentTestCase {
 		for (Class<?> clazz : classes) {
 			assertTrue("verify if the class is a rest component or provider",
 					MessageBodyReader.class.isAssignableFrom(clazz) || MessageBodyWriter.class.isAssignableFrom(clazz)
-							|| clazz.isAnnotationPresent(Provider.class)
-							|| DynamicFeature.class.isAssignableFrom(clazz));
+							|| clazz.isAnnotationPresent(Provider.class) || DynamicFeature.class.isAssignableFrom(clazz)
+							|| AsyncResponseProvider.class.isAssignableFrom(clazz)
+							|| AsyncStreamProvider.class.isAssignableFrom(clazz));
 			Map<Class<?>, Integer> contracts = configuration.getContracts(clazz);
 			assertFalse("each class has different contracts", contracts.isEmpty());
 			for (Class<?> contract : contracts.keySet()) {
