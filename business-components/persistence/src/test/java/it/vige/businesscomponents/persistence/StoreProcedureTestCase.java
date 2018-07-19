@@ -1,5 +1,6 @@
 package it.vige.businesscomponents.persistence;
 
+import static java.lang.Integer.valueOf;
 import static javax.persistence.ParameterMode.IN;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
 import static org.jboss.shrinkwrap.api.asset.EmptyAsset.INSTANCE;
@@ -45,6 +46,6 @@ public class StoreProcedureTestCase {
 		query.setParameter("y", 4);
 		query.execute();
 		Integer sum = (Integer) query.getSingleResult();
-		assertEquals("the sum in the stored procedure", sum, new Integer(9));
+		assertEquals("the sum in the stored procedure", sum, valueOf(9));
 	}
 }

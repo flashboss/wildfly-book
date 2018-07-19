@@ -72,7 +72,6 @@ public class RestTestCase {
 		Client client = newClient();
 		WebTarget target = client.target(url + "services/calculator/multi");
 		double value = 0.0;
-		Response response = null;
 		try {
 			Entity<double[]> valuesAsArray = entity(new double[] { 4.5, 6.7 }, TEXT_PLAIN);
 			target.request().post(valuesAsArray);
@@ -80,23 +79,20 @@ public class RestTestCase {
 		} catch (ProcessingException ex) {
 			assertEquals("Arrays not supported", "RESTEASY004655: Unable to invoke request", ex.getMessage());
 		}
-		try {
-			Entity<List<Double>> valuesAsList = entity(asList(new Double[] { 4.5, 6.7 }), TEXT_PLAIN);
-			response = target.request().post(valuesAsList);
+		Entity<List<Double>> valuesAsList = entity(asList(new Double[] { 4.5, 6.7 }), TEXT_PLAIN);
+		try (Response response = target.request().post(valuesAsList)) {
 			value = response.readEntity(Double.class);
 			fail();
 		} catch (ProcessingException ex) {
 			assertEquals("TEXT_PLAIN not supported",
 					"RESTEASY003145: Unable to find a MessageBodyReader of content-type */* and type class java.lang.Double",
 					ex.getMessage());
-		} finally {
-			response.close();
 		}
 
-		Entity<List<Double>> valuesAsList = entity(asList(new Double[] { 4.5, 6.7 }), APPLICATION_JSON);
-		response = target.request().post(valuesAsList);
-		value = response.readEntity(Double.class);
-		response.close();
+		valuesAsList = entity(asList(new Double[] { 4.5, 6.7 }), APPLICATION_JSON);
+		try (Response response = target.request().post(valuesAsList)) {
+			value = response.readEntity(Double.class);
+		}
 		assertEquals("sum implemented: ", 30.150000000000002, value, 0.0);
 		assertEquals("The filter registerOperation is called", POST, calledMethod);
 	}
