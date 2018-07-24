@@ -137,7 +137,7 @@
 								<jboss.home>${basedir}/target/wildfly-${org.wildfly.as.version}</jboss.home>
 							</systemPropertyVariables>
 						</configuration>
-						<executions combine.children="append">
+						<executions>
 
 							<!-- Disable default-test execution. -->
 							<execution>
