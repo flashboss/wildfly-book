@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
 <!-- A sample job.xml for testing job parser. Value conventions: all boolean 
 	value: true all number value: 5 id value: <element-type>1, e.g., job1, step1, 
 	flow1 nested id value: qualified by enclosing id, e.g., flow1.step1 property 

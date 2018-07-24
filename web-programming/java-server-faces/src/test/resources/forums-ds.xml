@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
 <datasources xmlns="http://www.jboss.org/ironjacamar/schema">
 	<datasource jndi-name="java:/jdbc/forums_mdefault"
 		pool-name="forums_mdefault">

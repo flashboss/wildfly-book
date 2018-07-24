@@ -32,7 +32,7 @@ public class OldSpecsWorkingBean implements MessageListener, MessageDrivenBean {
 
 	@Override
 	public void ejbRemove() throws EJBException {
-		logger.info("environment: " + ctx.getEnvironment());
+		logger.info("contextData: " + ctx.getContextData());
 		received = false;
 	}
 

@@ -1,3 +1,4 @@
+<!DOCTYPE xml>
 <job id="Sendmail" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
 	version="1.0">
 
