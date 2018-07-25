@@ -48,6 +48,7 @@ public class ApplicationTestCase {
 
 	private static final String FORUMS_DS_XML = "forums-ds.xml";
 	private static final String WEBAPP_SRC = "src/main/webapp";
+	private static final String WILDFLY_VERSION = "13.0.0.Final";
 
 	@ArquillianResource
 	private URL base;
@@ -59,8 +60,8 @@ public class ApplicationTestCase {
 	public static WebArchive createDeployment() {
 		WebArchive war = create(WebArchive.class);
 		File[] files = resolver().loadPomFromFile("pom.xml").importRuntimeDependencies()
-				.resolve("org.picketlink:picketlink-idm-api:2.5.5.SP9", "org.picketlink:picketlink-idm-impl:2.5.5.SP9",
-						"it.vige:rubia-forums-ejb:2.2.3")
+				.resolve("org.picketlink:picketlink-idm-api:2.5.5.SP11",
+						"org.picketlink:picketlink-idm-impl:2.5.5.SP11", "it.vige:rubia-forums-ejb:2.3.1")
 				.withTransitivity().asFile();
 		war.addAsLibraries(files);
 		war.addPackages(true, ApplicationTestCase.class.getPackage())
@@ -92,12 +93,12 @@ public class ApplicationTestCase {
 
 		@Override
 		public void setup(final ManagementClient managementClient, final String containerId) throws Exception {
-			copy(new File("src/test/resources/application-users.properties").toPath(),
-					new File("target/wildfly-12.0.0.Final/standalone/configuration/application-users.properties")
+			copy(new File("src/test/resources/application-users.properties").toPath(), new File(
+					"target/wildfly-" + WILDFLY_VERSION + "/standalone/configuration/application-users.properties")
 							.toPath(),
 					REPLACE_EXISTING);
-			copy(new File("src/test/resources/application-roles.properties").toPath(),
-					new File("target/wildfly-12.0.0.Final/standalone/configuration/application-roles.properties")
+			copy(new File("src/test/resources/application-roles.properties").toPath(), new File(
+					"target/wildfly-" + WILDFLY_VERSION + "/standalone/configuration/application-roles.properties")
 							.toPath(),
 					REPLACE_EXISTING);
 			final ServerDeploymentManager manager = ServerDeploymentManager.Factory
