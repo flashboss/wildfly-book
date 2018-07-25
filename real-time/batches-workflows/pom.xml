@@ -174,7 +174,7 @@
 									<!-- Parameters to test cases. -->
 									<systemPropertyVariables
 										combine.children="append">
-										<jboss.server.config.file.name>standalone-ee8.xml</jboss.server.config.file.name>
+										<jboss.options>-Dee8.preview.mode=true</jboss.options>
 									</systemPropertyVariables>
 								</configuration>
 							</execution>
