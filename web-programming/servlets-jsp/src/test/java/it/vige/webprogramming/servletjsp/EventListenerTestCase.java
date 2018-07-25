@@ -52,7 +52,7 @@ public class EventListenerTestCase {
 	@Test
 	public void testEventListener() throws Exception {
 		logger.info("start event listener test");
-		assertEquals("sample Context Attribute Set: ", 3, sampleContextAttributeSet.size());
+		assertEquals("sample Context Attribute Set: ", 2, sampleContextAttributeSet.size());
 		assertEquals("sample Context Set: ", 1, sampleContextSet.size());
 		assertTrue("sample HttpSession Activation Set: ",
 				sampleHttpSessionActivationSet == null || sampleHttpSessionActivationSet.isEmpty());
