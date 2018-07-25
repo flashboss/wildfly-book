@@ -15,6 +15,5 @@
 	<a href="${pageContext.request.contextPath}/CookiesServlet">Servlet</a> to
 	see the pre-defined cookie, and set two cookies - one normal, another
 	HttpOnly.
-	</form>
 </body>
 </html>

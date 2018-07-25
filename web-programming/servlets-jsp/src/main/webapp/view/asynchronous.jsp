@@ -10,7 +10,7 @@
 <body>
 	<h1>Servlet : Filters</h1>
 	Invoke the
-	<a href="${pageContext.request.contextPath}/AsynchronousServlet" />Asynchronous
+	<a href="${pageContext.request.contextPath}/AsynchronousServlet">Asynchronous
 	Servlet
 	</a>.
 </body>
