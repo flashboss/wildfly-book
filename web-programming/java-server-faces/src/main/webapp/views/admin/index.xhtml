@@ -55,7 +55,7 @@
 								test="${ ( (adminController.editCategoryMode and forums:message('feedback') eq null) 
                                and (adminController.selectedCategory eq tablecategory.id)                         )
                              or 
-                             ( category.title eq null                           )
+                             ( tablecategory.title eq null                           )
                            }">
 								<tr class="editRow">
 									<td><h:form id="form_${tablecategory.id}">
@@ -75,7 +75,7 @@
 
 							<c:otherwise>
 								<tr class="oddRow">
-									<td><strong>${category.title}</strong> <forums:isAllowed
+									<td><strong>${tablecategory.title}</strong> <forums:isAllowed
 											fragment="acl://editCategory" contextData="#{category}"
 											forumsACLProvider="#{forumsACLProvider}"
 											userModule="#{userModule}">

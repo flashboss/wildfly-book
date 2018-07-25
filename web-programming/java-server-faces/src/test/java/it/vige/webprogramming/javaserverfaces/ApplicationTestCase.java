@@ -1,6 +1,9 @@
 package it.vige.webprogramming.javaserverfaces;
 
+import static java.lang.Integer.MAX_VALUE;
 import static java.nio.file.Files.copy;
+import static java.nio.file.Files.find;
+import static java.nio.file.Paths.get;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static java.util.ResourceBundle.getBundle;
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -57,7 +60,7 @@ public class ApplicationTestCase {
 	private ResourceBundle resourceBundle;
 
 	@Deployment(testable = false)
-	public static WebArchive createDeployment() {
+	public static WebArchive createDeployment() throws IOException {
 		WebArchive war = create(WebArchive.class);
 		File[] files = resolver().loadPomFromFile("pom.xml").importRuntimeDependencies()
 				.resolve("org.picketlink:picketlink-idm-api:2.5.5.SP11",
@@ -86,6 +89,7 @@ public class ApplicationTestCase {
 				.addAsWebInfResource((new File(WEBAPP_SRC + "/WEB-INF", "forums.taglib.xml")), "forums.taglib.xml")
 				.addAsWebInfResource((new File(WEBAPP_SRC + "/WEB-INF", "beans.xml")), "beans.xml")
 				.addAsManifestResource((new File("src/test/resources", "MANIFEST.MF")), "MANIFEST.MF");
+		addGraphics(war);
 		return war;
 	}
 
@@ -187,5 +191,16 @@ public class ApplicationTestCase {
 		page = submitButton.click();
 		assertTrue("The delete is confirmed", page.asText()
 				.contains("\"" + categoryToUpdate + "\" " + resourceBundle.getString("Category_deleted_1")));
+	}
+
+	private static void addGraphics(WebArchive war) throws IOException {
+		find(get(WEBAPP_SRC + "/default_graphics"), MAX_VALUE,
+				(filePath, fileAttr) -> fileAttr.isRegularFile() && !fileAttr.isDirectory()).forEach(filePath -> {
+					File file = filePath.toFile();
+					String absoluteFileName = file.getAbsolutePath();
+					String relativeFileName = absoluteFileName
+							.substring(absoluteFileName.indexOf("/default_graphics") + 1, absoluteFileName.length());
+					war.addAsWebResource(file, relativeFileName);
+				});
 	}
 }

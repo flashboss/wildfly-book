@@ -1,6 +1,5 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:forums="http://www.jboss.com/products/jbossportal/forums"
@@ -30,14 +29,8 @@
 				</ul>
 			</div>
 		</h:form>
-
-		<!-- body of the page -->
-		<c:choose>
-			<c:otherwise>
-				<!-- main content for this page -->
-				<ui:insert name="mainContent" />
-			</c:otherwise>
-		</c:choose>
+		<!-- main content for this page -->
+		<ui:insert name="mainContent" />
 
 		<!-- footer -->
 		<div class="PoweredBy">
