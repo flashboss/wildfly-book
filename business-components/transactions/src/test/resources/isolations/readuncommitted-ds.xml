@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
 <datasources xmlns="http://www.jboss.org/ironjacamar/schema">
     <xa-datasource jndi-name="java:/jboss/datasources/readuncommitted" pool-name="readuncommitted">
         <xa-datasource-class>org.h2.jdbcx.JdbcDataSource</xa-datasource-class>
