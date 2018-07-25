@@ -170,6 +170,12 @@
 									<includes>
 										<include>it/vige/realtime/batchesworkflow/*TestCase.java</include>
 									</includes>
+
+									<!-- Parameters to test cases. -->
+									<systemPropertyVariables
+										combine.children="append">
+										<jboss.server.config.file.name>standalone-ee8.xml</jboss.server.config.file.name>
+									</systemPropertyVariables>
 								</configuration>
 							</execution>
 						</executions>

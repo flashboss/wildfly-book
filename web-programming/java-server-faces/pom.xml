@@ -16,42 +16,6 @@
 	<build>
 		<defaultGoal>package</defaultGoal>
 		<finalName>java-server-faces</finalName>
-		<plugins>
-			<plugin>
-				<artifactId>maven-eclipse-plugin</artifactId>
-				<configuration>
-					<additionalBuildcommands>
-						<buildCommand>
-							<name>org.jboss.tools.common.verification.verifybuilder</name>
-						</buildCommand>
-					</additionalBuildcommands>
-					<additionalConfig>
-						<file>
-							<name>.settings/org.maven.ide.eclipse.prefs</name>
-							<content>eclipse.preferences.version=1
-								fullBuildGoals=process-test-resources
-								includeModules=false
-								resolveWorkspaceProjects=true
-								resourceFilterGoals=process-resources
-								resources\:testResources
-								skipCompilerPlugin=true
-								version=1</content>
-						</file>
-					</additionalConfig>
-					<additionalProjectFacets>
-						<jst.jsf>2.2</jst.jsf>
-					</additionalProjectFacets>
-					<additionalProjectnatures>
-						<projectnature>org.eclipse.wst.jsdt.core.jsNature</projectnature>
-						<projectnature>org.jboss.tools.jsf.jsfnature</projectnature>
-					</additionalProjectnatures>
-					<workspace>${user.home}/.eclipse/workspace</workspace>
-					<wtpdefaultserver>JBossAS</wtpdefaultserver>
-					<wtpversion>3.6</wtpversion>
-					<!-- <downloadSources>true</downloadSources> <downloadJavadocs>true</downloadJavadocs> -->
-				</configuration>
-			</plugin>
-		</plugins>
 	</build>
 	<profiles>
 		<profile>
@@ -168,6 +132,12 @@
 									<includes>
 										<include>it/vige/webprogramming/javaserverfaces/*TestCase.java</include>
 									</includes>
+
+									<!-- Parameters to test cases. -->
+									<systemPropertyVariables
+										combine.children="append">
+										<jboss.server.config.file.name>standalone-ee8.xml</jboss.server.config.file.name>
+									</systemPropertyVariables>
 								</configuration>
 							</execution>
 						</executions>
