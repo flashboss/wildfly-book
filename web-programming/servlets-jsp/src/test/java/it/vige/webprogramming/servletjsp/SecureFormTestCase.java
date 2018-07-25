@@ -37,16 +37,18 @@ public class SecureFormTestCase {
 
 	private static final Logger logger = getLogger(SecureFormTestCase.class.getName());
 
+	private static final String WILDFLY_VERSION = "13.0.0.Final";
+
 	static class SecureResourcesSetupTask implements ServerSetupTask {
 
 		@Override
 		public void setup(ManagementClient managementClient, String containerId) throws Exception {
-			copy(new File("src/test/resources/application-users.properties").toPath(),
-					new File("target/wildfly-12.0.0.Final/standalone/configuration/application-users.properties")
+			copy(new File("src/test/resources/application-users.properties").toPath(), new File(
+					"target/wildfly-" + WILDFLY_VERSION + "/standalone/configuration/application-users.properties")
 							.toPath(),
 					REPLACE_EXISTING);
-			copy(new File("src/test/resources/application-roles.properties").toPath(),
-					new File("target/wildfly-12.0.0.Final/standalone/configuration/application-roles.properties")
+			copy(new File("src/test/resources/application-roles.properties").toPath(), new File(
+					"target/wildfly-" + WILDFLY_VERSION + "/standalone/configuration/application-roles.properties")
 							.toPath(),
 					REPLACE_EXISTING);
 		}
