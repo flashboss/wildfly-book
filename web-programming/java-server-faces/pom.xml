@@ -98,8 +98,8 @@
 						by inheriting plugin configurations. -->
 
 					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-surefire-plugin</artifactId>
+						<version>${maven.surefire.plugin.version}</version>
 						<configuration>
 							<skipTests>${ts.skipTests}</skipTests>
 							<enableAssertions>true</enableAssertions>

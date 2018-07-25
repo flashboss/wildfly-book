@@ -53,6 +53,8 @@
 		<javaee.version>8.0</javaee.version>
 		<rubiaforums.version>2.3.1</rubiaforums.version>
 		<subethasmtp.version>3.1.7</subethasmtp.version>
+		<maven.surefire.plugin.version>2.22.0</maven.surefire.plugin.version>
+		<maven.ejb.plugin.version>3.0.1</maven.ejb.plugin.version>
 		<replacer.plugin.version>1.5.3</replacer.plugin.version>
 		<testLogToFile>true</testLogToFile>
 		<maven.deploy.skip>true</maven.deploy.skip>

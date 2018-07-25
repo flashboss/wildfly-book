@@ -27,6 +27,7 @@
 				<plugins>
 					<plugin>
 						<artifactId>maven-surefire-plugin</artifactId>
+						<version>${maven.surefire.plugin.version}</version>
 						<configuration>
 							<argLine>-Duser.language=${user.language}
 								-Duser.region=${user.country}</argLine>
