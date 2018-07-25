@@ -10,12 +10,12 @@
 			<div class="forumbread">
 				<ul>
 					<li class="first"><h:commandLink
-							value="#{shared.mainPageName}" action="viewCategory" /> <c:if
+							value="#{shared.mainPageName}" /> <c:if
 							test="#{category.categories ne null and category.categorySelected eq true}">
 							<ul>
 								<li>&gt; <c:forEach items="#{category.categories}"
 										var="catrow">
-										<h:commandLink value="#{catrow.title}" action="viewCategory">
+										<h:commandLink value="#{catrow.title}">
 											<f:param name="c" value="#{catrow.id}" />
 										</h:commandLink>
 									</c:forEach>
@@ -45,7 +45,7 @@
 						<tr>
 							<td class="forumcategory" colspan="5">
 								<h3>
-									<h:commandLink value="#{catrow.title}" action="viewCategory">
+									<h:commandLink value="#{catrow.title}">
 										<f:param name="c" value="#{catrow.id}" />
 									</h:commandLink>
 								</h3>
@@ -66,7 +66,7 @@
 									</td>
 									<td>
 										<h3>
-											<h:commandLink value="#{forumrow.name}" action="viewForum">
+											<h:commandLink value="#{forumrow.name}">
 												<f:param name="f" value="#{forumrow.id}" />
 												<f:param name="page" value="0" />
 											</h:commandLink>
@@ -76,7 +76,7 @@
 									<td class="forumlistcentered">${forumrow.postCount}</td>
 									<td class="forumlistlast"><c:choose>
 											<c:when test="#{category.forumLastPosts[forumrow.id]!=null}">
-												<h:commandLink action="viewTopic"
+												<h:commandLink
 													value="#{category.getLastPostSubject(forumrow.id)}">
 													<f:param name="p"
 														value="#{category.forumLastPosts[forumrow.id].id}" />
@@ -91,8 +91,7 @@
 
 												<h:panelGroup rendered="#{!userModule.guest}">
 													<h:commandLink
-														value="${userModule.findUserById(category.forumLastPosts[forumrow.id].poster.userId).userName}"
-														action="viewProfile">
+														value="${userModule.findUserById(category.forumLastPosts[forumrow.id].poster.userId).userName}">
 														<f:param name="uid"
 															value="#{category.forumLastPosts[forumrow.id].poster.userId}" />
 													</h:commandLink>

@@ -13,15 +13,14 @@
 			<div class="forumsectionhdr">
 				<ul>
 
-					<li><h:commandLink value="${resourcebundle.Home}"
-							action="viewCategory" /></li>
+					<li><h:commandLink value="${resourcebundle.Home}" /></li>
 
 					<h:panelGroup rendered="#{userModule.guest==false}">
 						<forums:isAllowed fragment="acl://accessAdminTool"
 							forumsACLProvider="#{forumsACLProvider}"
 							userModule="#{userModule}">
 							<li>&#160;&#160;|&#160;&#160; <h:commandLink
-									action="adminPanel" value="${resourcebundle.Admin_panel}" />
+									value="${resourcebundle.Admin_panel}" />
 							</li>
 						</forums:isAllowed>
 					</h:panelGroup>
