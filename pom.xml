@@ -130,7 +130,6 @@
 
 	<dependencyManagement>
 		<dependencies>
-			<!-- Richfaces -->
 			<dependency>
 				<groupId>org.jboss.arquillian.selenium</groupId>
 				<artifactId>selenium-bom</artifactId>
@@ -144,11 +143,6 @@
 				<version>${org.jboss.arquillian.drone.version}</version>
 				<scope>import</scope>
 				<type>pom</type>
-			</dependency>
-			<dependency>
-				<groupId>org.richfaces</groupId>
-				<artifactId>richfaces</artifactId>
-				<version>${richfaces.version}</version>
 			</dependency>
 
 			<!-- Import the core parent to get all the managed dependencies from core -->
