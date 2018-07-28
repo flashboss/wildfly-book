@@ -57,7 +57,7 @@ public class InterceptorsTestCase {
 		assertEquals(2, getItemHistory().size());
 		simpleService.setItem(item);
 		assertEquals("the bean maintains the state", item, simpleService.getItem());
-		assertTrue(getItemHistory().contains("test_trace")); 
+		assertTrue(getItemHistory().contains("test_trace"));
 	}
 
 	@Test
