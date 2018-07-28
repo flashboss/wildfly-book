@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>it.vige.wildfly</groupId>
 	<artifactId>book</artifactId>
-	<version>13.0.0-SNAPSHOT</version>
+	<version>14.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Wildfly Book</name>
 	<description>Mastering Java EE Development with WildFly</description>
@@ -22,7 +22,7 @@
 	<scm>
 		<connection>svn:git:https://github.com/flashboss/wildfly-book.git</connection>
 		<developerConnection>svn:git:https://github.com/flashboss/wildfly-book.git</developerConnection>
-		<tag>12.0.0</tag>
+		<tag>14.0.0</tag>
 		<url>svn:git:https://github.com/flashboss/wildfly-book.git</url>
 	</scm>
 	<developers>
