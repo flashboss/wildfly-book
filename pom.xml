@@ -22,7 +22,7 @@
 	<scm>
 		<connection>svn:git:https://github.com/flashboss/wildfly-book.git</connection>
 		<developerConnection>svn:git:https://github.com/flashboss/wildfly-book.git</developerConnection>
-		<tag>12.0.0</tag>
+		<tag>13.0.0</tag>
 		<url>svn:git:https://github.com/flashboss/wildfly-book.git</url>
 	</scm>
 	<developers>
