@@ -51,7 +51,7 @@
 		<picketlink.version>2.5.5.SP12</picketlink.version>
 		<lucene.version>5.5.5</lucene.version>
 		<javaee.version>8.0</javaee.version>
-		<rubiaforums.version>2.3.1</rubiaforums.version>
+		<rubiaforums.version>2.3.2-SNAPSHOT</rubiaforums.version>
 		<subethasmtp.version>3.1.7</subethasmtp.version>
 		<maven.surefire.plugin.version>2.22.0</maven.surefire.plugin.version>
 		<maven.ejb.plugin.version>3.0.1</maven.ejb.plugin.version>
