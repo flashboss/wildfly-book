@@ -167,7 +167,7 @@ public class InjectSPITestCase {
 		assertEquals("In this case we see the process annotated types with annotations", 1,
 				observerExtension.getProcessAnnotatedTypeWithAnnotations());
 		assertEquals("In this case we see the after discovery", 1, observerExtension.getAfterBeanDiscovery());
-		assertEquals("In this case we see the process bean", 381, observerExtension.getProcessBean());
+		assertEquals("In this case we see the process bean", 410, observerExtension.getProcessBean());
 		assertEquals("In this case we see the process bean attributes", 79,
 				observerExtension.getProcessBeanAttributes());
 		assertEquals("In this case we see the process injection point", 86,
