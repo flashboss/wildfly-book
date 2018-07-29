@@ -128,12 +128,6 @@
 									<includes>
 										<include>it/vige/realtime/batchesworkflow/*TestCase.java</include>
 									</includes>
-
-									<!-- Parameters to test cases. -->
-									<systemPropertyVariables
-										combine.children="append">
-										<jboss.options>-Dee8.preview.mode=true</jboss.options>
-									</systemPropertyVariables>
 								</configuration>
 							</execution>
 						</executions>

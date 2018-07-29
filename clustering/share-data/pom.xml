@@ -132,7 +132,6 @@
 									<systemPropertyVariables
 										combine.children="append">
                                         <arquillian.launch>clustering-all</arquillian.launch>
-										<jboss.options>-Dee8.preview.mode=true</jboss.options>
 										<jboss.server.config.file.name>standalone-ha.xml</jboss.server.config.file.name>
                                         <cacheMode>SYNC</cacheMode>
                                         <stack>tcp</stack>
