@@ -4,12 +4,11 @@
                            http://xmlns.jcp.org/xml/ns/javaee/beans_2_0.xsd"
 	version="2.0" bean-discovery-mode="all">
 	<!-- in java EE 8 they are not more important. The interceptors are always 
-		actived if you annotate them -->
+		actived if you annotate them. If they are configured through the @Interceptors 
+		annotation they must not be in the beans.xml else you get an internal error -->
 	<interceptors>
 		<class>it.vige.businesscomponents.injection.interceptor.AuditInterceptor</class>
 		<class>it.vige.businesscomponents.injection.interceptor.LoggingInterceptor</class>
 		<class>it.vige.businesscomponents.injection.interceptor.TraceInterceptor</class>
-		<class>it.vige.businesscomponents.injection.interceptor.ExcludedInterceptor</class>
-		<class>it.vige.businesscomponents.injection.interceptor.ExcludingInterceptor</class>
 	</interceptors>
 </beans>
