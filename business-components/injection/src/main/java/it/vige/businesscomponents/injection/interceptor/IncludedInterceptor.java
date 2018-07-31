@@ -28,7 +28,7 @@ public class IncludedInterceptor {
 			logger.info("item: " + item.getName());
 		}
 		Map<String, Object> contextData = ic.getContextData();
-		if (!contextData.isEmpty())
+		if (contextData.size() == 2)
 			getItemHistory().add(contextData.get("test_trace") + "");
 		return ic.proceed();
 	}
