@@ -10,6 +10,8 @@
 		<class>it.vige.businesscomponents.injection.interceptor.AuditInterceptor</class>
 		<class>it.vige.businesscomponents.injection.interceptor.LoggingInterceptor</class>
 		<class>it.vige.businesscomponents.injection.interceptor.TraceInterceptor</class>
+		<class>it.vige.businesscomponents.injection.interceptor.ExcludedInterceptor</class>
+		<class>it.vige.businesscomponents.injection.interceptor.ExcludingInterceptor</class>
 	</interceptors>
 	<alternatives>
 		<class>it.vige.businesscomponents.injection.alternative.CoderBrutalImpl</class>
