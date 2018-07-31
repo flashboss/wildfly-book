@@ -27,7 +27,7 @@ public class ExcludedInterceptor {
 			logger.info("item: " + item.getName());
 		}
 		Map<String, Object> contextData = ic.getContextData();
-		if (contextData.isEmpty())
+		if (contextData.size() == 1)
 			contextData.put("test_trace", "test_trace");
 		return ic.proceed();
 	}
