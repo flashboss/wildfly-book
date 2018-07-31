@@ -1,6 +1,7 @@
 package it.vige.businesscomponents.injection.interceptor;
 
 import static it.vige.businesscomponents.injection.interceptor.service.History.getItemHistory;
+import static java.lang.String.format;
 import static java.text.DateFormat.getTimeInstance;
 import static javax.interceptor.Interceptor.Priority.LIBRARY_BEFORE;
 
@@ -34,9 +35,9 @@ public class AuditInterceptor {
 		String methodName = ic.getMethod().getName();
 		String time = getTimeInstance().format(new Date());
 		if (methodName.equals("create")) {
-			getItemHistory().add(String.format("Item created at %s", time));
+			getItemHistory().add(format("Item created at %s", time));
 		} else if (methodName.equals("getList")) {
-			getItemHistory().add(String.format("List of Items retrieved at %s", time));
+			getItemHistory().add(format("List of Items retrieved at %s", time));
 		}
 		return ic.proceed();
 	}
